@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "SceneDev3.h"
 
-SceneDev3::SceneDev3()
+SceneDev3::SceneDev3() :Scene(SceneIds::Dev3)
 {
 }
 

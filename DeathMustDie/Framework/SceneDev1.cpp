@@ -27,6 +27,7 @@ void SceneDev1::Enter()
 	text->SetFillColor(sf::Color::White);
 	text->SetCharacterSize(59);
 	text->Reset();
+	sprite->SetFillColor(sf::Color::White);
 	sprite->Reset();
 }
 
