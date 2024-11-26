@@ -154,8 +154,6 @@
     <ClCompile Include="Framework\Animator.cpp" />
     <ClCompile Include="Framework\DataTableMgr.cpp" />
     <ClCompile Include="Framework\DataTable.cpp" />
-    <ClCompile Include="Framework\Anim.cpp" />
-    <ClCompile Include="Framework\DebugBox.cpp" />
     <ClCompile Include="Framework\Framework.cpp" />
     <ClCompile Include="Framework\GameObject.cpp" />
     <ClCompile Include="Framework\HitBox.cpp" />
@@ -175,12 +173,6 @@
     <ClCompile Include="Framework\StringTable.cpp" />
     <ClCompile Include="Framework\Utils.cpp" />
     <ClCompile Include="SceneGame.cpp" />
-    <ClCompile Include="Snippets\SceneXXX.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="Snippets\XXXGo.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="Framework\Variables.cpp" />
     <ClCompile Include="TileMap.cpp" />
   </ItemGroup>
@@ -191,8 +183,6 @@
     <ClInclude Include="Framework\Animator.h" />
     <ClInclude Include="Framework\DataTableMgr.h" />
     <ClInclude Include="Framework\DataTable.h" />
-    <ClInclude Include="Framework\Anim.h" />
-    <ClInclude Include="Framework\DebugBox.h" />
     <ClInclude Include="Framework\Defines.h" />
     <ClInclude Include="Framework\Framework.h" />
     <ClInclude Include="Framework\GameObject.h" />
@@ -216,12 +206,6 @@
     <ClInclude Include="Framework\StringTable.h" />
     <ClInclude Include="Framework\Utils.h" />
     <ClInclude Include="SceneGame.h" />
-    <ClInclude Include="Snippets\SceneXXX.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="Snippets\XXXGo.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClInclude>
     <ClInclude Include="Framework\Variables.h" />
     <ClInclude Include="TileMap.h" />
   </ItemGroup>
