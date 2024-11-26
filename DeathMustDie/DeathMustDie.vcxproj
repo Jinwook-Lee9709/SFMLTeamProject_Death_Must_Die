@@ -148,6 +148,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Ability.cpp" />
     <ClCompile Include="DamageText.cpp" />
     <ClCompile Include="Effector.cpp" />
     <ClCompile Include="Framework\AnimationClip.cpp" />
@@ -172,11 +173,13 @@
     <ClCompile Include="Framework\SoundMgr.cpp" />
     <ClCompile Include="Framework\StringTable.cpp" />
     <ClCompile Include="Framework\Utils.cpp" />
+    <ClCompile Include="SceneDev3.cpp" />
     <ClCompile Include="SceneGame.cpp" />
     <ClCompile Include="Framework\Variables.cpp" />
     <ClCompile Include="TileMap.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Ability.h" />
     <ClInclude Include="DamageText.h" />
     <ClInclude Include="Effector.h" />
     <ClInclude Include="Framework\AnimationClip.h" />
@@ -205,6 +208,7 @@
     <ClInclude Include="Framework\SoundMgr.h" />
     <ClInclude Include="Framework\StringTable.h" />
     <ClInclude Include="Framework\Utils.h" />
+    <ClInclude Include="SceneDev3.h" />
     <ClInclude Include="SceneGame.h" />
     <ClInclude Include="Framework\Variables.h" />
     <ClInclude Include="TileMap.h" />
