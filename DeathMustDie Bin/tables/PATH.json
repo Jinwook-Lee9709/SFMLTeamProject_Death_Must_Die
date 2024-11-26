@@ -1,0 +1,40 @@
+
+{
+    "window":{
+        "width" : 800,
+        "height" : 600,
+        "title" : "Timber!"
+    },
+    "scene":{
+        "General":{
+            "Texture" : {
+                "retreat" : "graphics/retreat_button.png"
+            },
+            "SpriteSheet" :{
+
+            },
+            "Fonts" :{
+
+
+            },
+            "Sound" :{
+
+            }
+        },
+        "Dev1":{
+            "Texture" : {
+               "retreat" : "graphics/retreat_button.png"
+
+            
+            },
+            "Font" :{
+                "Sansation" : "fonts/Sansation.ttf"
+            },
+            "Sound" :{
+                
+            }
+        }
+  
+    }
+    
+}

@@ -1,0 +1,104 @@
+
+{
+   "Character1":
+   {
+        "name": "Reynauld",
+        "type": 0,
+        "hp" : 20,
+        "maxHp" : 33,
+        "stress" : 1,
+        "speed" : 1,
+        "dodge" : 0,
+        "accuracy" : 0,
+        "critical" : 3.0,
+        "minDamage" : 6,
+        "maxDamage" : 12,
+        "protect" : 20,
+        "resistStun" : 40,
+        "resistBlight" : 30,
+        "resistBleed" : 30,
+        "resistDebuff" : 30,
+        "resistMove" : 40,
+        "skill1": ["crusader_ability_one","1"],
+        "skill2":["crusader_ability_two","2"],
+        "skill3":["crusader_ability_three","3"],
+        "skill4":["crusader_ability_four","4"]
+        
+   },
+
+   "Character2":
+   {
+        "name": "Dismas",
+        "type": 1,
+        "hp" : 25,
+        "maxHp" : 25,
+        "stress" : 34,
+        "speed" : 3,
+        "dodge" : 0,
+        "accuracy" : 0,
+        "critical" : 15.0,
+        "minDamage" : 8,
+        "maxDamage" : 10,
+        "protect" : 4,
+        "resistStun" : 30,
+        "resistBlight" : 30,
+        "resistBleed" : 30,
+        "resistDebuff" : 30,
+        "resistMove" : 30,
+        "skill1": ["highwayman_ability_one","1"],
+        "skill2":["highwayman_ability_two","2"],
+        "skill3":["highwayman_ability_three","3"],
+        "skill4":["highwayman_ability_four","4"]
+   },
+
+   "Character3":
+   {
+        "name": "Paracelsus",
+        "type": 2,
+        "hp" : 25,
+        "maxHp" : 25,
+        "stress" : 34,
+        "speed" : 5,
+        "dodge" : 0,
+        "accuracy" : 0,
+        "critical" : 15.0,
+        "minDamage" : 8,
+        "maxDamage" : 10,
+        "protect" : 4,
+        "resistStun" : 20,
+        "resistBlight" : 60,
+        "resistBleed" : 20,
+        "resistDebuff" : 50,
+        "resistMove" : 20,
+        "skill1": ["plague_doctor_ability_one","1"],
+        "skill2":["plague_doctor_ability_two","2"],
+        "skill3":["plague_doctor_ability_three","3"],
+        "skill4":["plague_doctor_ability_four","4"]
+   },
+
+   "Character4":
+   {
+        "name": "Junia",
+        "type": 3,
+        "hp" : 25,
+        "maxHp" : 25,
+        "stress" : 34,
+        "speed" : 7,
+        "dodge" : 0,
+        "accuracy" : 0,
+        "critical" : 15.0,
+        "minDamage" : 8,
+        "maxDamage" : 10,
+        "protect" : 4,
+        "resistStun" : 30,
+        "resistBlight" : 30,
+        "resistBleed" : 40,
+        "resistDebuff" : 30,
+        "resistMove" : 30,
+        "skill1": ["vestal_ability_one","1"],
+        "skill2":["vestal_ability_two","2"],
+        "skill3":["vestal_ability_three","3"],
+        "skill4":["vestal_ability_four","4"]
+   }
+
+}

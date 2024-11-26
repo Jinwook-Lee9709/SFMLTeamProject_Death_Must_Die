@@ -1,0 +1,109 @@
+
+{
+     "0":{
+          "Monster1":
+          {
+               "type": 0,
+               "name": "SKELETON MILITIA",
+               "hp" : 10,
+               "maxHp" : 10,
+               "speed" : 0,
+               "dodge" : 10,
+               "accuracy" : 0,
+               "critical" : 3.0,
+               "minDamage" : 6,
+               "maxDamage" : 12,
+               "protect" : 1,
+               "resistStun" : 25,
+               "resistBlight" : 10,
+               "resistBleed" : 200,
+               "resistDebuff" : 15,
+               "resistMove" : 20,
+               "skillCount" : 2,  
+               "skill1":["Skeleton_militia_skill1","1"],
+               "skill2":["Skeleton_militia_skill2","2"],
+               "skill3":["NONE","-1"],
+               "skill4":["NONE","-1"]
+               
+          },
+          "Monster2":
+          {
+               "type": 0,
+               "name": "SKELETON MILITIA",
+               "hp" : 10,
+               "maxHp" : 10,
+               "speed" : 2,
+               "dodge" : 10,
+               "accuracy" : 0,
+               "critical" : 3.0,
+               "minDamage" : 6,
+               "maxDamage" : 12,
+               "protect" : 1,
+               "resistStun" : 25,
+               "resistBlight" : 10,
+               "resistBleed" : 200,
+               "resistDebuff" : 15,
+               "resistMove" : 20,
+               "skillCount" : 2,  
+               "skill1":["Skeleton_militia_skill1","1"],
+               "skill2":["Skeleton_militia_skill2","2"],
+               "skill3":["NONE","-1"],
+               "skill4":["NONE","-1"]
+               
+          },
+          "Monster3":
+          {
+               "type": 0,
+               "name": "SKELETON MILITIA",
+               "hp" : 10,
+               "maxHp" : 10,
+               "speed" : 4,
+               "dodge" : 10,
+               "accuracy" : 0,
+               "critical" : 3.0,
+               "minDamage" : 6,
+               "maxDamage" : 12,
+               "protect" : 1,
+               "resistStun" : 25,
+               "resistBlight" : 10,
+               "resistBleed" : 200,
+               "resistDebuff" : 15,
+               "resistMove" : 20,
+               "skillCount" : 2,  
+               "skill1":["Skeleton_militia_skill1","1"],
+               "skill2":["Skeleton_militia_skill2","2"],
+               "skill3":["NONE","-1"],
+               "skill4":["NONE","-1"]
+               
+          },
+          "Monster4":
+          {
+               "type": 0,
+               "name": "SKELETON MILITIA",
+               "hp" : 10,
+               "maxHp" : 10,
+               "speed" : 6,
+               "dodge" : 10,
+               "accuracy" : 0,
+               "critical" : 3.0,
+               "minDamage" : 6,
+               "maxDamage" : 12,
+               "protect" : 1,
+               "resistStun" : 25,
+               "resistBlight" : 10,
+               "resistBleed" : 200,
+               "resistDebuff" : 15,
+               "resistMove" : 20,
+               "skillCount" : 2,  
+               "skill1":["Skeleton_militia_skill1","1"],
+               "skill2":["Skeleton_militia_skill2","2"],
+               "skill3":["NONE","-1"],
+               "skill4":["NONE","-1"]
+               
+          }
+
+     }
+
+
+  
+}

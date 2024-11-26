@@ -1,0 +1,318 @@
+{
+    "Character":{
+        "0":
+        {
+            "IDLE":
+            {
+                "ID": "crusader_idle",
+                "TEX_ID": "resource/Heroes/Crusader/Sheet/crusader_idle_sheet.png"
+            },
+            "COMBAT":
+            {
+                "ID": "crusader_combat",
+                "TEX_ID": "resource/Heroes/Crusader/Sheet/crusader_combat_sheet.png"
+            },
+            "WALK":
+            {
+                "ID": "crusader_walk",
+                "TEX_ID": "resource/Heroes/Crusader/Sheet/crusader_walk_sheet.png"
+            },
+            "DEFEND":
+            {
+                "ID": "crusader_defend",
+                "TEX_ID": "resource/Heroes/Crusader/Sheet/crusader_defend_sheet.png"
+            },
+            "DEATH":
+            {
+                "ID": "crusader_death",
+                "TEX_ID": "resource/Heroes/Crusader/Sheet/crusader_death_sheet.png"
+            },
+            "SKILL1":
+            {
+                "ID": "crusader_skill_one",
+                "TEX_ID": "resource/Heroes/Crusader/Sheet/crusader_smite_sheet.png"
+            },
+            "SKILL2":
+            {
+                "ID": "crusader_skill_two",
+                "TEX_ID": "resource/Heroes/Crusader/Sheet/crusader_stun_sheet.png"
+            },
+            "SKILL3":
+            {
+                "ID": "crusader_skill_three",
+                "TEX_ID": "resource/Heroes/Crusader/Sheet/crusader_heal_sheet.png"
+            },
+            "SKILL4":
+            {
+                "ID": "crusader_skill_four",
+                "TEX_ID": "resource/Heroes/Crusader/Sheet/crusader_scroll_sheet.png"
+            },
+            "HEAL":
+            {
+                "ID": "crusader_heal_target",
+                "TEX_ID": "resource/Heroes/Crusader/Sheet/crusader_heal_target_sheet.png"
+            },
+            "STUN":
+            {
+                "ID": "crusader_stun_target",
+                "TEX_ID": "resource/Heroes/Crusader/Sheet/crusader_stun_target_sheet.png"
+            }
+        },
+        "1":
+        {
+            "IDLE":
+            {
+                "ID": "highwayman_idle",
+                "TEX_ID": "resource/Heroes/HighwayMan/Sheet/highwayman_idle_sheet.png"
+            },
+            "COMBAT":
+            {
+                "ID": "highwayman_combat",
+                "TEX_ID": "resource/Heroes/HighwayMan/Sheet/highwayman_combat_sheet.png"
+            },
+            "WALK":
+            {
+                "ID": "highwayman_walk",
+                "TEX_ID": "resource/Heroes/HighwayMan/Sheet/highwayman_walk_sheet.png"
+            },
+            "DEFEND":
+            {
+                "ID": "highwayman_defend",
+                "TEX_ID": "resource/Heroes/HighwayMan/Sheet/highwayman_defend_sheet.png"
+            },
+            "DEATH":
+            {
+                "ID": "highwayman_death",
+                "TEX_ID": "resource/Heroes/HighwayMan/Sheet/highwayman_death_sheet.png"
+            },
+            "SKILL1":
+            {
+                "ID": "highwayman_skill_one",
+                "TEX_ID": "resource/Heroes/HighwayMan/Sheet/highwayman_slice_sheet.png"
+            },
+            "SKILL2":
+            {
+                "ID": "highwayman_skill_two",
+                "TEX_ID": "resource/Heroes/HighwayMan/Sheet/highwayman_shot_sheet.png"
+            },
+            "SKILL3":
+            {
+                "ID": "highwayman_skill_three",
+                "TEX_ID": "resource/Heroes/HighwayMan/Sheet/highwayman_hipshot_sheet.png"
+            },
+            "SKILL4":
+            {
+                "ID": "highwayman_skill_four",
+                "TEX_ID": "resource/Heroes/HighwayMan/Sheet/highwayman_blast_sheet.png"
+            },
+            "SHOT":
+            {
+                "ID": "highwayman_shot_target",
+                "TEX_ID": "resource/Heroes/HighwayMan/Sheet/highwayman_shot_target_sheet.png"
+            },
+            "BLAST":
+            {
+                "ID": "highwayman_grapeshot_target",
+                "TEX_ID": "resource/Heroes/HighwayMan/Sheet/highwayman_grapeshot_target_sheet.png"
+            }
+        },
+        "2":
+        {
+            "IDLE":
+            {
+                "ID": "plagueDoctor_idle",
+                "TEX_ID": "resource/Heroes/plagueDoctor/Sheet/plagueDoctor_idle_sheet.png"
+            },
+            "COMBAT":
+            {
+                "ID": "plagueDoctor_combat",
+                "TEX_ID": "resource/Heroes/plagueDoctor/Sheet/plagueDoctor_combat_sheet.png"
+            },
+            "WALK":
+            {
+                "ID": "plagueDoctor_walk",
+                "TEX_ID": "resource/Heroes/plagueDoctor/Sheet/plagueDoctor_walk_sheet.png"
+            },
+            "DEFEND":
+            {
+                "ID": "plagueDoctor_defend",
+                "TEX_ID": "resource/Heroes/plagueDoctor/Sheet/plagueDoctor_defend_sheet.png"
+            },
+            "DEATH":
+            {
+                "ID": "plagueDoctor_death",
+                "TEX_ID": "resource/Heroes/plagueDoctor/Sheet/plagueDoctor_death_sheet.png"
+            },
+            "SKILL1":
+            {
+                "ID": "plagueDoctor_skill_one",
+                "TEX_ID": "resource/Heroes/plagueDoctor/Sheet/plagueDoctor_blast_sheet.png"
+            },
+            "SKILL2":
+            {
+                "ID": "plagueDoctor_skill_two",
+                "TEX_ID": "resource/Heroes/plagueDoctor/Sheet/plagueDoctor_grenade_sheet.png"
+            },
+            "SKILL3":
+            {
+                "ID": "plagueDoctor_skill_three",
+                "TEX_ID": "resource/Heroes/plagueDoctor/Sheet/plagueDoctor_blast_sheet.png"
+            },
+            "SKILL4":
+            {
+                "ID": "plagueDoctor_skill_four",
+                "TEX_ID": "resource/Heroes/plagueDoctor/Sheet/plagueDoctor_heal_sheet.png"
+            },
+            "BLAST":
+            {
+                "ID": "plagueDoctor_blast_target",
+                "TEX_ID": "resource/Heroes/plagueDoctor/Sheet/plagueDoctor_blast_target_sheet.png"
+            },
+            "PLAGUE_GRENADE":
+            {
+                "ID": "plagueDoctor_plagueGrenade_target",
+                "TEX_ID": "resource/Heroes/plagueDoctor/Sheet/plagueDoctor_plagueGrenade_target_sheet.png"
+            },
+            "STUN_GRENADE":
+            {
+                "ID": "plagueDoctor_stunGrenade_target",
+                "TEX_ID": "resource/Heroes/plagueDoctor/Sheet/plagueDoctor_stunGrenade_target_sheet.png"
+            },
+            "HEAL":
+            {
+                "ID": "plagueDoctor_heal_target",
+                "TEX_ID": "resource/Heroes/plagueDoctor/Sheet/plagueDoctor_heal_target_sheet.png"
+            }
+        },
+        "3":
+        {
+            "IDLE":
+            {
+                "ID": "vestal_idle",
+                "TEX_ID": "resource/Heroes/Vestal/Sheet/vestal_idle_sheet.png"
+            },
+            "COMBAT":
+            {
+                "ID": "vestal_combat",
+                "TEX_ID": "resource/Heroes/Vestal/Sheet/vestal_combat_sheet.png"
+            },
+            "WALK":
+            {
+                "ID": "vestal_walk",
+                "TEX_ID": "resource/Heroes/Vestal/Sheet/vestal_walk_sheet.png"
+            },
+            "DEFEND":
+            {
+                "ID": "vestal_defend",
+                "TEX_ID": "resource/Heroes/Vestal/Sheet/vestal_defend_sheet.png"
+            },
+            "DEATH":
+            {
+                "ID": "vestal_death",
+                "TEX_ID": "resource/Heroes/Vestal/Sheet/vestal_death_sheet.png"
+            },
+            "SKILL1":
+            {
+                "ID": "vestal_skill_one",
+                "TEX_ID": "resource/Heroes/Vestal/Sheet/vestal_mace_sheet.png"
+            },
+            "SKILL2":
+            {
+                "ID": "vestal_skill_two",
+                "TEX_ID": "resource/Heroes/Vestal/Sheet/vestal_judgement_sheet.png"
+            },
+            "SKILL3":
+            {
+                "ID": "vestal_skill_three",
+                "TEX_ID": "resource/Heroes/Vestal/Sheet/vestal_divine_grace_sheet.png"
+            },
+            "SKILL4":
+            {
+                "ID": "vestal_skill_four",
+                "TEX_ID": "resource/Heroes/Vestal/Sheet/vestal_gods_comfort_sheet.png"
+            },
+            "JUDGEMENT":
+            {
+                "ID": "vestal_judgement_target",
+                "TEX_ID": "resource/Heroes/Vestal/Sheet/vestal_judgement_target_sheet.png"
+            },
+            "HEAL":
+            {
+                "ID": "vestal_heal_target",
+                "TEX_ID": "resource/Heroes/Vestal/Sheet/vestal_heal_target_sheet.png"
+            }
+        }
+
+    },
+    "Monster":{
+        "Ruin":{
+            "0":{
+                "Combat": 
+                {
+                    "ID": "skeleton_militia_combat",
+                    "TEX_ID": "resource/Monster/skeleton_militia/Sheet/skeleton_militia_combat_sheet.png"
+                },
+                "DEFEND":
+                {
+                     "ID": "skeleton_militia_defend",
+                    "TEX_ID": "resource/Monster/skeleton_militia/Sheet/skeleton_militia_defend_sheet.png"
+                },
+                "DEATH":
+                {
+                     "ID": "skeleton_militia_death",
+                    "TEX_ID": "resource/Monster/skeleton_militia/Sheet/skeleton_militia_death_sheet.png"
+                },
+                "SKILL1": 
+                {
+                    "ID": "skeleton_militia_skill_one",
+                    "TEX_ID": "resource/Monster/skeleton_militia/Sheet/skeleton_militia_attack_sheet.png"
+                },
+                "SKILL2":{
+                    "ID": "skeleton_militia_skill_two",
+                    "TEX_ID": "resource/Monster/skeleton_militia/Sheet/skeleton_militia_attack_sheet.png"
+                }
+            }
+        }
+      
+    },
+    "Effect":{
+        "STUN":{
+            "ID": "stunned",
+            "TEX_ID": "resource/FX/halo/stunned.png"
+        },
+        "STUNLOOP":{
+            "ID": "stunned_loop",
+            "TEX_ID": "resource/FX/halo/stunned_loop.png"
+        },
+        "BLOOD":{
+            "ID": "blood",
+            "TEX_ID": "resource/FX/blood_sheet.png"
+        },
+        "DEATH":{
+            "ID": "death",
+            "TEX_ID": "resource/FX/death_sheet.png"
+        },
+        "TORCH0":{
+            "ID": "torch0",
+            "TEX_ID": "resource/Overlays/torch0_sheet.png"
+        },
+        "TORCH1":{
+            "ID": "torch1",
+            "TEX_ID": "resource/Overlays/torch1_sheet.png"
+        },
+        "TORCH2":{
+            "ID": "torch2",
+            "TEX_ID": "resource/Overlays/torch2_sheet.png"
+        },
+        "TORCH3":{
+            "ID": "torch3",
+            "TEX_ID": "resource/Overlays/torch3_sheet.png"
+        },
+        "TORCH4":{
+            "ID": "torch4",
+            "TEX_ID": "resource/Overlays/torch4_sheet.png"
+        }
+
+
+    }
+}
