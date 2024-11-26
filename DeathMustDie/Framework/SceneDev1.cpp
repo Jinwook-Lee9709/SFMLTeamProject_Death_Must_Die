@@ -22,7 +22,7 @@ void SceneDev1::Enter()
 	Scene::Enter();
 	sprite = new SpriteGo("retreat");
 	text = new TextGo("Sansation");
-	text->SetString("Hi");
+	text->SetString("ContinueText");
 	text->SetPosition(sf::Vector2f(400.f, 500.f));
 	text->SetFillColor(sf::Color::White);
 	text->SetCharacterSize(59);
