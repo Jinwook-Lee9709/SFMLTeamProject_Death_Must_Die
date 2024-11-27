@@ -149,6 +149,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Ability.cpp" />
+    <ClCompile Include="AniMonster.cpp" />
     <ClCompile Include="DamageText.cpp" />
     <ClCompile Include="Effector.cpp" />
     <ClCompile Include="EventHandler.cpp" />
@@ -182,6 +183,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Ability.h" />
+    <ClInclude Include="AniMonster.h" />
     <ClInclude Include="DamageText.h" />
     <ClInclude Include="Effector.h" />
     <ClInclude Include="EventHandler.h" />
