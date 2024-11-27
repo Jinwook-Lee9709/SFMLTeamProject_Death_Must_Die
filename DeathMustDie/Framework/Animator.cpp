@@ -25,14 +25,6 @@ void Animator::Update(float dt)
 			break;
 		}
 	}
-	//sf::Vector2f scale = sprite->getScale();
-	//if (this->flip) {
-
-	//	sprite->setScale({ -abs(scale.x), scale.y });
-	//}
-	//else {
-	//	sprite->setScale({ scale.x, scale.y });
-	//}
 	SetRect(currentClip->frames[currentFrame]);
 }
 

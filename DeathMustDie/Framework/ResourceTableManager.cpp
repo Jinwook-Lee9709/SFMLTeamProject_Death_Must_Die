@@ -28,8 +28,8 @@ void ResourceTableManager::Init()
 
 bool ResourceTableManager::LoadAnimation()
 {
-	auto effects = ANIMATION["Effect"];
-	for (auto& animation : effects) {
+	auto animations = ANIMATION;
+	for (auto& animation : animations) {
 		RES_MGR(AnimationClip).Load(animation["ID"]);
 		RES_MGR(sf::Texture).Load(animation["TEX_ID"]);
 		if (resourceTable.find(animation["ID"]) == resourceTable.end()) {

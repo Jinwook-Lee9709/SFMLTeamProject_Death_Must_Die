@@ -40,7 +40,7 @@ void SceneDev2::Update(float dt)
 {
 	Scene::Update(dt);
 
-	
+	text->OnLocalize(Languages::Korean);
 }
 
 void SceneDev2::Draw(sf::RenderWindow& window)
