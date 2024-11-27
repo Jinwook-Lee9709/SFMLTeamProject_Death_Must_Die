@@ -4,7 +4,7 @@
 
 void Framework::Init(int width, int height, const std::string& name)
 {
-    FONT_MGR.Load("fonts/DS-DIGI.ttf");
+    FONT_MGR.Load("fonts/Sansation.ttf");
 
 	window.create(sf::VideoMode(width, height), name);
     RES_TABLE_MGR.Init();

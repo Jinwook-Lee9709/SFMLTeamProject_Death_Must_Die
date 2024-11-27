@@ -4,6 +4,8 @@
 class SceneDev2 : public Scene
 {
 protected:
+	SpriteGo* sprite;
+	TextGo* text;
 
 public:
 	SceneDev2();
