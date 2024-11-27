@@ -9,10 +9,8 @@ void Animator::Update(float dt)
 	accumTime += dt;
 	if (accumTime < frameDuration)
 		return;
-
 	currentFrame++;
 	accumTime = 0;
-	
 	if (currentFrame == totalFrame) {
 		switch (currentClip->loopType) {
 		case AnimationLoopTypes::Single:

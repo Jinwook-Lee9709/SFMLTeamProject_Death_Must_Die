@@ -1,15 +1,29 @@
 #pragma once
 #include "AttackEntity.h"
 
-#pragma once
-
 class FallAttack : public AttackEntity
 {
+	struct Info {
+		std::string fallAnimId;
+		std::string impactAnimId;
+		int impactFrame;
+		float fallAnimSize;
+		float damage;
+		float speed;
+		float ellipseWidth;
+		float ellipseHeight;
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(Info, fallAnimId, impactAnimId,
+			impactFrame, fallAnimSize, damage, speed, ellipseWidth, ellipseHeight);
+	};
+
 protected:
-	float damage;
-	float duration;
-	sf::Vector2f ellipseRadius;
-	sf::CircleShape circle;
+	sf::Sprite fallSprite;
+	sf::Sprite impactSprite;
+	Animator fallAnimator;
+	Animator impactAnimator;
+	bool isImpacted;
+	Info info;
+
 public:
 	FallAttack(const std::string& name = "");
 	~FallAttack() = default;
@@ -18,13 +32,12 @@ public:
 	void SetRotation(float angle) override;
 	void SetScale(const sf::Vector2f& scale) override;
 
-	void SetOrigin(Origins preset) override;
-	void SetOrigin(const sf::Vector2f& newOrigin) override;
-
-	void Init() override;
 	void Release() override;
-	void Reset() override;
 	void Update(float dt) override;
 	void FixedUpdate(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
+
+	void SetInfo(const json& j)override;
+	void Play();
+	void StartImpactAnim();
 };

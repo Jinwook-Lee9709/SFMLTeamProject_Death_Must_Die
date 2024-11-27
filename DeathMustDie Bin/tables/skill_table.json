@@ -6,12 +6,14 @@
         "Projectile_Count": 4,
         "AttackEntity":
         {
-            "Animation": "anim",
-            "Damage": 10,
-            "Duration": 5,
-            "range": 5,
-            "width": 20,
-            "height": 10
+            "fallAnimId": "meteor_fall",
+            "impactAnimId": "meteor_explode",
+            "impactFrame": 14,
+            "fallAnimSize": 0.5,
+            "damage": 10,
+            "speed": 2000,
+            "ellipseWidth": 64,
+            "ellipseHeight": 32
         }
     }
 }

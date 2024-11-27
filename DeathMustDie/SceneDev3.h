@@ -1,9 +1,14 @@
 #pragma once
+class FallAttack;
+
 class SceneDev3 : public Scene
 {
 private:
 	SpriteGo* sprite;
-	
+	FallAttack* attack;
+	json j;
+	ObjectPool<FallAttack>* pool;
+	std::vector<FallAttack*> attacks;
 public:
 
 	SceneDev3();

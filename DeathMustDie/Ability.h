@@ -23,6 +23,7 @@ enum class AbilityAction
 {
 	Fire,
 	Random,
+	fall,
 	Radial,
 	Wedge,
 	Chain,

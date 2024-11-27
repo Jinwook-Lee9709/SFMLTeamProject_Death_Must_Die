@@ -3,6 +3,17 @@
     {
         "ID": "crusader_idle",
         "TEX_ID": "resource/texture/Sheet/crusader_idle_sheet.png"
+    },
+    "METEOR_FALL":
+    {
+        "ID": "meteor_fall",
+        "TEX_ID": "resource/texture/Sheet/meteor_fall.png"
+    },
+    "METEOR_EXPLODE":
+    {
+        "ID": "meteor_explode",
+        "TEX_ID": "resource/texture/Sheet/meteor_explode.png"
     }
+ 
         
 }
