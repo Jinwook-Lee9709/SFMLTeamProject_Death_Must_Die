@@ -1,11 +1,14 @@
 #pragma once
 #include "AnimationClip.h"
 
+class Monster;
+
 class Animator
 {
 protected:
 	sf::Sprite* sprite;
 	AnimationClip* currentClip;
+	Monster* monster;
 
 	bool isPlaying;
 	bool flip;

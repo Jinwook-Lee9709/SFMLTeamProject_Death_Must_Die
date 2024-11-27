@@ -2,7 +2,50 @@
     "CHARCTER_IDLE":
     {
         "ID": "crusader_idle",
-        "TEX_ID": "resource/texture/Sheet/crusader_idle_sheet.png"
+        "TEX_ID": "resource/texture/Sheet/crusader_idle_Sheet.png"
+    },
+    
+    "SKELETON_WALK":
+    {
+        "ID": "skeleton_walk",
+        "TEX_ID": "resource/texture/Sheet/Skeleton_Walk_Sheet.png"
+    },
+
+    "SKELETON_ATTACK":
+    {
+        "ID": "skeleton_attack",
+        "TEX_ID": "resource/texture/Sheet/Skeleton_Attack_Sheet.png"
+    },
+
+    "SKELETON_DEATH":
+    {
+        "ID": "skeleton_death",
+        "TEX_ID": "resource/texture/Sheet/Skeleton_Death_Sheet.png"
+    },
+
+    "SKELETON_GETHIT":
+    {
+        "ID": "skeleton_gethit",
+        "TEX_ID": "resource/texture/Sheet/Skeleton_GetHit_Sheet.png"
+    },
+
+    "SLIME_WALK":
+    {
+        "ID": "slime_walk",
+        "TEX_ID": "resource/texture/Sheet/Slime_Walk_Sheet.png"
+    },
+
+    "SLIME_ATTACK":
+    {
+        "ID": "slime_attack",
+        "TEX_ID": "resource/texture/Sheet/Slime_Attack_Sheet.png"
+    },
+
+    "SLIME_DEATH":
+    {
+        "ID": "slime_death",
+        "TEX_ID": "resource/texture/Sheet/Slime_Death_Sheet.png"
     }
+    
         
 }

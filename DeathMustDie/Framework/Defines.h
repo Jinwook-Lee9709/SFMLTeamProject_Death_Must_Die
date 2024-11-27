@@ -42,3 +42,11 @@ enum class Sides
 	Right,
 	None,
 };
+
+enum class MonsterTypes
+{
+	None = -1,
+	Skeleton,
+	Slime,
+	Count,
+};

@@ -1,11 +1,19 @@
 #pragma once
 #include "Scene.h"
 
+class Monster;
+
 class SceneDev2 : public Scene
 {
 protected:
 	SpriteGo* sprite;
 	TextGo* text;
+	Monster* skeleton;
+	Monster* slime;
+	Animator anim;
+
+	sf::Sprite spr;
+	sf::RectangleShape player;
 
 public:
 	SceneDev2();
