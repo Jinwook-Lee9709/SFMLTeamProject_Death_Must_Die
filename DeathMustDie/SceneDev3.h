@@ -1,8 +1,9 @@
 #pragma once
 class SceneDev3 : public Scene
 {
-private
-	:
+private:
+	sf::Sprite sprite;
+	Animator anim;
 public:
 
 	SceneDev3();

@@ -151,6 +151,7 @@
     <ClCompile Include="Ability.cpp" />
     <ClCompile Include="DamageText.cpp" />
     <ClCompile Include="Effector.cpp" />
+    <ClCompile Include="EventHandler.cpp" />
     <ClCompile Include="Framework\AnimationClip.cpp" />
     <ClCompile Include="Framework\Animator.cpp" />
     <ClCompile Include="Framework\DataTableMgr.cpp" />
@@ -182,6 +183,7 @@
     <ClInclude Include="Ability.h" />
     <ClInclude Include="DamageText.h" />
     <ClInclude Include="Effector.h" />
+    <ClInclude Include="EventHandler.h" />
     <ClInclude Include="Framework\AnimationClip.h" />
     <ClInclude Include="Framework\Animator.h" />
     <ClInclude Include="Framework\DataTableMgr.h" />
