@@ -33,6 +33,19 @@
             "Sound" :{
                 
             }
+        },
+        "Dev3":{
+            "Texture" : {
+               "fireRing" : "resource/texture/test/fireRing.png"
+
+            
+            },
+            "Font" :{
+                "Sansation" : "fonts/Sansation.ttf"
+            },
+            "Sound" :{
+                
+            }
         }
   
     }

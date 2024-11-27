@@ -2,8 +2,8 @@
 class SceneDev3 : public Scene
 {
 private:
-	sf::Sprite sprite;
-	Animator anim;
+	SpriteGo* sprite;
+	
 public:
 
 	SceneDev3();

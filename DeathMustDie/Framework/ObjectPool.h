@@ -6,14 +6,20 @@ class ObjectPool
 private:
 	std::list<T*> unused;
 	std::list<T*> used;
+	std::function<void(T)> initializer = nullptr;
 
 public:
-	ObjectPool(int initSize = 10)
+	ObjectPool(int initSize = 10, std::function<void(T)> func = nullptr)
 	{
+		initializer = func;
 		for (int i = 0; i < initSize; ++i)
 		{
 			auto obj = new T();
 			obj->Init();
+			if (func != nullptr)
+			{
+				func(obj);
+			}
 			unused.push_back(obj);
 		}
 	}
@@ -35,6 +41,10 @@ public:
 		if (unused.empty())
 		{
 			auto obj = new T();
+			if (initializer != nullptr)
+			{
+				initializer(obj);
+			}
 			obj->Init();
 			obj->Reset();
 			used.push_back(obj);

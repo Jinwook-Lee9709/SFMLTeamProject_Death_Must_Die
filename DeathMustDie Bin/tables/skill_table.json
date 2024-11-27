@@ -1,0 +1,17 @@
+{
+    "Meteor Shower":
+    {
+        "Type": 3,
+        "Action": 2,
+        "Projectile_Count": 4,
+        "AttackEntity":
+        {
+            "Animation": "anim",
+            "Damage": 10,
+            "Duration": 5,
+            "range": 5,
+            "width": 20,
+            "height": 10
+        }
+    }
+}

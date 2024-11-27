@@ -216,6 +216,18 @@ bool Utils::CheckCollision(const sf::RectangleShape& shapeA, const sf::Rectangle
     return PolygonsIntersect(pointsA, shapeA.getTransform(), pointsB, shapeB.getTransform());
 }
 
+bool Utils::CheckCollision(const sf::Vector2f& ellipseCenter, const sf::Vector2f& ellipseRadius, const sf::FloatRect& rect)
+{
+    float closestX = std::max(rect.left, std::min(ellipseCenter.x, rect.left + rect.width));
+    float closestY = std::max(rect.top, std::min(ellipseCenter.y, rect.top + rect.height));
+
+    float dx = closestX - ellipseCenter.x;
+    float dy = closestY - ellipseCenter.y;
+
+    return (dx * dx) / (ellipseRadius.x * ellipseRadius.x) +
+        (dy * dy) / (ellipseRadius.y * ellipseRadius.y) <= 1.0f;
+}
+
 std::vector<sf::Vector2f> Utils::GetShapePoints(const sf::Sprite& shape)
 {
     sf::FloatRect localBounds = shape.getLocalBounds();
