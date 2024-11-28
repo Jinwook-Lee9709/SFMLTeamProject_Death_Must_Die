@@ -3,6 +3,50 @@
     {
         "ID": "crusader_idle",
         "TEX_ID": "resource/texture/Sheet/crusader_idle_sheet.png"
+    },
+    "KNIGHT_IDLE" :
+    {
+        "ID": "knight_idle",
+        "TEX_ID": "resource/texture/Sheet/player_knight/knight_idle_sheet.png"
+    },
+    "KNIGHT_WALK" :
+    {
+        "ID": "knight_walk",
+        "TEX_ID": "resource/texture/Sheet/player_knight/knight_walk_sheet.png"
+    },
+    "KNIGHT_ATTACK1" :
+    {
+        "ID": "knight_attack1",
+        "TEX_ID": "resource/texture/Sheet/player_knight/knight_attack1_sheet.png"
+    },
+    "KNIGHT_ATTACK2" :
+    {
+        "ID": "knight_attack2",
+        "TEX_ID": "resource/texture/Sheet/player_knight/knight_attack2_sheet.png"
+    },
+    "KNIGHT_SOWARD1" :
+    {
+        "ID": "knight_soward1",
+        "TEX_ID": "resource/texture/Sheet/player_knight/knight_soward1_sheet.png"
+    },
+    "KNIGHT_SOWARD2" :
+    {
+        "ID": "knight_soward2",
+        "TEX_ID": "resource/texture/Sheet/player_knight/knight_soward2_sheet.png"
+    },
+    "KNIGHT_ATTACK_RANGE" :
+    {
+        "ID": "knight_attack_range",
+        "TEX_ID": "resource/texture/Sheet/player_knight/knight_attack_range_sheet.png"
+    },
+    "KNIGHT_DASH" :
+    {
+        "ID": "knight_dash",
+        "TEX_ID": "resource/texture/Sheet/player_knight/knight_dash_sheet.png"
+    },
+    "KNIGHT_DASH_GLOW" :
+    {
+        "ID": "knight_dash_glow",
+        "TEX_ID": "resource/texture/Sheet/player_knight/knight_glow_sheet.png"
     }
-        
 }
