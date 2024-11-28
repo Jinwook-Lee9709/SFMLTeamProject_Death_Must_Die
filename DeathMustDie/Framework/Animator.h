@@ -37,6 +37,7 @@ public:
 
 	bool IsFlip() { return flip; }
 	bool IsLoop() { return currentClip->loopType == AnimationLoopTypes::Loop; }
+	bool IsPlay() { return isPlaying; }
 
 	const std::string& GetCurrentClipId() const
 	{

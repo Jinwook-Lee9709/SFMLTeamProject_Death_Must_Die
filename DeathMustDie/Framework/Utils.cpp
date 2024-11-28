@@ -55,6 +55,13 @@ sf::Color Utils::RandomColor(bool opaque)
     return sf::Color(r, g, b, a);
 }
 
+sf::Vector2f Utils::RandomPointInRect(const sf::FloatRect& rect)
+{
+    return sf::Vector2f(
+        RandomRange(rect.left, rect.left + rect.width),
+        RandomRange(rect.top, rect.top + rect.height));
+}
+
 sf::Vector2f Utils::SetOrigin(sf::Transformable& obj, Origins preset, const sf::FloatRect rect)
 {
     sf::Vector2f newOrigin(rect.width, rect.height);

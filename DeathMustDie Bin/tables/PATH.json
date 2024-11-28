@@ -8,9 +8,7 @@
     "scene":{
         "General":{
             "Texture" : {
-                "retreat" : "graphics/retreat_button.png",
-                "Skeleton" : "resource/texture/Sprite/Skeleton_Spr_Walk_0000.png",
-                "Slime" : "resource/texture/Sprite/OozeSmall_Spr_Walk_0000.png"
+                "retreat" : "graphics/retreat_button.png"
             },
             "SpriteSheet" :{
 
@@ -38,9 +36,7 @@
         },
         "Dev2":{
             "Texture" : {
-               "retreat" : "graphics/retreat_button.png",
-               "Skeleton" : "resource/texture/Sprite/Skeleton_Spr_Walk_0000.png",
-               "Slime" : "resource/texture/Sprite/OozeSmall_Spr_Walk_0000.png"
+               "retreat" : "graphics/retreat_button.png"
 
             
             },

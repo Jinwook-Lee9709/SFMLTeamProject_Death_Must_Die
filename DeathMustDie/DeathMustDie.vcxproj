@@ -149,7 +149,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Ability.cpp" />
-    <ClCompile Include="AniMonster.cpp" />
+    <ClCompile Include="AniSkeleton.cpp" />
+    <ClCompile Include="AniSlime.cpp" />
     <ClCompile Include="DamageText.cpp" />
     <ClCompile Include="Effector.cpp" />
     <ClCompile Include="EventHandler.cpp" />
@@ -176,6 +177,7 @@
     <ClCompile Include="Framework\StringTable.cpp" />
     <ClCompile Include="Framework\Utils.cpp" />
     <ClCompile Include="Monster.cpp" />
+    <ClCompile Include="MonsterTable.cpp" />
     <ClCompile Include="SceneDev3.cpp" />
     <ClCompile Include="SceneGame.cpp" />
     <ClCompile Include="Framework\Variables.cpp" />
@@ -183,7 +185,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Ability.h" />
-    <ClInclude Include="AniMonster.h" />
+    <ClInclude Include="AniSkeleton.h" />
+    <ClInclude Include="AniSlime.h" />
     <ClInclude Include="DamageText.h" />
     <ClInclude Include="Effector.h" />
     <ClInclude Include="EventHandler.h" />
@@ -214,6 +217,7 @@
     <ClInclude Include="Framework\StringTable.h" />
     <ClInclude Include="Framework\Utils.h" />
     <ClInclude Include="Monster.h" />
+    <ClInclude Include="MonsterTable.h" />
     <ClInclude Include="SceneDev3.h" />
     <ClInclude Include="SceneGame.h" />
     <ClInclude Include="Framework\Variables.h" />

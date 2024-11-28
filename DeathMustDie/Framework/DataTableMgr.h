@@ -31,4 +31,5 @@ inline T* DataTableMgr::Get(DataTable::Types type)
 
 #define DATATABLE_MGR (DataTableMgr::Instance())
 #define STRING_TABLE (DATATABLE_MGR.Get<StringTable>(DataTable::Types::String))
+#define MONSTER_TABLE (DATATABLE_MGR.Get<MonsterTable>(DataTable::Types::Monster));
 #define STR(X) (STRING_TABLE->Get(X))

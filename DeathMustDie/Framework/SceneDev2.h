@@ -2,18 +2,25 @@
 #include "Scene.h"
 
 class Monster;
+class AniSkeleton;
+class AniSlime;
 
 class SceneDev2 : public Scene
 {
 protected:
 	SpriteGo* sprite;
 	TextGo* text;
-	Monster* skeleton;
-	Monster* slime;
 	Animator anim;
+	AniSkeleton* aniSkeleton;
+	AniSlime* aniSlime;
+	json j;
 
-	sf::Sprite spr;
-	sf::RectangleShape player;
+	sf::Vector2f direction;
+	sf::Vector2f rectDirection;
+	float speed = 70.f;
+	float rectSpeed = 300.f;
+
+	bool isPlaying = false;
 
 public:
 	SceneDev2();
@@ -24,6 +31,9 @@ public:
 	void Exit() override;
 
 	void Update(float dt) override;
+	void FixedUpdate(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
+
+	void SpawnSkeleton(int count);
 };
 

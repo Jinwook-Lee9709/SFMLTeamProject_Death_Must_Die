@@ -4,9 +4,10 @@ class DataTable
 public:
 	enum class Types
 	{
-		String, 
+		String,
+		Monster,
 	};
-	static const int TotalTypes = 1;
+	static const int TotalTypes = 2;
 
 protected:
 	Types type;
