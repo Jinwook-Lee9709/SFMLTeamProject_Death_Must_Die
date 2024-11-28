@@ -1,8 +1,8 @@
 {
     "Meteor Shower":
     {
-        "Type": 3,
-        "Action": 2,
+        "abilityType": 3,
+        "entityType": 2,
         "Projectile_Count": 4,
         "AttackEntity":
         {
@@ -14,6 +14,19 @@
             "speed": 2000,
             "ellipseWidth": 64,
             "ellipseHeight": 32
+        }
+    },
+    "Breath of Fire":
+    {
+        "abilityType": 2,
+        "entityType": 4,
+        "AttackEntity":
+        {
+            "AnimId": "breath_fire",
+            "AnimSize" : 0.5,
+            "damage": 14,
+            "rangeDegree": 60,
+            "radius": 431
         }
     }
 }

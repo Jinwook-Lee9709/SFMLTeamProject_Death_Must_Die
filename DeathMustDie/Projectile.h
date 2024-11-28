@@ -1,5 +1,8 @@
 #pragma once
-class Projectile
+#include "AttackEntity.h"
+
+class Projectile : public AttackEntity
 {
+
 };
 

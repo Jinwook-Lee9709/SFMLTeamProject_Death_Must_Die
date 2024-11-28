@@ -11,6 +11,6 @@ public:
     ~AttackEntity() = default;
 
     virtual void SetInfo(const json& j) {}
-
+    virtual void Activate() {};
 };
 

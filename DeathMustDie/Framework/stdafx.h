@@ -29,6 +29,7 @@ using json = nlohmann::json;
 #include "Variables.h"
 #include "DataTable.h"
 #include "StringTable.h"
+#include "SkillTable.h"
 #include "DataTableMgr.h"
 #include "ResourceTableManager.h"
 #include "HitBox.h"

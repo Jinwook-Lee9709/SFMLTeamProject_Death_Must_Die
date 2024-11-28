@@ -38,6 +38,6 @@ public:
 	void Draw(sf::RenderWindow& window) override;
 
 	void SetInfo(const json& j)override;
-	void Play();
+	void Activate()override;
 	void StartImpactAnim();
 };

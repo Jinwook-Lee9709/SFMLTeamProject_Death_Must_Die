@@ -1,14 +1,12 @@
 #pragma once
-class FallAttack;
+class AbilityMgr;
 
 class SceneDev3 : public Scene
 {
 private:
 	SpriteGo* sprite;
-	FallAttack* attack;
-	json j;
-	ObjectPool<FallAttack>* pool;
-	std::vector<FallAttack*> attacks;
+
+	AbilityMgr* abilMgr;
 public:
 
 	SceneDev3();

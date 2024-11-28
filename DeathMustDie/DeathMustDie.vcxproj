@@ -176,18 +176,22 @@
     <ClCompile Include="Framework\SoundMgr.cpp" />
     <ClCompile Include="Framework\StringTable.cpp" />
     <ClCompile Include="Framework\Utils.cpp" />
+    <ClCompile Include="AttackEntityPoolMgr.cpp" />
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="SceneDev3.cpp" />
     <ClCompile Include="SceneGame.cpp" />
     <ClCompile Include="Framework\Variables.cpp" />
+    <ClCompile Include="SkillTable.cpp" />
     <ClCompile Include="TileMap.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="FallAttack.cpp" />
+    <ClCompile Include="WedgeAttack.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Ability.h" />
     <ClInclude Include="AbilityMgr.h" />
     <ClInclude Include="AttackEntity.h" />
+    <ClInclude Include="AttackEntityPool.h" />
     <ClInclude Include="DamageText.h" />
     <ClInclude Include="Effector.h" />
     <ClInclude Include="EventHandler.h" />
@@ -217,13 +221,16 @@
     <ClInclude Include="Framework\SoundMgr.h" />
     <ClInclude Include="Framework\StringTable.h" />
     <ClInclude Include="Framework\Utils.h" />
+    <ClInclude Include="AttackEntityPoolMgr.h" />
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="SceneDev3.h" />
     <ClInclude Include="SceneGame.h" />
     <ClInclude Include="Framework\Variables.h" />
+    <ClInclude Include="SkillTable.h" />
     <ClInclude Include="TileMap.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="FallAttack.h" />
+    <ClInclude Include="WedgeAttack.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

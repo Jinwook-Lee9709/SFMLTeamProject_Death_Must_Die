@@ -42,6 +42,8 @@ public:
 	static float RadianToDegree(float radian);
 	static float DegreeToRadian(float degree);
 
+	static float NormalizeAngle(float angle);
+
 	static float AngleRadian(const sf::Vector2f& vec);
 	static float Angle(const sf::Vector2f& vec);
 	sf::Vector2f GetRotateVector(float angle, const sf::Vector2f& target);
@@ -51,6 +53,7 @@ public:
 
 	static bool CheckCollision(const sf::Sprite& shapeA, const sf::Sprite& shapeB);
 	static bool CheckCollision(const sf::RectangleShape& shapeA, const sf::RectangleShape& shapeB);
+	static bool CheckCollision(const sf::Vector2f& wedgeCenter, float degree, float degreeRange, float radius, const sf::FloatRect& rect);
 	static bool CheckCollision(const sf::Vector2f& elipseCenter, const sf::Vector2f& ellipseRadius, const sf::FloatRect& rect);
 	static std::vector<sf::Vector2f> GetShapePoints(const sf::Sprite& shape);
 	static std::vector<sf::Vector2f> GetShapePoints(const sf::RectangleShape& shape);

@@ -86,7 +86,7 @@ void FallAttack::SetInfo(const json& j)
 	info = j;
 }
 
-void FallAttack::Play()
+void FallAttack::Activate()
 {
 	active = true;
 	SetScale(scale);

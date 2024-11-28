@@ -6,19 +6,14 @@ class ObjectPool
 private:
 	std::list<T*> unused;
 	std::list<T*> used;
-	json j;
 
 public:
-	ObjectPool(int initSize = 10, json j = nullptr)
+	ObjectPool(int initSize = 10)
 	{
 		for (int i = 0; i < initSize; ++i)
 		{
 			auto obj = new T();
 			obj->Init();
-			if (j != nullptr)
-			{
-				obj->SetInfo(j);
-			}
 			unused.push_back(obj);
 		}
 	}
@@ -41,10 +36,6 @@ public:
 		{
 			auto obj = new T();
 			obj->Init();
-			if (j != nullptr)
-			{
-				obj->SetInfo(j);
-			}
 			obj->Reset();
 			used.push_back(obj);
 			return obj;
@@ -71,3 +62,5 @@ public:
 		unused.push_back(obj);
 	}
 };
+
+

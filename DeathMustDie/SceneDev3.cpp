@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "SceneDev3.h"
 #include "FallAttack.h"
+#include "AttackEntityPoolMgr.h"
+#include "AbilityMgr.h"
 
 SceneDev3::SceneDev3() :Scene(SceneIds::Dev3)
 {
@@ -14,15 +16,6 @@ void SceneDev3::Init()
 
 	uiView.setSize(size);
 	uiView.setCenter(size.x * 0.5f, size.y * 0.5f);
-	attack = AddGo(new FallAttack());
-
-	std::ifstream file1("tables/skill_table.json", std::ios::in);
-	if (!file1) {
-		std::cerr << "Failed to Read File";
-	}
-	j = json::parse(file1);
-	file1.close();
-	pool = new ObjectPool<FallAttack>(10, j["Meteor Shower"]["AttackEntity"]);
 
 	Scene::Init();
 }
@@ -36,8 +29,8 @@ void SceneDev3::Enter()
 {
 	RES_TABLE_MGR.LoadScene("Dev1");
 	RES_TABLE_MGR.LoadAnimation();
-	auto obj = AddGo(new FallAttack("Test"));
-	obj->sortingLayer = SortingLayers::Foreground;
+	AddGo(new AttackEntityPoolMgr("entityPoolMgr"));
+	abilMgr = AddGo(new AbilityMgr("abilityMgr"));
 	sprite = AddGo(new SpriteGo("retreat","Rect"));
 	sprite->sortingLayer = SortingLayers::Foreground;
 	ApplyAddGo();
@@ -50,34 +43,24 @@ void SceneDev3::Exit()
 
 void SceneDev3::Update(float dt)
 {
-	if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
+	if(InputMgr::GetKeyDown(sf::Keyboard::Num1))
 	{
-		auto obj = pool->Take();
-		AddGo(obj);
-		obj->SetPosition(Scene::ScreenToWorld(InputMgr::GetMousePosition()));
-		obj->Play();
-		attacks.push_back(obj);
+		abilMgr->AddAbility("Meteor Shower");
 	}
-	auto it = attacks.begin();
-	while (it != attacks.end())
+	if (InputMgr::GetKeyDown(sf::Keyboard::Num2))
 	{
-		if (!(*it)->IsActive())
-		{
-			RemoveGo(*it);
-			pool->Return(*it);
-			it = attacks.erase(it);
-		}
-		else
-		{
-			it++;
-		}
+		abilMgr->AddAbility("Breath of Fire");
 	}
-
+	sf::Vector2f center = worldView.getCenter();
+	center.x += InputMgr::GetAxis(Axis::Horizontal) * dt * 200;
+	center.y += InputMgr::GetAxis(Axis::Vertical) * dt* 200;
+	worldView.setCenter(center);
 	Scene::Update(dt);
 }
 
 void SceneDev3::LateUpdate(float dt)
 {
+	Scene::LateUpdate(dt);
 }
 
 void SceneDev3::FixedUpdate(float dt)

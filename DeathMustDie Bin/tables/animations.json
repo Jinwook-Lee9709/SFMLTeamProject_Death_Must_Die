@@ -13,6 +13,11 @@
     {
         "ID": "meteor_explode",
         "TEX_ID": "resource/texture/Sheet/meteor_explode.png"
+    },
+    "BREATH":
+    {
+        "ID": "breath_fire",
+        "TEX_ID": "resource/texture/Sheet/breath_fire.png"
     }
  
         

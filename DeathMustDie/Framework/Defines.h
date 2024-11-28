@@ -42,3 +42,46 @@ enum class Sides
 	Right,
 	None,
 };
+
+
+enum class AbilityGrade
+{
+	Novice,
+	Adept,
+	Expert,
+	Master,
+	Legend,
+};
+
+enum class AbilityType
+{
+	Attack,
+	Dash,
+	Strike,
+	Cast,
+	Power,
+	Summon,
+	Passive,
+};
+enum class AbilityTriggerType
+{
+	Attack, //When Hit enemy
+	Dash, //When Dash
+	Interval, //Actiavte by CoolTime
+	Power,
+	Summon,
+	Passive,
+};
+
+enum class AttackEntityType
+{
+	Fire,
+	Circle,
+	Fall,
+	Radial,
+	Wedge,
+	Chain,
+	Summon,
+	Buff,
+	Shield
+};

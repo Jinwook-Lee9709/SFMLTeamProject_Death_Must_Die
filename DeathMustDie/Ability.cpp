@@ -1,55 +1,53 @@
 #include "stdafx.h"
 #include "Ability.h"
 
-Ability::Ability(const AbilityType type, const AbilityGrade& grade, const std::string& name)
-	: type(type), grade(grade), GameObject(name)
+Ability::Ability(const json& info, AttackEntityPoolMgr* pool, const std::string& name)
+	:  info(info), entityPool(pool), GameObject(name)
 {
+	SetSkillInfo();
 }
 
 void Ability::SetSkillInfo()
 {
-	switch (action)
+	SetActivateFunc();
+}
+
+void Ability::SetActivateFunc()
+{
+	switch ( (AttackEntityType)info["entityType"].get<int>() )
 	{
-		case AbilityAction::Fire:
+		case AttackEntityType::Fall:
 		{
-			
+			entityPool->CreatePool(name, info["entityType"], info["AttackEntity"]);
+			activateFunc = [&]() {
+				AttackEntity* entity = entityPool->GetEntity(name);
+				sf::Vector2f pos = WORLD_MOUSE_POS;
+				entity->SetPosition(pos);
+				entity->Activate();
+				};
 			break;
 		}
-		case AbilityAction::Random:
+		case AttackEntityType::Wedge:
 		{
-
-			break;
-		}
-		case AbilityAction::Radial:
-		{
-
-			break;
-		}
-		case AbilityAction::Wedge:
-		{
-
-			break;
-		}
-		case AbilityAction::Chain:
-		{
-
-			break;
-		}
-		case AbilityAction::Summon:
-		{
-
-			break;
-		}
-		case AbilityAction::Buff:
-		{
-
-			break;
-		}
-		case AbilityAction::Shield:
-		{
-
+			entityPool->CreatePool(name, info["entityType"], info["AttackEntity"]);
+			activateFunc = [&]() {
+				AttackEntity* entity = entityPool->GetEntity(name);
+				sf::Vector2f mPos = WORLD_MOUSE_POS;
+				sf::Vector2f center = SCENE_MGR.GetCurrentScene()->GetWorldViewCenter();
+				sf::Vector2f dir = mPos - center;
+				float angle = Utils::Angle(dir);
+				entity->SetPosition(center);
+				entity->SetRotation(angle);
+				entity->Activate();
+				};
 			break;
 		}
 	}
+
+}
+
+void Ability::UseAbility()
+{
+	activateFunc();
 }
 

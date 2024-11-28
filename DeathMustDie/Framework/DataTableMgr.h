@@ -31,4 +31,5 @@ inline T* DataTableMgr::Get(DataTable::Types type)
 
 #define DATATABLE_MGR (DataTableMgr::Instance())
 #define STRING_TABLE (DATATABLE_MGR.Get<StringTable>(DataTable::Types::String))
+#define SKILL_TABLE (DATATABLE_MGR.Get<SkillTable>(DataTable::Types::Skill))
 #define STR(X) (STRING_TABLE->Get(X))

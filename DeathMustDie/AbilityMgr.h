@@ -1,10 +1,27 @@
 #pragma once
-class AbilityMgr
-{
-	std::vector<std::function<void()>> attack;
-	std::vector<std::function<void()>> dash;
-	std::vector<std::function<void()>> strike;
-	std::vector<std::function<void()>> cast;
 
+class Ability;
+class AttackEntityPoolMgr;
+
+class AbilityMgr : public GameObject
+{
+private:
+	std::vector<Ability*> attack;
+	std::vector<Ability*> dash;
+	std::vector<Ability*> strike;
+	std::vector<Ability*> cast;
+
+	//Reference
+	AttackEntityPoolMgr* entityPool;
+public:
+	AbilityMgr(const std::string& name = "");
+	~AbilityMgr() = default;
+
+	void Reset() override;
+	void Update(float dt) override;
+	void AddAbility(const std::string& skillId);
+
+private:
 };
+
 
