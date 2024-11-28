@@ -13,40 +13,105 @@ void AbilityMgr::Reset()
 	entityPool = (AttackEntityPoolMgr*)SCENE_MGR.GetCurrentScene()->FindGo("entityPoolMgr");
 }
 
-void AbilityMgr::Update(float dt)
+void AbilityMgr::AddAbility(const std::string& skillId)
 {
-	if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
+	json j = SKILL_TABLE->Get(skillId);
+	Ability* abil = new Ability(j, entityPool, skillId);
+	abil->SetSkillInfo();
+	switch ((AbilityTriggerType)j["triggerType"].get<int>())
 	{
-		for (auto& abil : cast)
+		case AbilityTriggerType::Attack:
 		{
-			abil->UseAbility();
+			AttackCounter counter;
+			counter.maxCount = j["attackCounter"]["maxCount"].get<int>();
+			counter.probability = j["attackCounter"]["probability"].get<int>();
+			attack.push_back({ counter, abil });
+			break;
+		}
+		case AbilityTriggerType::Dash:
+		{
+			dash.push_back(abil);
+			break;
+		}
+		case AbilityTriggerType::AutoCast:
+		{
+			CoolTime time;
+			time.elapsedTime = 0;
+			time.coolTime = j["coolTime"];
+			autoCast.push_back({ time, abil });
+			break;
 		}
 	}
-	if (InputMgr::GetMouseButtonDown(sf::Mouse::Right))
+}
+
+void AbilityMgr::Update(float dt)
+{
+	UpdateAll(dt);
+	UpdateAutoCast(dt);
+	if (InputMgr::GetKeyDown(sf::Keyboard::Space))
 	{
-		for (auto& abil : strike)
+		for (auto& abil : dash)
 		{
 			abil->UseAbility();
 		}
 	}
 }
 
-void AbilityMgr::AddAbility(const std::string& skillId)
+void AbilityMgr::UpdateAttack(float dt)
 {
-	json j = SKILL_TABLE->Get(skillId);
-	Ability* abil = new Ability(j, entityPool, skillId);
-	abil->SetSkillInfo();
-	switch ((AbilityType)j["abilityType"].get<int>())
+	for (auto& abil : attack)
 	{
-		case AbilityType::Strike:
+		if (abil.first.maxCount == 1)
 		{
-			strike.push_back(abil);
-			break;
+			if (Utils::RollTheDice(abil.first.probability))
+			{
+				abil.second->UseAbility();
+			}
 		}
-		case AbilityType::Cast:
+		else
 		{
-			cast.push_back(abil);
-			break;
+			abil.first.currentCount++;
+			if (abil.first.currentCount >= abil.first.maxCount)
+			{
+				abil.first.currentCount = 0;
+				if (Utils::RollTheDice(abil.first.probability))
+				{
+					abil.second->UseAbility();
+				}
+			}
 		}
+	}
+}
+
+void AbilityMgr::UpdateAutoCast(float dt)
+{
+	for (auto& abil: autoCast)
+	{
+		abil.first.elapsedTime += dt;
+		if (abil.first.coolTime < abil.first.elapsedTime)
+		{
+			abil.first.elapsedTime = 0;
+			abil.second->UseAbility();
+		}
+	}
+}
+
+void AbilityMgr::UpdateAll(float dt)
+{
+	for (auto& abil : attack)
+	{
+		abil.second->Update(dt);
+	}
+	for (auto& abil : dash)
+	{
+		abil->Update(dt);
+	}
+	for (auto& abil : autoCast)
+	{
+		abil.second->Update(dt);
+	}
+	for (auto& abil : earn)
+	{
+		abil->Update(dt);
 	}
 }

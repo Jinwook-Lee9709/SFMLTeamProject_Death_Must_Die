@@ -1,9 +1,12 @@
 {
     "Meteor Shower":
     {
+        "triggerType": 2,
         "abilityType": 3,
         "entityType": 2,
-        "Projectile_Count": 4,
+        "projectileCount": 4,
+        "coolTime": 2,
+        "projectiles": 4, 
         "AttackEntity":
         {
             "fallAnimId": "meteor_fall",
@@ -18,8 +21,14 @@
     },
     "Breath of Fire":
     {
-        "abilityType": 2,
-        "entityType": 4,
+        "triggerType": 0,
+        "abilityType": 0,
+        "entityType": 3,
+        "attackCounter":
+        {
+            "maxCount": 1,
+            "probability": 1.0
+        },
         "AttackEntity":
         {
             "AnimId": "breath_fire",
@@ -27,6 +36,23 @@
             "damage": 14,
             "rangeDegree": 60,
             "radius": 431
+        }
+    },
+    "Trail of Fire":
+    {
+        "triggerType": 1,
+        "abilityType": 1,
+        "entityType": 4,
+        "duration" : 1.6,
+        "interval" : 0.2,
+        "AttackEntity":
+        {
+            "AnimIdStart": "fire_start",
+            "AnimIdLoop": "fire_loop",
+            "AnimIdEnd": "fire_end",
+            "damage": 14,
+            "duration" : 1.6,
+            "interval" : 0.2
         }
     }
 }

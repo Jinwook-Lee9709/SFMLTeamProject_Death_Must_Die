@@ -44,3 +44,4 @@ using json = nlohmann::json;
 #include "Scene.h"
 #include "ObjectPool.h"
 #include "SoundMgr.h"
+#include "Effector.h"

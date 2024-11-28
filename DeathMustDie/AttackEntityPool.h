@@ -3,6 +3,7 @@
 #include "AttackEntity.h"
 #include "FallAttack.h"
 #include "WedgeAttack.h"
+#include "TrailEntity.h"
 
 class AttackEntityPool
 {
@@ -23,6 +24,10 @@ private:
 			case AttackEntityType::Fall:
 			{
 				return new FallAttack();
+			}
+			case AttackEntityType::Trail:
+			{
+				return new TrailEntity();
 			}
 		}
 	}

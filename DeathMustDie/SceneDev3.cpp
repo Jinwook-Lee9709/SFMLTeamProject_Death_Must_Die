@@ -51,6 +51,10 @@ void SceneDev3::Update(float dt)
 	{
 		abilMgr->AddAbility("Breath of Fire");
 	}
+	if (InputMgr::GetKeyDown(sf::Keyboard::Num3))
+	{
+		abilMgr->AddAbility("Trail of Fire");
+	}
 	sf::Vector2f center = worldView.getCenter();
 	center.x += InputMgr::GetAxis(Axis::Horizontal) * dt * 200;
 	center.y += InputMgr::GetAxis(Axis::Vertical) * dt* 200;

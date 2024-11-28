@@ -65,26 +65,22 @@ enum class AbilityType
 };
 enum class AbilityTriggerType
 {
-	Attack, //When Hit enemy
-	Dash, //When Dash
-	Interval, //Actiavte by CoolTime
-	Power,
-	Summon,
-	Passive,
+	Attack, // When Hit enemy
+	Dash, // When Dash
+	AutoCast, //Actiavte by CoolTime
+	Earn, // Only activates when earning a skill
 };
 
 enum class AttackEntityType
 {
-	Fire,
+	Projectile,
 	Circle,
 	Fall,
-	Radial,
 	Wedge,
-	Chain,
-	Summon,
-	Buff,
-	Shield
+	Trail,
+	Summon
 };
+
 enum class MonsterTypes
 {
 	None = -1,

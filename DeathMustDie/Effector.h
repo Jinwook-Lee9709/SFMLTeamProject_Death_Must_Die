@@ -32,4 +32,5 @@ public:
 	void AddAnimation(std::string animId);
 	void PlayAnimation(std::string animId);
 
+	bool IsPlay() { return isPlaying; }
 };

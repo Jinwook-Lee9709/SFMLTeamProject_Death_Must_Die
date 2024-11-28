@@ -7,17 +7,32 @@
     "METEOR_FALL":
     {
         "ID": "meteor_fall",
-        "TEX_ID": "resource/texture/Sheet/meteor_fall.png"
+        "TEX_ID": "resource/texture/Sheet/skill/meteor_fall.png"
     },
     "METEOR_EXPLODE":
     {
         "ID": "meteor_explode",
-        "TEX_ID": "resource/texture/Sheet/meteor_explode.png"
+        "TEX_ID": "resource/texture/Sheet/skill/meteor_explode.png"
     },
     "BREATH":
     {
         "ID": "breath_fire",
-        "TEX_ID": "resource/texture/Sheet/breath_fire.png"
+        "TEX_ID": "resource/texture/Sheet/skill/breath_fire.png"
+    },
+    "FIRE_START":
+    {
+        "ID": "fire_start",
+        "TEX_ID": "resource/texture/Sheet/skill/fire_start.png"
+    },
+    "FIRE_LOOP":
+    {
+        "ID": "fire_loop",
+        "TEX_ID": "resource/texture/Sheet/skill/fire_loop.png"
+    },
+    "FIRE_END":
+    {
+        "ID": "fire_end",
+        "TEX_ID": "resource/texture/Sheet/skill/fire_end.png"
     },
     "SKELETON_WALK":
     {
