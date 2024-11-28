@@ -176,8 +176,12 @@
     <ClCompile Include="Framework\SoundMgr.cpp" />
     <ClCompile Include="Framework\StringTable.cpp" />
     <ClCompile Include="Framework\Utils.cpp" />
+<<<<<<< HEAD
     <ClCompile Include="Monster.cpp" />
     <ClCompile Include="MonsterTable.cpp" />
+=======
+    <ClCompile Include="Player.cpp" />
+>>>>>>> origin/SKH
     <ClCompile Include="SceneDev3.cpp" />
     <ClCompile Include="SceneGame.cpp" />
     <ClCompile Include="Framework\Variables.cpp" />
@@ -216,8 +220,12 @@
     <ClInclude Include="Framework\SoundMgr.h" />
     <ClInclude Include="Framework\StringTable.h" />
     <ClInclude Include="Framework\Utils.h" />
+<<<<<<< HEAD
     <ClInclude Include="Monster.h" />
     <ClInclude Include="MonsterTable.h" />
+=======
+    <ClInclude Include="Player.h" />
+>>>>>>> origin/SKH
     <ClInclude Include="SceneDev3.h" />
     <ClInclude Include="SceneGame.h" />
     <ClInclude Include="Framework\Variables.h" />

@@ -23,8 +23,9 @@
         },
         "Dev1":{
             "Texture" : {
-               "retreat" : "graphics/retreat_button.png"
-
+               "retreat" : "graphics/retreat_button.png",
+               "background" : "resource/texture/TerrainWilderness_Spr_01.png"
+            
             
             },
             "Font" :{
