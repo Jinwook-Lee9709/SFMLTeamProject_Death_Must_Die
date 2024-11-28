@@ -1,14 +1,18 @@
 #pragma once
 #include "AnimationClip.h"
 
+class Monster;
+
 class Animator
 {
 protected:
 	sf::Sprite* sprite;
 	AnimationClip* currentClip;
+	Monster* monster;
 
 	bool isPlaying;
 	bool flip;
+	bool isEnd;
 
 	int currentFrame = 0;
 	int totalFrame = 0;
@@ -33,8 +37,13 @@ public:
 	void SetRect(const AnimationFrame& frame);
 
 	bool IsFlip() { return flip; }
+	void SetFlip(bool flip) { this->flip = flip; }
 	bool IsLoop() { return currentClip->loopType == AnimationLoopTypes::Loop; }
 	bool IsPlay() { return isPlaying; }
+	bool IsEnd() { return isEnd; }
+	void SetEnd() { isEnd = true; currentFrame = totalFrame; }
+
+	int GetCurrentFrame() const { return currentFrame; }
 
 	const std::string& GetCurrentClipId() const
 	{

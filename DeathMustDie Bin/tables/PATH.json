@@ -23,6 +23,20 @@
         },
         "Dev1":{
             "Texture" : {
+               "retreat" : "graphics/retreat_button.png",
+               "background" : "resource/texture/TerrainWilderness_Spr_01.png"
+            
+            
+            },
+            "Font" :{
+                "Sansation" : "fonts/Sansation.ttf"
+            },
+            "Sound" :{
+                
+            }
+        },
+        "Dev2":{
+            "Texture" : {
                "retreat" : "graphics/retreat_button.png"
 
             

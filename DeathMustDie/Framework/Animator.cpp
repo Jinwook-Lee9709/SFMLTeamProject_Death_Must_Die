@@ -6,12 +6,21 @@ void Animator::Update(float dt)
 	if (!isPlaying) {
 		return;
 	}
+	sf::Vector2f scale = sprite->getScale();
+	if (this->flip) {
+
+		sprite->setScale({ -abs(scale.x), scale.y });
+	}
+	else {
+		sprite->setScale({ abs(scale.x), scale.y });
+	}
 	accumTime += dt;
 	if (accumTime < frameDuration)
 		return;
 	currentFrame++;
 	accumTime = 0;
 	if (currentFrame == totalFrame) {
+		isEnd = true;
 		switch (currentClip->loopType) {
 		case AnimationLoopTypes::Single:
 			currentFrame = -1;
@@ -35,6 +44,7 @@ void Animator::Play(const std::string& clipId, bool flip)
 void Animator::Play(AnimationClip* clip, bool flip)
 {
 	isPlaying = true;
+	isEnd = false;
 	currentClip = clip;
 	totalFrame = clip->frames.size();
 	currentFrame = 0;

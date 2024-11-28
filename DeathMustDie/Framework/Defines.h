@@ -85,3 +85,10 @@ enum class AttackEntityType
 	Buff,
 	Shield
 };
+enum class MonsterTypes
+{
+	None = -1,
+	Skeleton,
+	Slime,
+	Count,
+};

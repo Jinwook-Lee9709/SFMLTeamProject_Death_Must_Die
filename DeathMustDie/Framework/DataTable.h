@@ -6,8 +6,9 @@ public:
 	{
 		String, 
 		Skill,
+		Monster,
 	};
-	static const int TotalTypes = 1;
+	static const int TotalTypes = 3;
 
 protected:
 	Types type;

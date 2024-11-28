@@ -16,6 +16,7 @@ public:
 	static sf::Vector2f RandomOnUnitCircle();
 	static sf::Vector2f RandomInUnitCircle();
 	static sf::Color RandomColor(bool opaque = true);
+	static sf::Vector2f RandomPointInRect(const sf::FloatRect& rect);
 
 	// Origin
 	static sf::Vector2f SetOrigin(sf::Transformable& obj, Origins preset, const sf::FloatRect bound);

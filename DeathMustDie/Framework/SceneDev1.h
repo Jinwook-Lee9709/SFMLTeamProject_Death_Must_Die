@@ -1,6 +1,8 @@
 #pragma once
 #include "Scene.h"
 
+class Player;
+
 
 class SceneDev1 : public Scene
 {
@@ -8,6 +10,7 @@ protected:
 	SpriteGo* sprite;
 	TextGo* text;
 
+	Player* player;
 public:
 	SceneDev1();
 	~SceneDev1() = default;
