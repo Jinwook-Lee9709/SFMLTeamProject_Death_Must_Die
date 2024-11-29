@@ -112,6 +112,9 @@ protected:
 	Animator animator3;
 	HitBox attackHB;
 
+	sf::Sprite body4;
+	Animator animator4;
+
 	bool flip;
 	sf::Vector2f direction;
 
@@ -120,15 +123,20 @@ protected:
 	std::string clipId = "knight_idle";
 	std::string clipId2 = "knight_soward1";
 	std::string clipId3 = "knight_attack_range";
+	std::string clipId4 = "dash_spr";
 	Status status;
 
 	float attackTerm = 0.f;
 	bool isAttack;
 	bool isAttack2;
+	sf::Vector2f attackPos;
 
-	float speed = 100.f;
+	float speed = 500.f;
 	int frame = 0;
 	bool isDash;
+	int dashCharge;
+	float dashChargeTime;
+	sf::Vector2f dashPos;
 	sf::Vector2f dashDirection;
 
 	Stat stat;

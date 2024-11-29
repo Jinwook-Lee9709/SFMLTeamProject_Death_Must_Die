@@ -20,5 +20,6 @@ knight_attack2,"21",0,4,7,78,65
 knight_soward1,"21",0,2,4,78,65
 knight_soward2,"21",0,2,2,78,65
 knight_attack_range,"21",0,3,7,408,290
-knight_dash,"21",0,4,14,78,65
-knight_dash_glow,"21",0,3,9,78,65
+knight_dash,"28",0,4,14,78,65
+knight_dash_glow,"28",0,3,9,78,65
+dash_spr,"28",0,3,7,35,85
