@@ -3,6 +3,7 @@
 #include "Monster.h"
 #include "AniSkeleton.h"
 #include "AniSlime.h"
+#include "MonsterPoolManager.h"
 
 SceneDev2::SceneDev2() : Scene(SceneIds::Dev2)
 {
@@ -10,7 +11,7 @@ SceneDev2::SceneDev2() : Scene(SceneIds::Dev2)
 }
 
 void SceneDev2::Init()
-{	
+{
 	sf::Vector2f size = FRAMEWORK.GetWindowSizeF();
 	worldView.setSize(size);
 	worldView.setCenter(0.f, 0.f);
@@ -32,27 +33,27 @@ void SceneDev2::Enter()
 {
 	RES_TABLE_MGR.LoadScene("Dev2");
 	RES_TABLE_MGR.LoadAnimation();
-	sprite = new SpriteGo("retreat");
+
+	MPMgr = AddGo(new MonsterPoolManager());
+	sprite = AddGo(new SpriteGo("retreat", "Player"));
 	aniSkeleton = new AniSkeleton("AniSkeleton");
 	aniSlime = new AniSlime("AniSlime");
-	
-	aniSkeleton->SetInfo(j["Skeleton"]);
-	aniSlime->SetInfo(j["Slime"]);
-	sprite->Reset();
-	sprite->SetPosition({ 700.f, 700.f });
-	sprite->SetOrigin(Origins::BC);
+	ApplyAddGo();
 
-	aniSkeleton->SetOrigin(Origins::BC);
-	aniSkeleton->SetScale({ 3.f, 3.f });
-	aniSkeleton->SetPosition({ 500.f, 500.f });
+	MPMgr->CreatePool(MonsterTypes::Skeleton, j["Skeleton"], "Skeleton");
+	
+	aniSlime->SetInfo(j["Slime"]);
 
 	aniSlime->SetOrigin(Origins::BC);
 	aniSlime->SetScale({ 3.f, 3.f });
 	aniSlime->SetPosition({ 900.f, 900.f });
-	
-	aniSkeleton->Walk();
+
 	aniSlime->Walk();
-	
+
+	Utils::SetOrigin(attackRange, Origins::MC);
+	attackRange.setFillColor(sf::Color::White);
+	attackRange.setRadius(100.f);
+
 	Scene::Enter();
 }
 
@@ -63,12 +64,14 @@ void SceneDev2::Exit()
 
 void SceneDev2::Update(float dt)
 {
-	aniSkeleton->Update(dt);
+
 
 	aniSlime->Update(dt);
 
 	sf::Vector2f rectPos = sprite->GetPosition();
 	sf::Vector2f skeletonPos = aniSkeleton->GetPosition();
+
+	attackRange.setPosition(skeletonPos);
 
 	//sprite 이동
 	rectDirection.x = InputMgr::GetAxis(Axis::Horizontal);
@@ -81,21 +84,15 @@ void SceneDev2::Update(float dt)
 
 	sprite->SetPosition(rectPos + rectDirection * rectSpeed * dt);
 
-	//skeleton이 sprite를 향해 이동
-	if (Utils::Distance(skeletonPos, rectPos) > 10)
+	if (InputMgr::GetKeyDown(sf::Keyboard::Space))
 	{
-		direction = Utils::GetNormal(rectPos - skeletonPos);
-		aniSkeleton->SetPosition(skeletonPos + direction * speed * dt);
+		auto monster = MPMgr->GetMonster("Skeleton");
+		monster->SetPosition({ 100.f, 100.f });
+		monster->SetScale({ 3.f, 3.f });
 	}
 
-	//skeleton의 x좌표가 sprite의 x좌표보다 클 때 스케일 반전
-	if (skeletonPos.x > rectPos.x)
+	if (InputMgr::GetKeyDown(sf::Keyboard::L))
 	{
-		aniSkeleton->SetScale({ -3.f, 3.f });
-	}
-	else
-	{
-		aniSkeleton->SetScale({ 3.f, 3.f });
 	}
 
 	Scene::Update(dt);
@@ -103,29 +100,17 @@ void SceneDev2::Update(float dt)
 
 void SceneDev2::FixedUpdate(float dt)
 {
-	//skeleton과 sprite가 부딪히면 attack애니메이션 출력
-	if (Utils::CheckCollision(sprite->GetSprite(), aniSkeleton->GetSprite()))
-	{
-		isPlaying = true;
-		aniSkeleton->OnAttack();
-		return;
-	}
 
-	if (InputMgr::GetKeyDown(sf::Keyboard::Space))
-	{
-		aniSkeleton->Die();
-	}
 }
 
 void SceneDev2::Draw(sf::RenderWindow& window)
 {
 	sprite->Draw(window);
-	aniSkeleton->Draw(window);
 	aniSlime->Draw(window);
 	Scene::Draw(window);
 }
 
 void SceneDev2::SpawnSkeleton(int count)
 {
-	
+
 }

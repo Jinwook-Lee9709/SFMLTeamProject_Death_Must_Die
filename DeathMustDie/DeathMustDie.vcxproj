@@ -177,6 +177,8 @@
     <ClCompile Include="Framework\StringTable.cpp" />
     <ClCompile Include="Framework\Utils.cpp" />
     <ClCompile Include="Monster.cpp" />
+    <ClCompile Include="MonsterPoolManager.cpp" />
+    <ClCompile Include="MonsterSpawner.cpp" />
     <ClCompile Include="MonsterTable.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SceneDev3.cpp" />
@@ -218,6 +220,9 @@
     <ClInclude Include="Framework\StringTable.h" />
     <ClInclude Include="Framework\Utils.h" />
     <ClInclude Include="Monster.h" />
+    <ClInclude Include="MonsterPool.h" />
+    <ClInclude Include="MonsterPoolManager.h" />
+    <ClInclude Include="MonsterSpawner.h" />
     <ClInclude Include="MonsterTable.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="SceneDev3.h" />

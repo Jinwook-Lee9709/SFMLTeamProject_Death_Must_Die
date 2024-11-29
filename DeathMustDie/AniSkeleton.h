@@ -1,6 +1,15 @@
 #pragma once
 #include "Monster.h"
 
+enum class Status
+{
+	None = -1,
+	Move,
+	Attack,
+	GetHit,
+	Death,
+};
+
 class AniSlime;
 
 class AniSkeleton : public Monster
@@ -29,20 +38,24 @@ public:
 
 protected:
 	sf::Sprite body;
-	Animator walkAnim;
-	Animator attackAnim;
-	Animator deathAnim;
+	Animator Anim;
 	std::string textureId;
+	Status beforeStatus = Status::None;
+	Status currentStatus = Status::Move;
 
-	sf::CircleShape attackRange;
+	SpriteGo* player;
 
 	sf::Vector2f direction;
 	float speed = 70.f;
+	float attackDelay = 0.f;
+	float attackDuration = 3.f;
 
 	bool isAttack = false;
+	bool isDead = false;
 
 	SkeletonInfo info;
 	AniSlime* aniSlime;
+	Scene* scene;
 public:
 	AniSkeleton(const std::string& name = "");
 	~AniSkeleton() = default;
@@ -54,19 +67,28 @@ public:
 	void SetOrigin(Origins preset) override;
 	void SetOrigin(const sf::Vector2f& newOrigin) override;
 
+	sf::FloatRect GetGlobalBound() { return hitbox.rect.getGlobalBounds(); }
 	sf::Vector2f GetPosition() { return position; }
 	sf::Sprite GetSprite() const { return body; }
+
+	bool GetIsAttack() { return isAttack; }
+	bool GetIsDead() { return isDead; }
 
 	void Init() override;
 	void Release() override;
 	void Reset() override;
 	void Update(float dt) override;
+	void MoveUpdate(float dt);
+	void AttackUpdate(float dt);
+	void GetHitUpdate(float dt);
+	void DeathUpdate(float dt);
 	void Draw(sf::RenderWindow& window) override;
 
 	void SetInfo(const json& j) override;
 
-	void Walk();
-	void OnAttack();
-	void Die();
+	void Walk(float dt);
+	void CheckAttack(float dt);
+	void OnHit(float damage);
+	void OnDie();
 };
 

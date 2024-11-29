@@ -4,15 +4,16 @@
 AniSkeleton::AniSkeleton(const std::string& name)
 	: Monster(name)
 {
-	walkAnim.SetTarget(&body);
-	attackAnim.SetTarget(&body);
-	deathAnim.SetTarget(&body);
+	Anim.SetTarget(&body);
 }
 
 void AniSkeleton::SetPosition(const sf::Vector2f& pos)
 {
 	position = pos;
 	body.setPosition(position);
+	hitbox.rect.setPosition(position);
+	HPBar.setPosition({ position.x, position.y - 140 });
+	HPBarFrame.setPosition({ position.x, position.y - 140 });
 }
 
 void AniSkeleton::SetRotation(float angle)
@@ -45,8 +46,7 @@ void AniSkeleton::SetOrigin(const sf::Vector2f& newOrigin)
 
 void AniSkeleton::Init()
 {
-	attackRange.setFillColor(sf::Color::White);
-	attackRange.setRadius(50.f);
+
 }
 
 void AniSkeleton::Release()
@@ -55,71 +55,155 @@ void AniSkeleton::Release()
 
 void AniSkeleton::Reset()
 {
-	Walk();
+	hitbox.rect.setSize({ 40, 120 });
+	hitbox.rect.setPosition({ position });
+	Utils::SetOrigin(hitbox.rect, Origins::BC);
+
+	HPBar.setPosition({ position.x, position.y - 140 });
+	HPBarFrame.setPosition({ position.x, position.y - 140 });
+
+	player = dynamic_cast<SpriteGo*>(SCENE_MGR.GetCurrentScene()->FindGo("Player"));
+
 }
 
 void AniSkeleton::Update(float dt)
 {
 	SetOrigin(Origins::BC);
 
-	sf::Vector2i mousePos = InputMgr::GetMousePosition();
-	sf::Vector2f monsterPos = body.getPosition();
+	Anim.Update(dt);
 
-	/*if (Utils::Distance(position, (sf::Vector2f)mousePos) > 10)
+	switch (currentStatus)
 	{
-		direction = Utils::GetNormal((sf::Vector2f)mousePos - position);
-		SetPosition(position + direction * speed * dt);
-	}*/
+	case Status::Move:
+	{
+		MoveUpdate(dt);
+		break;
+	}case Status::Attack:
+	{
+		AttackUpdate(dt);
+		break;
+	}
+	case Status::GetHit:
+	{
+		GetHitUpdate(dt);
+		break;
+	}
+	case Status::Death:
+	{
+		DeathUpdate(dt);
+		break;
+	}
+	}
+}
 
-	walkAnim.Update(dt);
-	attackAnim.Update(dt);
+void AniSkeleton::MoveUpdate(float dt)
+{
+	Walk(dt);
+	attackDelay += dt;
+	sf::Vector2f playerPos = player->GetPosition() - position;
 
-	sf::FloatRect skeletonBound = body.getGlobalBounds();
+	if (Utils::Magnitude(playerPos) < DISTANCE_TO_PLAYER)
+	{
+		isAttack = true;
+		Anim.Play(info.attackAnimId);
+		attackDelay = 0.f;
+		beforeStatus = currentStatus;
+		currentStatus = Status::Attack;
+		return;
+	}
+}
 
-	hitbox.UpdateTr(body, skeletonBound);
+void AniSkeleton::AttackUpdate(float dt)
+{
+	if (!Anim.IsPlay())
+	{
+		Anim.Play(info.walkAnimId);
+		beforeStatus = currentStatus;
+		currentStatus = Status::Move;
+		attackDelay = 0.f;
+	}
+}
+
+void AniSkeleton::GetHitUpdate(float dt)
+{
+
+}
+
+void AniSkeleton::DeathUpdate(float dt)
+{
+
 }
 
 void AniSkeleton::Draw(sf::RenderWindow& window)
 {
 	window.draw(body);
 	hitbox.Draw(window);
-
-	if (isAttack)
-	{
-		window.draw(attackRange);
-	}
+	Monster::Draw(window);
 }
 
 void AniSkeleton::SetInfo(const json& j)
 {
 	info = j;
+	hp = info.hp;
+	Anim.Play(info.walkAnimId);
 }
 
-void AniSkeleton::Walk()
+void AniSkeleton::Walk(float dt)
 {
-	active = true;
-	speed = 70.f;
-	walkAnim.Play(info.walkAnimId);
-}
+	sf::Vector2f playerPos = player->GetPosition();
 
-void AniSkeleton::OnAttack()
-{
-	isAttack = true;
-	speed = 0.f;
-	attackAnim.Play(info.attackAnimId);
-
-	sf::Vector2f slimePos = body.getPosition();
-
-	if (!walkAnim.IsPlay() && !attackAnim.IsPlay())
+	if (Utils::Magnitude(playerPos - position) > DISTANCE_TO_PLAYER)
 	{
-		isAttack = false;
-		attackRange.setPosition(slimePos);
-		Reset();
+	direction = playerPos - position;
+	Utils::Normalize(direction);
+
+	SetPosition(position + direction * speed * dt);
 	}
 }
 
-void AniSkeleton::Die()
+void AniSkeleton::CheckAttack(float dt)
 {
-	speed = 0.f;
-	deathAnim.Play(info.deathAnimId);
+	attackDelay += dt;
+	//sf::Vector2f mousePos = scene->ScreenToWorld(InputMgr::GetMousePosition());
+
+
+	if (Anim.IsEnd())
+	{
+		isAttack = false;
+		currentStatus = Status::Move;
+	}
+}
+
+void AniSkeleton::OnHit(float damage)
+{
+	hp -= damage;
+	Anim.Play(info.getHitAnimId);
+	if (!Anim.IsPlay())
+	{
+		Anim.SetEnd();
+	}
+	else if (Anim.IsEnd())
+	{
+
+	}
+
+	if (hp < 0)
+	{
+		hp = 0;
+		//Die()
+	}
+}
+
+void AniSkeleton::OnDie()
+{
+	Anim.Play(info.deathAnimId);
+	if (!Anim.IsPlay())
+	{
+		Anim.SetEnd();
+	}
+	else if (Anim.IsEnd())
+	{
+		isDead = true;
+		active = false;
+	}
 }
