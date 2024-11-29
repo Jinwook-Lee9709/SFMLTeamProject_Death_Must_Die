@@ -55,7 +55,7 @@ void AbilityMgr::Update(float dt)
 			abil->UseAbility();
 		}
 	}
-	if (InputMgr::GetKeyDown(sf::Keyboard::Left))
+	if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
 	{
 			UpdateAttack(dt);
 

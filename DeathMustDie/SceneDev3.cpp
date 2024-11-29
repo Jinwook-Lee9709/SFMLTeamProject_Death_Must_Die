@@ -10,7 +10,7 @@ SceneDev3::SceneDev3() :Scene(SceneIds::Dev3)
 
 void SceneDev3::Init()
 {
-	sf::Vector2f size = FRAMEWORK.GetWindowSizeF();
+	sf::Vector2f size = 0.7f * FRAMEWORK.GetWindowSizeF();
 	worldView.setSize(size);
 	worldView.setCenter(0.f, 0.f);
 
