@@ -41,6 +41,6 @@ public:
 	void FixedUpdate(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
 
-	void SpawnSkeleton(int count);
+	void SpawnSkeleton(float dt);
 };
 

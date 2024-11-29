@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "AniSkeleton.h"
+#include "Player.h"
 
 AniSkeleton::AniSkeleton(const std::string& name)
 	: Monster(name)
@@ -62,8 +63,7 @@ void AniSkeleton::Reset()
 	HPBar.setPosition({ position.x, position.y - 140 });
 	HPBarFrame.setPosition({ position.x, position.y - 140 });
 
-	player = dynamic_cast<SpriteGo*>(SCENE_MGR.GetCurrentScene()->FindGo("Player"));
-
+	player = dynamic_cast<Player*>(SCENE_MGR.GetCurrentScene()->FindGo("Player"));
 }
 
 void AniSkeleton::Update(float dt)

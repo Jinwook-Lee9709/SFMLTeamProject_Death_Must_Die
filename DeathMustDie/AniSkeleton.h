@@ -11,6 +11,7 @@ enum class Status
 };
 
 class AniSlime;
+class Player;
 
 class AniSkeleton : public Monster
 {
@@ -43,7 +44,7 @@ protected:
 	Status beforeStatus = Status::None;
 	Status currentStatus = Status::Move;
 
-	SpriteGo* player;
+	Player* player;
 
 	sf::Vector2f direction;
 	float speed = 70.f;

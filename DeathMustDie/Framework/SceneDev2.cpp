@@ -100,14 +100,7 @@ void SceneDev2::Update(float dt)
 
 	Scene::Update(dt);
 
-	static float spawnTimer = 0.0f; // 타이머
-	const float spawnInterval = 5.0f; // 5초마다 스폰
-
-	spawnTimer += dt;
-	if (spawnTimer >= spawnInterval) {
-		monsterSpawn->SpawnMonster("Skeleton"); // "Skeleton" 몬스터 스폰
-		spawnTimer = 0.0f; // 타이머 초기화
-	}
+	SpawnSkeleton(dt);
 }
 
 void SceneDev2::FixedUpdate(float dt)
@@ -122,7 +115,14 @@ void SceneDev2::Draw(sf::RenderWindow& window)
 	Scene::Draw(window);
 }
 
-void SceneDev2::SpawnSkeleton(int count)
+void SceneDev2::SpawnSkeleton(float dt)
 {
+	static float spawnTimer = 0.0f; // 타이머
+	const float spawnInterval = 5.0f; // 5초마다 스폰
 
+	spawnTimer += dt;
+	if (spawnTimer >= spawnInterval) {
+		monsterSpawn->SpawnMonster("Skeleton"); // "Skeleton" 몬스터 스폰
+		spawnTimer = 0.0f; // 타이머 초기화
+	}
 }

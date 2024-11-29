@@ -1,13 +1,22 @@
 #pragma once
 class AbilityMgr;
 class Player;
+class AniSkeleton;
+class MonsterPoolManager;
+class MonsterSpawner;
 
 class SceneDev3 : public Scene
 {
 private:
 	SpriteGo* sprite;
 	Player* player;
+	AniSkeleton* skeleton;
 	AbilityMgr* abilMgr;
+	MonsterPoolManager* MPMgr;
+	MonsterSpawner* monsterSpawn;
+	json j;
+
+	sf::FloatRect mapBound = { 0, 0, 1920, 1080 };
 public:
 
 	SceneDev3();
