@@ -11,7 +11,8 @@ void Player::SetPosition(const sf::Vector2f& pos)
 	position = pos;
 	body.setPosition(position);
 	body2.setPosition(position);
-	body3.setPosition(position);
+	body3.setPosition(position + attackPos);
+	hitbox.rect.setPosition({position.x, position.y + 5.f});
 }
 
 void Player::SetRotation(float angle)
@@ -24,6 +25,10 @@ void Player::SetScale(const sf::Vector2f& s)
 {
 	scale = s;
 	body.setScale(scale);
+	body2.setScale(body2.getScale().x * scale.x, body2.getScale().y * scale.y);
+	body3.setScale(body3.getScale().x * scale.x, body3.getScale().y * scale.y);
+	body4.setScale(body4.getScale().x * scale.x, body4.getScale().y * scale.y);
+	//body3.setScale(body2.getScale().x * scale.x, body2.getScale().y * scale.y);
 }
 
 void Player::SetOrigin(Origins preset)
@@ -35,6 +40,7 @@ void Player::SetOrigin(Origins preset)
 		Utils::SetOrigin(body2, originPreset);
 		//Utils::SetOrigin(body3, Origins::BC);
 		body3.setOrigin(body3.getLocalBounds().width * 0.5f, body3.getLocalBounds().height - 50.f);
+		//Utils::SetOrigin(body2, originPreset);
 	}
 }
 
@@ -51,6 +57,7 @@ void Player::Init()
 	animator.SetTarget(&body);
 	animator2.SetTarget(&body2);
 	animator3.SetTarget(&body3);
+	animator4.SetTarget(&body4);
 }
 
 void Player::Release()
@@ -62,10 +69,18 @@ void Player::Reset()
 	RES_TABLE_MGR.LoadAnimation();
 	animator.Play(clipId);
 	animator2.Play(clipId2);
+	animator2.Stop();
 	animator3.Play(clipId3);
+	animator3.Stop();
+	animator4.Play(clipId4);
+	animator4.Stop();
 	body3.setScale(0.2f, 0.2f);
+	body3.setPosition(position);
+	body3.setColor(sf::Color::Yellow);
 	SetOrigin(Origins::MC);
-	attackHB.UpdateTr(body3, body3.getLocalBounds());
+	hitbox.rect.setSize({ 25.f, 45.f });
+	Utils::SetOrigin(hitbox.rect, Origins::MC);
+	dashCharge = stat.dash.dashCharge;
 	scene = SCENE_MGR.GetCurrentScene();
 }
 
@@ -77,7 +92,7 @@ void Player::Update(float dt)
 	Move(dt);
 	Attack(dt);
 	Dash(dt);
-	attackHB.UpdateTr(body3, body3.getLocalBounds());
+
 	
 	if (direction.x < 0)
 	{
@@ -99,13 +114,21 @@ void Player::Update(float dt)
 void Player::Draw(sf::RenderWindow& window)
 {
 	
-	if (!animator2.IsEnd())
+	if (animator2.IsPlay())
 	{
 		window.draw(body2);
+		//attackHB.Draw(window);
+	}
+	if (animator3.IsPlay())
+	{
 		window.draw(body3);
-		attackHB.Draw(window);
+	}
+	if (animator4.IsPlay())
+	{
+		window.draw(body4);
 	}
 	window.draw(body);
+	hitbox.Draw(window);
 }
 
 void Player::SetStatus(Status cur)
@@ -122,6 +145,7 @@ void Player::SetStatus(Status cur)
 	case Player::Status::DASH:
 		clipId = "knight_dash";
 		clipId2 = "knight_dash_glow";
+		clipId4 = "dash_spr";
 		break;
 	case Player::Status::ATTACK:
 		isAttack = true;
@@ -142,6 +166,7 @@ void Player::SetStatus(Status cur)
 
 void Player::Move(float dt)
 {
+
 	direction.x = InputMgr::GetAxisRaw(Axis::Horizontal);
 	direction.y = InputMgr::GetAxisRaw(Axis::Vertical);
 	float mag = Utils::Magnitude(direction);
@@ -149,30 +174,20 @@ void Player::Move(float dt)
 	{
 		Utils::Normalize(direction);
 	}
-	if ((InputMgr::GetKey(sf::Keyboard::A) && InputMgr::GetKey(sf::Keyboard::D)))
-		direction = { 0, direction.y };
-	if ((InputMgr::GetKey(sf::Keyboard::W) && InputMgr::GetKey(sf::Keyboard::S)))
-		direction = { direction.x, 0 };
-	SetPosition(position + direction * speed * dt);
 
+	if (!isDash)
+	{
+		if ((InputMgr::GetKey(sf::Keyboard::A) && InputMgr::GetKey(sf::Keyboard::D)))
+			direction = { 0, direction.y };
+		if ((InputMgr::GetKey(sf::Keyboard::W) && InputMgr::GetKey(sf::Keyboard::S)))
+			direction = { direction.x, 0 };
+		SetPosition(position + direction * (float)stat.defensive.moveSpeed * dt);
+	}
+	
 	if (!isAttack && !isDash)
 	{
-		/*if ((direction.x < 0))
-		{
-			flip = true;
-			animator.SetFlip(true);
-		}
-		else if ((direction.x > 0))
-		{
-			flip = false;
-			animator.SetFlip(false);
-		}*/
-
 		direction.x != 0.f || direction.y != 0.f ? SetStatus(Status::WALK) : SetStatus(Status::IDLE);
 	}
-		
-
-	
 }
 
 void Player::Attack(float dt)
@@ -188,7 +203,7 @@ void Player::Attack(float dt)
 		temp.push(Status::ATTACK2);
 		temp.push(Status::ATTACK);
 	}
-	if (InputMgr::GetMouseButton(sf::Mouse::Left))
+	if (InputMgr::GetMouseButton(sf::Mouse::Left) && !isDash)
 	{
 		if (mousePos.x < position.x)
 		{
@@ -200,7 +215,6 @@ void Player::Attack(float dt)
 			flip = false;
 		}
 		sf::Vector2f look = Utils::GetNormal(mousePos - body3.getPosition());
-		
 		if (attackTerm > stat.attack.attackTime)
 		{
 			
@@ -214,9 +228,11 @@ void Player::Attack(float dt)
 			else
 				animator3.Play(clipId3, flip);
 			animator2.Play(clipId2, flip);
-
-			body3.setRotation(Utils::Angle(look) + 90);
 			
+			body3.setRotation(Utils::Angle(look) + 90);
+			look.x *= 2;
+			attackPos = look * 7.f;
+			body3.setPosition(position + attackPos);
 			attackTerm = 0.f;
 			temp.pop();
 		}
@@ -235,25 +251,41 @@ void Player::Attack(float dt)
 
 void Player::Dash(float dt)
 {
-	if (direction.x == 0.f && direction.y == 0.f)
+	dashChargeTime += dt;
+	if (dashChargeTime > stat.dash.dashRechargeTime && dashCharge < stat.dash.dashCharge)
+	{
+		dashCharge++;
+		dashChargeTime = 0;
+	}       
+	if ((direction.x == 0.f && direction.y == 0.f && !isDash))
 		return;
 	if (InputMgr::GetKeyDown(sf::Keyboard::Space))
 	{
+		if (dashCharge == 0)
+			return;
 		isDash = true;
 		frame = 0;
+		dashCharge--;
 		SetStatus(Status::DASH);
 		animator.Play(clipId, flip);
 		animator2.Play(clipId2, flip);
-		dashDirection = direction;
+		animator4.Play(clipId4, flip);
+		dashDirection = Utils::GetNormal(direction);
+		dashPos = position + dashDirection * 600.f * 0.4f;
+		std::cout << dashCharge << std::endl;
 	}
 
-	if (frame <= 40 && isDash)
+	if (animator2.IsPlay() && isDash)
 	{
-		SetPosition(position + dashDirection * 500.f * dt);
-		frame++;
+		sf::Vector2f newPos = position;
+		newPos = Utils::Lerp(newPos, dashPos, dt * 6, true);
+		SetPosition(newPos);
 	}
-	if (animator2.IsEnd())
+	if (!animator2.IsPlay())
+	{
 		isDash = false;
+	}
+	
 	
 }
 

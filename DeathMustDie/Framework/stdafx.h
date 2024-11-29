@@ -10,7 +10,9 @@
 #include <limits>
 #include <codecvt>
 #include <functional>
+#include <cmath>
 #include <fstream>
+
 
 
 #include <SFML/Graphics.hpp>
@@ -22,10 +24,12 @@ using json = nlohmann::json;
 
 #include "Defines.h"
 #include "Utils.h"
+#include "Timer.h"
 #include "Singleton.h"
 #include "Variables.h"
 #include "DataTable.h"
 #include "StringTable.h"
+#include "SkillTable.h"
 #include "DataTableMgr.h"
 #include "ResourceTableManager.h"
 #include "HitBox.h"
@@ -40,3 +44,4 @@ using json = nlohmann::json;
 #include "Scene.h"
 #include "ObjectPool.h"
 #include "SoundMgr.h"
+#include "Effector.h"

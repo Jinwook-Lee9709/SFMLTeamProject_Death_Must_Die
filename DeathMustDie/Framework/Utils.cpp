@@ -179,6 +179,12 @@ float Utils::DegreeToRadian(float degree)
     return degree * (PI / 180.f);
 }
 
+float Utils::NormalizeAngle(float angle)
+{
+    while (angle > 180) angle -= 360;
+    while (angle < -180) angle += 360;
+    return angle;
+}
 float Utils::AngleRadian(const sf::Vector2f& vec)
 {
     return std::atan2(vec.y, vec.x);
@@ -221,6 +227,55 @@ bool Utils::CheckCollision(const sf::RectangleShape& shapeA, const sf::Rectangle
     auto pointsA = GetShapePoints(shapeA);
     auto pointsB = GetShapePoints(shapeB);
     return PolygonsIntersect(pointsA, shapeA.getTransform(), pointsB, shapeB.getTransform());
+}
+
+bool Utils::CheckCollision(const sf::Vector2f& wedgeCenter, float degree, float degreeRange, float radius, const sf::FloatRect& rect)
+{
+    sf::Vector2f corners[] = {
+        {rect.left, rect.top},                               // Left Top
+        {rect.left + rect.width, rect.top},                  // RIght Top
+        {rect.left, rect.top + rect.height},                 // Left Bottom
+        {rect.left + rect.width, rect.top + rect.height}     // Right Botton
+    };
+    for (const auto& corner : corners) {
+        float distanceSquared = std::pow(corner.x - wedgeCenter.x, 2) + std::pow(corner.y - wedgeCenter.y, 2);
+        if (distanceSquared > radius * radius)
+            continue; 
+        float angleToCorner = Angle(corner - wedgeCenter);
+
+        float relativeAngle = NormalizeAngle(angleToCorner - degree);
+ 
+        if (std::abs(relativeAngle) <= degreeRange / 2.0f) {
+            return true; 
+         }
+    }
+
+    float closestX = std::max(rect.left, std::min(wedgeCenter.x, rect.left + rect.width));
+    float closestY = std::max(rect.top, std::min(wedgeCenter.y, rect.top + rect.height));
+    float dx = closestX - wedgeCenter.x;
+    float dy = closestY - wedgeCenter.y;
+    if (dx*dx + dy*dy < radius * radius ) 
+    {
+        float angleToDot = Angle({ dx, dy });
+        float relativeAngle = NormalizeAngle(angleToDot - degree);
+        if (std::abs(relativeAngle) <= degreeRange / 2.0f) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool Utils::CheckCollision(const sf::Vector2f& ellipseCenter, const sf::Vector2f& ellipseRadius, const sf::FloatRect& rect)
+{
+    float closestX = std::max(rect.left, std::min(ellipseCenter.x, rect.left + rect.width));
+    float closestY = std::max(rect.top, std::min(ellipseCenter.y, rect.top + rect.height));
+
+    float dx = closestX - ellipseCenter.x;
+    float dy = closestY - ellipseCenter.y;
+
+    return (dx * dx) / (ellipseRadius.x * ellipseRadius.x) +
+        (dy * dy) / (ellipseRadius.y * ellipseRadius.y) <= 1.0f;
 }
 
 std::vector<sf::Vector2f> Utils::GetShapePoints(const sf::Sprite& shape)

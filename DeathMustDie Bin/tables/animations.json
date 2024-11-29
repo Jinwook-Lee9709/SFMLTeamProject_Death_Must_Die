@@ -2,10 +2,38 @@
     "CHARCTER_IDLE":
     {
         "ID": "crusader_idle",
-
-        "TEX_ID": "resource/texture/Sheet/crusader_idle_Sheet.png"
+        "TEX_ID": "resource/texture/Sheet/crusader_idle_sheet.png"
     },
-    
+    "METEOR_FALL":
+    {
+        "ID": "meteor_fall",
+        "TEX_ID": "resource/texture/Sheet/skill/meteor_fall.png"
+    },
+    "METEOR_EXPLODE":
+    {
+        "ID": "meteor_explode",
+        "TEX_ID": "resource/texture/Sheet/skill/meteor_explode.png"
+    },
+    "BREATH":
+    {
+        "ID": "breath_fire",
+        "TEX_ID": "resource/texture/Sheet/skill/breath_fire.png"
+    },
+    "FIRE_START":
+    {
+        "ID": "fire_start",
+        "TEX_ID": "resource/texture/Sheet/skill/fire_start.png"
+    },
+    "FIRE_LOOP":
+    {
+        "ID": "fire_loop",
+        "TEX_ID": "resource/texture/Sheet/skill/fire_loop.png"
+    },
+    "FIRE_END":
+    {
+        "ID": "fire_end",
+        "TEX_ID": "resource/texture/Sheet/skill/fire_end.png"
+    },
     "SKELETON_WALK":
     {
         "ID": "skeleton_walk",
@@ -92,5 +120,10 @@
     {
         "ID": "knight_dash_glow",
         "TEX_ID": "resource/texture/Sheet/player_knight/knight_glow_sheet.png"
+    },
+    "DASH_SPR" :
+    {
+        "ID": "dash_spr",
+        "TEX_ID": "resource/texture/Sheet/player_knight/dash_spr_sheet.png"
     }
 }

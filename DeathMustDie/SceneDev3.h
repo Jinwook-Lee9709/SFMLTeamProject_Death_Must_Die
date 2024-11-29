@@ -1,9 +1,12 @@
 #pragma once
+class AbilityMgr;
+
 class SceneDev3 : public Scene
 {
 private:
-	sf::Sprite sprite;
-	Animator anim;
+	SpriteGo* sprite;
+
+	AbilityMgr* abilMgr;
 public:
 
 	SceneDev3();

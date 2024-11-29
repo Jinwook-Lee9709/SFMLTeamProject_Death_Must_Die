@@ -43,6 +43,44 @@ enum class Sides
 	None,
 };
 
+
+enum class AbilityGrade
+{
+	Novice,
+	Adept,
+	Expert,
+	Master,
+	Legend,
+};
+
+enum class AbilityType
+{
+	Attack,
+	Dash,
+	Strike,
+	Cast,
+	Power,
+	Summon,
+	Passive,
+};
+enum class AbilityTriggerType
+{
+	Attack, // When Hit enemy
+	Dash, // When Dash
+	AutoCast, //Actiavte by CoolTime
+	Earn, // Only activates when earning a skill
+};
+
+enum class AttackEntityType
+{
+	Projectile,
+	Circle,
+	Fall,
+	Wedge,
+	Trail,
+	Summon
+};
+
 enum class MonsterTypes
 {
 	None = -1,

@@ -4,6 +4,7 @@
 Effector::Effector(const std::string& name)
 	: GameObject(name)
 {
+	animator.SetTarget(&sprite);
 }
 
 void Effector::SetPosition(const sf::Vector2f& pos)
@@ -47,7 +48,7 @@ void Effector::Init()
 
 void Effector::Reset()
 {
-	animator.SetTarget(&sprite);
+
 }
 
 void Effector::Update(float dt)

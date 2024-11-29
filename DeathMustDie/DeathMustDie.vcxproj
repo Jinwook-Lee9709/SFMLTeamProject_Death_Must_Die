@@ -149,8 +149,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Ability.cpp" />
+    <ClCompile Include="AbilityMgr.cpp" />
+    <ClCompile Include="AttackEntity.cpp" />
     <ClCompile Include="AniSkeleton.cpp" />
     <ClCompile Include="AniSlime.cpp" />
+    <ClCompile Include="Calculator.cpp" />
     <ClCompile Include="DamageText.cpp" />
     <ClCompile Include="Effector.cpp" />
     <ClCompile Include="EventHandler.cpp" />
@@ -176,6 +179,8 @@
     <ClCompile Include="Framework\SoundMgr.cpp" />
     <ClCompile Include="Framework\StringTable.cpp" />
     <ClCompile Include="Framework\Utils.cpp" />
+    <ClCompile Include="AttackEntityPoolMgr.cpp" />
+    <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="Monster.cpp" />
     <ClCompile Include="MonsterPoolManager.cpp" />
     <ClCompile Include="MonsterSpawner.cpp" />
@@ -184,12 +189,21 @@
     <ClCompile Include="SceneDev3.cpp" />
     <ClCompile Include="SceneGame.cpp" />
     <ClCompile Include="Framework\Variables.cpp" />
+    <ClCompile Include="SkillTable.cpp" />
     <ClCompile Include="TileMap.cpp" />
+    <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="FallAttack.cpp" />
+    <ClCompile Include="TrailEntity.cpp" />
+    <ClCompile Include="WedgeAttack.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Ability.h" />
+    <ClInclude Include="AbilityMgr.h" />
+    <ClInclude Include="AttackEntity.h" />
+    <ClInclude Include="AttackEntityPool.h" />
     <ClInclude Include="AniSkeleton.h" />
     <ClInclude Include="AniSlime.h" />
+    <ClInclude Include="Calculator.h" />
     <ClInclude Include="DamageText.h" />
     <ClInclude Include="Effector.h" />
     <ClInclude Include="EventHandler.h" />
@@ -219,6 +233,8 @@
     <ClInclude Include="Framework\SoundMgr.h" />
     <ClInclude Include="Framework\StringTable.h" />
     <ClInclude Include="Framework\Utils.h" />
+    <ClInclude Include="AttackEntityPoolMgr.h" />
+    <ClInclude Include="Projectile.h" />
     <ClInclude Include="Monster.h" />
     <ClInclude Include="MonsterPool.h" />
     <ClInclude Include="MonsterPoolManager.h" />
@@ -228,7 +244,12 @@
     <ClInclude Include="SceneDev3.h" />
     <ClInclude Include="SceneGame.h" />
     <ClInclude Include="Framework\Variables.h" />
+    <ClInclude Include="SkillTable.h" />
     <ClInclude Include="TileMap.h" />
+    <ClInclude Include="Timer.h" />
+    <ClInclude Include="FallAttack.h" />
+    <ClInclude Include="TrailEntity.h" />
+    <ClInclude Include="WedgeAttack.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

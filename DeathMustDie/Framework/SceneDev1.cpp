@@ -8,11 +8,11 @@ SceneDev1::SceneDev1() : Scene(SceneIds::Dev1)
 
 void SceneDev1::Init()
 {
-	player = AddGo(new Player("Knight"));
+	player = AddGo(new Player("Player"));
 
 	Scene::Init();
 	sf::Vector2f size = FRAMEWORK.GetWindowSizeF();
-	worldView.setSize(size * 0.35f);
+	worldView.setSize(size);
 	worldView.setCenter(0.f, 0.f);
 
 	uiView.setSize(size);
@@ -27,6 +27,7 @@ void SceneDev1::Enter()
 	Scene::Enter();
 	sprite = new SpriteGo("background");
 	sprite->Reset();
+	player->SetScale({3.f, 3.f});
 }
 
 void SceneDev1::Exit()

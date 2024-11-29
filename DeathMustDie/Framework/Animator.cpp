@@ -17,10 +17,8 @@ void Animator::Update(float dt)
 	accumTime += dt;
 	if (accumTime < frameDuration)
 		return;
-
 	currentFrame++;
 	accumTime = 0;
-	
 	if (currentFrame == totalFrame) {
 		isEnd = true;
 		switch (currentClip->loopType) {
@@ -71,6 +69,7 @@ void Animator::Play(AnimationClip* clip, bool flip)
 void Animator::Stop()
 {
 	isPlaying = false;
+	
 }
 
 void Animator::SetFrame(const AnimationFrame& frame)

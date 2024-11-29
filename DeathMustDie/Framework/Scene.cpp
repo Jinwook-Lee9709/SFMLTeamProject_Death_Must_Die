@@ -185,6 +185,11 @@ void Scene::ApplyRemoveGO()
 	removeGameObjects.clear();
 }
 
+sf::Vector2f Scene::GetWorldViewCenter()
+{
+	return worldView.getCenter();
+}
+
 sf::Vector2f Scene::ScreenToWorld(sf::Vector2i screenPos)
 {
 	return FRAMEWORK.GetWindow().mapPixelToCoords(screenPos, worldView);
