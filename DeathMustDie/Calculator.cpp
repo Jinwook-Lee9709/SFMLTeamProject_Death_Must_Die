@@ -31,7 +31,7 @@ void Calculator::AddEffect(const Effect& effect)
 	effects.push_back(effect);
 }
 
-float Calculator::CalculateValue()
+float Calculator::CalculateValue(float base)
 {
 	float value = base;
 	for (auto& effect : effects)
@@ -39,4 +39,22 @@ float Calculator::CalculateValue()
 		value *= effect.multiplier;
 	}
 	return value;
+}
+
+void Calculator::Update(float dt)
+{
+	auto it = effects.begin();
+	while (it != effects.end())
+	{
+		if (it->type == EffectType::Temporary)
+		{
+			it->duration -= dt;
+			if (it->duration <= 0)
+			{
+				it = effects.erase(it);
+				continue;
+			}
+		}
+		it++;
+	}
 }

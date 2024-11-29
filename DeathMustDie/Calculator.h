@@ -21,11 +21,10 @@ struct Effect
 class Calculator
 {
 private:
-	float base;
 	std::vector<Effect> effects;
+public:
 	void AddEffect(const Effect& effect);
-	float CalculateValue();
-
+	float CalculateValue(float base);
 	void Update(float dt);
 
 };

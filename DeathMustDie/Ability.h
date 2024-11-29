@@ -1,6 +1,7 @@
 #pragma once
-
 #include "AttackEntityPoolMgr.h"
+
+class Player;
 
 class Ability : public GameObject
 {
@@ -17,6 +18,8 @@ protected:
 	float duration = 0;
 	int projectiles = 1;
 	bool isActive = false;
+
+	Player* player;
 
 	std::function<void()> activateFunc;
 public:
