@@ -5,6 +5,7 @@ class Monster;
 class AniSkeleton;
 class AniSlime;
 class MonsterPoolManager;
+class MonsterSpawner;
 
 class SceneDev2 : public Scene
 {
@@ -16,6 +17,7 @@ protected:
 	AniSlime* aniSlime;
 	json j;
 	MonsterPoolManager* MPMgr;
+	MonsterSpawner* monsterSpawn;
 
 	sf::Vector2f direction;
 	sf::Vector2f rectDirection;
@@ -23,6 +25,7 @@ protected:
 	float rectSpeed = 300.f;
 
 	sf::CircleShape attackRange;
+	sf::FloatRect mapBound = { 0, 0, 1920, 1080 };
 
 	bool isPlaying = false;
 

@@ -1,6 +1,14 @@
 #pragma once
 #include "Monster.h"
 
+enum class SlimeStatus
+{
+	None = -1,
+	Move,
+	Attack,
+	Death,
+};
+
 class AniSlime : public Monster
 {
 public:
@@ -25,12 +33,16 @@ public:
 
 protected:
 	sf::Sprite body;
-	Animator walkAnim;
-	Animator attackAnim;
+	Animator Anim;
 	std::string textureId;
+
+	SlimeStatus beforeStatus = SlimeStatus::None;
+	SlimeStatus currentStatus = SlimeStatus::Move;
 
 	sf::Vector2f direction;
 	float speed = 70.f;
+
+	bool isAttack = false;
 
 	SlimeInfo info;
 public:
@@ -49,11 +61,14 @@ public:
 	void Release() override;
 	void Reset() override;
 	void Update(float dt) override;
+	void MoveUpdate(float dt);
+	void AttackUpdate(float dt);
+	void DeathUpdate(float dt);
 	void Draw(sf::RenderWindow& window) override;
 
 	void SetInfo(const json& j) override;
 
-	void Walk();
+	void Walk(float dt);
 	void OnAttack();
 };
 

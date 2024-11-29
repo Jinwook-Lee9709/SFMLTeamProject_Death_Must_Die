@@ -4,14 +4,17 @@
 AniSlime::AniSlime(const std::string& name)
 	: Monster(name)
 {
-	walkAnim.SetTarget(&body);
-	attackAnim.SetTarget(&body);
+	Anim.SetTarget(&body);
+
 }
 
 void AniSlime::SetPosition(const sf::Vector2f& pos)
 {
 	position = pos;
 	body.setPosition(position);
+	hitbox.rect.setPosition(position);
+	HPBar.setPosition({ position.x, position.y - 140 });
+	HPBarFrame.setPosition({ position.x, position.y - 140 });
 }
 
 void AniSlime::SetRotation(float angle)
@@ -48,13 +51,84 @@ void AniSlime::Release()
 
 void AniSlime::Reset()
 {
-	Walk();
+	hitbox.rect.setSize({ 40, 120 });
+	hitbox.rect.setPosition({ position });
+	Utils::SetOrigin(hitbox.rect, Origins::BC);
+
+	HPBar.setPosition({ position.x, position.y - 140 });
+	HPBarFrame.setPosition({ position.x, position.y - 140 });
 }
 
 void AniSlime::Update(float dt)
 {
 	SetOrigin(Origins::BC);
 
+	Anim.Update(dt);
+
+	switch (currentStatus)
+	{
+	case SlimeStatus::Move:
+	{
+		MoveUpdate(dt);
+		break;
+	}case SlimeStatus::Attack:
+	{
+		AttackUpdate(dt);
+		break;
+	}
+	case SlimeStatus::Death:
+	{
+		DeathUpdate(dt);
+		break;
+	}
+	}
+}
+
+void AniSlime::MoveUpdate(float dt)
+{
+	Walk(dt);
+
+	sf::Vector2f mousePos = (sf::Vector2f)InputMgr::GetMousePosition() - position;
+
+	if (Utils::Magnitude(mousePos) < DISTANCE_TO_PLAYER)
+	{
+		isAttack = true;
+		Anim.Play(info.attackAnimId);
+		beforeStatus = currentStatus;
+		currentStatus = SlimeStatus::Attack;
+		return;
+	}
+}
+
+void AniSlime::AttackUpdate(float dt)
+{
+	if (!Anim.IsPlay())
+	{
+		Anim.Play(info.walkAnimId);
+		beforeStatus = currentStatus;
+		currentStatus = SlimeStatus::Move;
+	}
+}
+
+void AniSlime::DeathUpdate(float dt)
+{
+
+}
+
+void AniSlime::Draw(sf::RenderWindow& window)
+{
+	window.draw(body);
+}
+
+void AniSlime::SetInfo(const json& j)
+{
+	info = j;
+	hp = info.hp;
+	Anim.Play(info.walkAnimId);
+}
+
+void AniSlime::Walk(float dt)
+{
 	sf::Vector2i mousePos = InputMgr::GetMousePosition();
 	sf::Vector2f monsterPos = body.getPosition();
 
@@ -72,39 +146,9 @@ void AniSlime::Update(float dt)
 	{
 		body.setScale({ 3.f, 3.f });
 	}
-
-	walkAnim.Update(dt);
-	attackAnim.Update(dt);
-
-	if (InputMgr::GetMouseButton(sf::Mouse::Left))
-	{
-		speed = 0.f;
-		OnAttack();
-	}
-}
-
-void AniSlime::Draw(sf::RenderWindow& window)
-{
-	window.draw(body);
-}
-
-void AniSlime::SetInfo(const json& j)
-{
-	info = j;
-}
-
-void AniSlime::Walk()
-{
-	if (!attackAnim.IsPlay())
-	{
-		active = true;
-		speed = 70.f;
-		walkAnim.Play(info.walkAnimId);
-	}
 }
 
 void AniSlime::OnAttack()
 {
-	active = true;
-	attackAnim.Play(info.attackAnimId);
+
 }

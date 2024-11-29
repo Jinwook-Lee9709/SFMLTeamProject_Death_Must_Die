@@ -5,7 +5,7 @@ class Monster : public GameObject
 {
 
 protected:
-	float hp;
+	float hp = 100.f;
 
 	sf::RectangleShape HPBar;
 	sf::RectangleShape HPBarFrame;
@@ -16,6 +16,8 @@ public:
 
 	virtual void SetInfo(const json& j) {}
 	void Draw(sf::RenderWindow& window) override;
+
+	void OnDeath();
 };
 
 #define DISTANCE_TO_PLAYER (60.f)

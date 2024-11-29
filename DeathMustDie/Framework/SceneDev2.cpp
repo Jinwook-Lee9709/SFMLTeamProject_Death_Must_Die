@@ -4,6 +4,7 @@
 #include "AniSkeleton.h"
 #include "AniSlime.h"
 #include "MonsterPoolManager.h"
+#include "MonsterSpawner.h"
 
 SceneDev2::SceneDev2() : Scene(SceneIds::Dev2)
 {
@@ -24,7 +25,7 @@ void SceneDev2::Init()
 		std::cerr << "Failed to Read File";
 	}
 	j = json::parse(file1);
-	file1.close();
+	file1.close(); 
 
 	Scene::Init();
 }
@@ -38,17 +39,16 @@ void SceneDev2::Enter()
 	sprite = AddGo(new SpriteGo("retreat", "Player"));
 	aniSkeleton = new AniSkeleton("AniSkeleton");
 	aniSlime = new AniSlime("AniSlime");
+	monsterSpawn = AddGo(new MonsterSpawner(MPMgr, mapBound, 30));
 	ApplyAddGo();
 
 	MPMgr->CreatePool(MonsterTypes::Skeleton, j["Skeleton"], "Skeleton");
-	
+
 	aniSlime->SetInfo(j["Slime"]);
 
 	aniSlime->SetOrigin(Origins::BC);
 	aniSlime->SetScale({ 3.f, 3.f });
 	aniSlime->SetPosition({ 900.f, 900.f });
-
-	aniSlime->Walk();
 
 	Utils::SetOrigin(attackRange, Origins::MC);
 	attackRange.setFillColor(sf::Color::White);
@@ -64,8 +64,6 @@ void SceneDev2::Exit()
 
 void SceneDev2::Update(float dt)
 {
-
-
 	aniSlime->Update(dt);
 
 	sf::Vector2f rectPos = sprite->GetPosition();
@@ -84,11 +82,16 @@ void SceneDev2::Update(float dt)
 
 	sprite->SetPosition(rectPos + rectDirection * rectSpeed * dt);
 
+	sf::Vector2f pos = Utils::RandomPointInRect(mapBound);
+	
 	if (InputMgr::GetKeyDown(sf::Keyboard::Space))
 	{
-		auto monster = MPMgr->GetMonster("Skeleton");
-		monster->SetPosition({ 100.f, 100.f });
-		monster->SetScale({ 3.f, 3.f });
+		for(int i = 0; i < 10; i++)
+		{
+			auto monster = MPMgr->GetMonster("Skeleton");
+			monster->SetPosition(pos);
+			monster->SetScale({ 3.f, 3.f });
+		}
 	}
 
 	if (InputMgr::GetKeyDown(sf::Keyboard::L))
@@ -96,6 +99,15 @@ void SceneDev2::Update(float dt)
 	}
 
 	Scene::Update(dt);
+
+	static float spawnTimer = 0.0f; // 타이머
+	const float spawnInterval = 5.0f; // 5초마다 스폰
+
+	spawnTimer += dt;
+	if (spawnTimer >= spawnInterval) {
+		monsterSpawn->SpawnMonster("Skeleton"); // "Skeleton" 몬스터 스폰
+		spawnTimer = 0.0f; // 타이머 초기화
+	}
 }
 
 void SceneDev2::FixedUpdate(float dt)
