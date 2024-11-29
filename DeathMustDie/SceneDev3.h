@@ -1,11 +1,12 @@
 #pragma once
 class AbilityMgr;
+class Player;
 
 class SceneDev3 : public Scene
 {
 private:
 	SpriteGo* sprite;
-
+	Player* player;
 	AbilityMgr* abilMgr;
 public:
 

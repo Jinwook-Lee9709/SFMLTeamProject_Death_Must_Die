@@ -47,7 +47,8 @@ public:
 
 	static float AngleRadian(const sf::Vector2f& vec);
 	static float Angle(const sf::Vector2f& vec);
-	sf::Vector2f GetRotateVector(float angle, const sf::Vector2f& target);
+	static sf::Vector2f AngleToVector(float rotation);
+	static sf::Vector2f GetRotateVector(float angle, const sf::Vector2f& target);
 	static float Dot(const sf::Vector2f& a, const sf::Vector2f& b);
 	static bool PointInTransformBounds(const sf::Transformable& transformable,
 		const sf::FloatRect& localBounds, const sf::Vector2f point);

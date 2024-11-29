@@ -1,15 +1,14 @@
 #pragma once
 #include "Scene.h"
 
+class AbilityMgr;
+class Player;
 
 class SceneGame : public Scene
 {
 public:
-
+	AbilityMgr* abilMgr;
 protected:
-	
-
-
 
 public:
 	SceneGame();

@@ -195,6 +195,13 @@ float Utils::Angle(const sf::Vector2f& vec)
     return RadianToDegree(AngleRadian(vec));
 }
 
+sf::Vector2f Utils::AngleToVector(float rotation) {
+    float radian = rotation * 3.14159265359f / 180.0f;
+    float x = std::cos(radian);
+    float y = std::sin(radian);
+    return sf::Vector2f(x, y);
+}
+
 sf::Vector2f Utils::GetRotateVector(float angle, const sf::Vector2f& target)
 {
     sf::Transform rotMat = sf::Transform::Identity;

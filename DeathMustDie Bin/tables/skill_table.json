@@ -1,8 +1,27 @@
 {
+    "Base Attack":
+    {
+        "triggerType": 0,
+        "abilityType": 0,
+        "spawnType": 3,
+        "entityType": 6,
+        "attackCounter":
+        {
+            "maxCount": 1,
+            "probability": 1.0
+        },
+        "AttackEntity":
+        {
+            "damage": 14,
+            "rangeDegree": 170,
+            "radius": 140
+        }
+    },
     "Meteor Shower":
     {
         "triggerType": 2,
         "abilityType": 3,
+        "spawnType": 1,
         "entityType": 2,
         "projectileCount": 4,
         "coolTime": 2,
@@ -23,6 +42,7 @@
     {
         "triggerType": 0,
         "abilityType": 0,
+        "spawnType": 3,
         "entityType": 3,
         "attackCounter":
         {
@@ -42,6 +62,7 @@
     {
         "triggerType": 1,
         "abilityType": 1,
+        "spawnType": 3,
         "entityType": 4,
         "duration" : 1.6,
         "interval" : 0.2,

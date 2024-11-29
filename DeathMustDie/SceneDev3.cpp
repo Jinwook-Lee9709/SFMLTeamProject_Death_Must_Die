@@ -3,6 +3,7 @@
 #include "FallAttack.h"
 #include "AttackEntityPoolMgr.h"
 #include "AbilityMgr.h"
+#include "Player.h"
 
 SceneDev3::SceneDev3() :Scene(SceneIds::Dev3)
 {
@@ -11,6 +12,8 @@ SceneDev3::SceneDev3() :Scene(SceneIds::Dev3)
 void SceneDev3::Init()
 {
 	sf::Vector2f size = FRAMEWORK.GetWindowSizeF();
+
+	player = AddGo(new Player("Player"));
 	worldView.setSize(size);
 	worldView.setCenter(0.f, 0.f);
 
@@ -35,6 +38,7 @@ void SceneDev3::Enter()
 	sprite->sortingLayer = SortingLayers::Foreground;
 	ApplyAddGo();
 	Scene::Enter();
+	player->SetScale({ 3.f, 3.f });
 }
 
 void SceneDev3::Exit()
@@ -55,10 +59,11 @@ void SceneDev3::Update(float dt)
 	{
 		abilMgr->AddAbility("Trail of Fire");
 	}
-	sf::Vector2f center = worldView.getCenter();
-	center.x += InputMgr::GetAxis(Axis::Horizontal) * dt * 200;
-	center.y += InputMgr::GetAxis(Axis::Vertical) * dt* 200;
-	worldView.setCenter(center);
+	if (InputMgr::GetKeyDown(sf::Keyboard::Num4))
+	{
+		abilMgr->AddAbility("Base Attack");
+	}
+	worldView.setCenter(player->GetPosition());
 	Scene::Update(dt);
 }
 

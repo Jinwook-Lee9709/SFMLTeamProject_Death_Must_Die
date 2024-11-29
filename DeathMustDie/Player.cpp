@@ -76,7 +76,6 @@ void Player::Reset()
 	animator4.Stop();
 	body3.setScale(0.2f, 0.2f);
 	body3.setPosition(position);
-	body3.setColor(sf::Color::Yellow);
 	SetOrigin(Origins::MC);
 	hitbox.rect.setSize({ 25.f, 45.f });
 	Utils::SetOrigin(hitbox.rect, Origins::MC);
@@ -231,7 +230,7 @@ void Player::Attack(float dt)
 			
 			body3.setRotation(Utils::Angle(look) + 90);
 			look.x *= 2;
-			attackPos = look * 7.f;
+			attackPos = look * 10.f;
 			body3.setPosition(position + attackPos);
 			attackTerm = 0.f;
 			temp.pop();
@@ -308,4 +307,9 @@ void Player::LoadStat()
 	stat.godBlessing = j["godBlessing"];
 	stat.offensive = j["offensive"];
 	stat.utility = j["utility"];
+}
+
+void Player::ChangeAttackColor(sf::Color color)
+{
+	body3.setColor(color);
 }

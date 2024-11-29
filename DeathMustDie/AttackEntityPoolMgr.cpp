@@ -22,7 +22,6 @@ void AttackEntityPoolMgr::Reset()
 
 void AttackEntityPoolMgr::Update(float dt)
 {
-
 	for (auto& pair : attackEntities)
 	{
 		auto it = pair.second.begin();
@@ -30,6 +29,7 @@ void AttackEntityPoolMgr::Update(float dt)
 		{
 			if (!(*it)->IsActive())
 			{
+				poolContainer[pair.first]->Return(*it);
 				it = pair.second.erase(it);
 			}
 			else
@@ -50,6 +50,7 @@ void AttackEntityPoolMgr::FixedUpdate(float dt)
 		{
 			if (!(*it)->IsActive())
 			{
+				poolContainer[pair.first]->Return(*it);
 				it = pair.second.erase(it);
 			}
 			else

@@ -63,6 +63,15 @@ enum class AbilityType
 	Summon,
 	Passive,
 };
+
+enum class AbilitySpawnType
+{
+	BasicAttack,
+	OnRandomEnemy, 
+	OnCharacter,
+	CharacterToMouse, 
+};
+
 enum class AbilityTriggerType
 {
 	Attack, // When Hit enemy
@@ -78,7 +87,8 @@ enum class AttackEntityType
 	Fall,
 	Wedge,
 	Trail,
-	Summon
+	Summon,
+	BasicAttack,
 };
 
 enum class MonsterTypes

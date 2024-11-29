@@ -166,5 +166,7 @@ public:
 
 	void SaveStat();
 	void LoadStat();
+
+	void ChangeAttackColor(sf::Color color);
 };
 
