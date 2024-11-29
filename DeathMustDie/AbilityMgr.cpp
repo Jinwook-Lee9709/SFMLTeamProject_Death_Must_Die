@@ -55,6 +55,11 @@ void AbilityMgr::Update(float dt)
 			abil->UseAbility();
 		}
 	}
+	if (InputMgr::GetKeyDown(sf::Keyboard::Left))
+	{
+			UpdateAttack(dt);
+
+	}
 }
 
 void AbilityMgr::UpdateAttack(float dt)
