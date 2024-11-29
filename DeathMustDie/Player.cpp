@@ -12,7 +12,8 @@ void Player::SetPosition(const sf::Vector2f& pos)
 	body.setPosition(position);
 	body2.setPosition(position);
 	body3.setPosition(position + attackPos);
-	hitbox.rect.setPosition({position.x, position.y + 5.f});
+	body4.setPosition({ position.x, position.y});
+	hitbox.rect.setPosition({position.x, position.y + 15.f});
 }
 
 void Player::SetRotation(float angle)
@@ -28,7 +29,7 @@ void Player::SetScale(const sf::Vector2f& s)
 	body2.setScale(body2.getScale().x * scale.x, body2.getScale().y * scale.y);
 	body3.setScale(body3.getScale().x * scale.x, body3.getScale().y * scale.y);
 	body4.setScale(body4.getScale().x * scale.x, body4.getScale().y * scale.y);
-	//body3.setScale(body2.getScale().x * scale.x, body2.getScale().y * scale.y);
+	hitbox.rect.setScale(hitbox.rect.getScale().x * scale.x, hitbox.rect.getScale().y * scale.y);
 }
 
 void Player::SetOrigin(Origins preset)
@@ -40,6 +41,8 @@ void Player::SetOrigin(Origins preset)
 		Utils::SetOrigin(body2, originPreset);
 		//Utils::SetOrigin(body3, Origins::BC);
 		body3.setOrigin(body3.getLocalBounds().width * 0.5f, body3.getLocalBounds().height - 50.f);
+		body4.setOrigin(body4.getLocalBounds().width * 0.5f, body4.getLocalBounds().height);
+		Utils::SetOrigin(hitbox.rect, Origins::MC);
 		//Utils::SetOrigin(body2, originPreset);
 	}
 }
@@ -77,9 +80,12 @@ void Player::Reset()
 	body3.setScale(0.2f, 0.2f);
 	body3.setPosition(position);
 	body3.setColor(sf::Color::Yellow);
+	body4.setScale(0.8f, 0.8f);
+	body4.setRotation(-90);
+	hitbox.UpdateTr(body, { 0,0,19.f,47.f });
 	SetOrigin(Origins::MC);
-	hitbox.rect.setSize({ 25.f, 45.f });
-	Utils::SetOrigin(hitbox.rect, Origins::MC);
+	
+	//Utils::SetOrigin(body4, Origins::BC);
 	dashCharge = stat.dash.dashCharge;
 	scene = SCENE_MGR.GetCurrentScene();
 }
@@ -89,18 +95,19 @@ void Player::Update(float dt)
 	animator.Update(dt);
 	animator2.Update(dt);
 	animator3.Update(dt);
+	animator4.Update(dt);
 	Move(dt);
 	Attack(dt);
 	Dash(dt);
-
 	
-	if (direction.x < 0)
+	
+	if (direction.x < 0 && !isAttack)
 	{
 		flip = true;
 		animator.SetFlip(true);
 		animator2.SetFlip(true);
 	}
-	else if (direction.x > 0)
+	else if (direction.x > 0 && !isAttack)
 	{
 		flip = false;
 		animator.SetFlip(false);
@@ -251,6 +258,7 @@ void Player::Attack(float dt)
 
 void Player::Dash(float dt)
 {
+	dashCharge = 100;
 	dashChargeTime += dt;
 	if (dashChargeTime > stat.dash.dashRechargeTime && dashCharge < stat.dash.dashCharge)
 	{
@@ -267,10 +275,17 @@ void Player::Dash(float dt)
 		frame = 0;
 		dashCharge--;
 		SetStatus(Status::DASH);
+
+		
 		animator.Play(clipId, flip);
 		animator2.Play(clipId2, flip);
-		animator4.Play(clipId4, flip);
+		animator4.Play(clipId4, false);
+		if (direction.x < 0)
+		{
+			
+		}
 		dashDirection = Utils::GetNormal(direction);
+		
 		dashPos = position + dashDirection * 600.f * 0.4f;
 		std::cout << dashCharge << std::endl;
 	}
