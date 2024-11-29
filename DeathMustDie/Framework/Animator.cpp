@@ -69,6 +69,7 @@ void Animator::Play(AnimationClip* clip, bool flip)
 void Animator::Stop()
 {
 	isPlaying = false;
+	
 }
 
 void Animator::SetFrame(const AnimationFrame& frame)

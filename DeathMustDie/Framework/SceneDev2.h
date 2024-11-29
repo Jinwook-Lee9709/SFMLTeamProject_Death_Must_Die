@@ -4,6 +4,7 @@
 class Monster;
 class AniSkeleton;
 class AniSlime;
+class MonsterPoolManager;
 
 class SceneDev2 : public Scene
 {
@@ -14,11 +15,14 @@ protected:
 	AniSkeleton* aniSkeleton;
 	AniSlime* aniSlime;
 	json j;
+	MonsterPoolManager* MPMgr;
 
 	sf::Vector2f direction;
 	sf::Vector2f rectDirection;
 	float speed = 70.f;
 	float rectSpeed = 300.f;
+
+	sf::CircleShape attackRange;
 
 	bool isPlaying = false;
 

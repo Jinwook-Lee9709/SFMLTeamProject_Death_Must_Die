@@ -120,5 +120,10 @@
     {
         "ID": "knight_dash_glow",
         "TEX_ID": "resource/texture/Sheet/player_knight/knight_glow_sheet.png"
+    },
+    "DASH_SPR" :
+    {
+        "ID": "dash_spr",
+        "TEX_ID": "resource/texture/Sheet/player_knight/dash_spr_sheet.png"
     }
 }

@@ -182,6 +182,8 @@
     <ClCompile Include="AttackEntityPoolMgr.cpp" />
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="Monster.cpp" />
+    <ClCompile Include="MonsterPoolManager.cpp" />
+    <ClCompile Include="MonsterSpawner.cpp" />
     <ClCompile Include="MonsterTable.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SceneDev3.cpp" />
@@ -234,6 +236,9 @@
     <ClInclude Include="AttackEntityPoolMgr.h" />
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="Monster.h" />
+    <ClInclude Include="MonsterPool.h" />
+    <ClInclude Include="MonsterPoolManager.h" />
+    <ClInclude Include="MonsterSpawner.h" />
     <ClInclude Include="MonsterTable.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="SceneDev3.h" />
