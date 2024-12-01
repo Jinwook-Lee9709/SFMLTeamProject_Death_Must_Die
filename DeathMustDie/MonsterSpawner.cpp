@@ -18,8 +18,9 @@ sf::Vector2f MonsterSpawner::GenerateSpawnPosition()
     if (x < 0 || x > mapBounds.width) {
         y = yDist(rng); // x°¡ ¸Ê ¿Ü°ûÀÌ¸é y´Â ·£´ý
     }
-    else {
-        y = (rng() % 2 == 0) ? -100.f : mapBounds.height + 100.f; // y´Â »ó/ÇÏ ¿Ü°û
+    else if(y < 0 || y < mapBounds.height)
+    {
+        x = xDist(rng); // y´Â »ó/ÇÏ ¿Ü°û
     }
     return { x, y };
 }
