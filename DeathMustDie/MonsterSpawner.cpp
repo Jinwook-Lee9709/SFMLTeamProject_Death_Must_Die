@@ -3,7 +3,7 @@
 #include "Utils.h"
 
 MonsterSpawner::MonsterSpawner(MonsterPoolManager* manager, const sf::FloatRect& bounds, int maxMonsters)
-    : poolManager(manager), mapBounds(bounds), rng(std::random_device{}()), maxMonsters(maxMonsters) 
+    : GameObject("MonsterSpawner"), poolManager(manager), mapBounds(bounds), rng(std::random_device{}()), maxMonsters(maxMonsters)
 {
     xDist = std::uniform_real_distribution<float>(-100.f, mapBounds.width + 100.f);
     yDist = std::uniform_real_distribution<float>(-100.f, mapBounds.height + 100.f);

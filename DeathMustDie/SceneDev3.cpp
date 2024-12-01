@@ -5,13 +5,10 @@
 #include "MonsterPoolManager.h"
 #include "AbilityMgr.h"
 #include "Player.h"
-<<<<<<< HEAD
 #include "CalculatorMgr.h"
-=======
 #include "AniSkeleton.h"
 #include "MonsterPool.h"
 #include "MonsterSpawner.h"
->>>>>>> origin/hayoung
 
 SceneDev3::SceneDev3() :Scene(SceneIds::Dev3)
 {
