@@ -41,7 +41,7 @@ void Player::SetOrigin(Origins preset)
 		Utils::SetOrigin(body2, originPreset);
 		//Utils::SetOrigin(body3, Origins::BC);
 		body3.setOrigin(body3.getLocalBounds().width * 0.5f, body3.getLocalBounds().height - 50.f);
-		body4.setOrigin(body4.getLocalBounds().width * 0.5f, body4.getLocalBounds().height);
+		body4.setOrigin(body4.getLocalBounds().width * 0.5f + 3.f, body4.getLocalBounds().height - 5.f);
 		Utils::SetOrigin(hitbox.rect, Origins::MC);
 		//Utils::SetOrigin(body2, originPreset);
 	}
@@ -104,12 +104,14 @@ void Player::Update(float dt)
 	if (direction.x < 0 && !isAttack)
 	{
 		flip = true;
+		dashFlip = true;
 		animator.SetFlip(true);
 		animator2.SetFlip(true);
 	}
 	else if (direction.x > 0 && !isAttack)
 	{
 		flip = false;
+		dashFlip = false;
 		animator.SetFlip(false);
 		animator2.SetFlip(false);
 	}
@@ -269,6 +271,7 @@ void Player::Dash(float dt)
 		return;
 	if (InputMgr::GetKeyDown(sf::Keyboard::Space))
 	{
+		std::cout << direction.x << " " << direction.y << std::endl;
 		if (dashCharge == 0)
 			return;
 		isDash = true;
@@ -276,15 +279,12 @@ void Player::Dash(float dt)
 		dashCharge--;
 		SetStatus(Status::DASH);
 
-		
+		dashDirection = Utils::GetNormal(direction);
+		body4.setRotation(Utils::Angle(dashDirection) - 90);
+
 		animator.Play(clipId, flip);
 		animator2.Play(clipId2, flip);
-		animator4.Play(clipId4, false);
-		if (direction.x < 0)
-		{
-			
-		}
-		dashDirection = Utils::GetNormal(direction);
+		animator4.Play(clipId4, flip);
 		
 		dashPos = position + dashDirection * 600.f * 0.4f;
 		std::cout << dashCharge << std::endl;

@@ -1,6 +1,6 @@
 #pragma once
 
-class TileMap : public GameObject
+class TileMap2 : public GameObject
 {
 protected:
 	sf::VertexArray va;
@@ -11,9 +11,10 @@ protected:
 	sf::Vector2i cellCount;
 	sf::Vector2f cellSize;
 
+	sf::Sprite temp;
 public:
-	TileMap(const std::string& name = "");
-	~TileMap() = default;
+	TileMap2(const std::string& name = "");
+	~TileMap2() = default;
 
 	void SetPosition(const sf::Vector2f& pos) override;
 	void SetRotation(float angle) override;
@@ -33,5 +34,6 @@ public:
 	void Draw(sf::RenderWindow& window) override;
 
 	void Set(const sf::Vector2i& count, const sf::Vector2f& size);
+	void SetPoint(sf::Transformable& obj, const sf::Vector2i& pos);
 	void UpdateTransform();
 };

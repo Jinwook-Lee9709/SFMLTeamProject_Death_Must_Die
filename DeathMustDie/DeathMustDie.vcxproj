@@ -191,6 +191,7 @@
     <ClCompile Include="Framework\Variables.cpp" />
     <ClCompile Include="SkillTable.cpp" />
     <ClCompile Include="TileMap.cpp" />
+    <ClCompile Include="TileMap2.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="FallAttack.cpp" />
     <ClCompile Include="TrailEntity.cpp" />
@@ -246,6 +247,7 @@
     <ClInclude Include="Framework\Variables.h" />
     <ClInclude Include="SkillTable.h" />
     <ClInclude Include="TileMap.h" />
+    <ClInclude Include="TileMap2.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="FallAttack.h" />
     <ClInclude Include="TrailEntity.h" />
