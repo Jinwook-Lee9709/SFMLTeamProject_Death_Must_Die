@@ -3,9 +3,6 @@
 
 enum class ValueType
 {
-	None = -1,
-	MinDamage,
-	MaxDamage,
 	Attack,
 	Dash,
 	Strike,
@@ -13,6 +10,7 @@ enum class ValueType
 	Power,
 	Summon,
 	Passive,
+	BaseDamage,
 	Count
 };
 
@@ -21,11 +19,12 @@ class CalculatorMgr : public GameObject
 protected:
 	std::unordered_map<ValueType, Calculator> container;
 public:
-	CalculatorMgr();
+	CalculatorMgr(const std::string& name = "");
 	~CalculatorMgr() = default;
 	void Update(float dt) override;
 	void Release() override;
 	void AddEffect(const ValueType& type, const Effect& effect);
 	float GetValue(const ValueType& type, float value);
+	float GetValue(const AbilityType& type, float value);
 };
 

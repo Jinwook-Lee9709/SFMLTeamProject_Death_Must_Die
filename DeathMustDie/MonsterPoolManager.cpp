@@ -1,6 +1,12 @@
 #include "stdafx.h"
 #include "MonsterPoolManager.h"
 
+MonsterPoolManager::MonsterPoolManager(const std::string& name)
+	:GameObject(name)
+{
+
+}
+
 void MonsterPoolManager::Init()
 {
 }

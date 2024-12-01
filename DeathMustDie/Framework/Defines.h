@@ -74,6 +74,7 @@ enum class AbilitySpawnType
 
 enum class AbilityTriggerType
 {
+	BasicAttack,
 	Attack, // When Hit enemy
 	Dash, // When Dash
 	AutoCast, //Actiavte by CoolTime
@@ -89,6 +90,11 @@ enum class AttackEntityType
 	Trail,
 	Summon,
 	BasicAttack,
+};
+
+enum class DebuffType
+{
+	Burn
 };
 
 enum class MonsterTypes

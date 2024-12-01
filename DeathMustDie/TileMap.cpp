@@ -66,10 +66,7 @@ sf::FloatRect TileMap::GetMoveableBounds() const
 
 void TileMap::Init()
 {
-	sortingLayer = SortingLayers::Background;
-	sortingOrder = -1;
 
-	Set({ 50, 50 }, { 50.f, 50.f });
 }
 
 void TileMap::Release()
@@ -78,6 +75,10 @@ void TileMap::Release()
 
 void TileMap::Reset()
 {
+	sortingLayer = SortingLayers::Background;
+	sortingOrder = -1;
+
+	Set({ 25, 37 }, { 804.f, 538.f });
 	texture = &TEXTURE_MGR.Get(spriteSheetId);
 	SetOrigin(Origins::MC);
 	SetScale({ 1.f, 1.f });
@@ -117,20 +118,15 @@ void TileMap::Set(const sf::Vector2i& count, const sf::Vector2f& size)
 	sf::Vector2f texCoords[4] =
 	{
 		{ 0, 0 },
-		{ 50.f, 0 },
-		{ 50.f, 50.f },
-		{ 0, 50.f },
+		{ size.x, 0 },
+		{ size.x, size.y },
+		{ 0, size.y },
 	};
 
 	for (int i = 0; i < count.y; ++i)
 	{
 		for (int j = 0; j < count.x; ++j)
 		{
-			int texIndex = Utils::RandomRange(0, 2);
-			if (i == 0 || i == count.y - 1 || j == 0 || j == count.x - 1)
-			{
-				texIndex = 3;
-			}
 			
 			int quadIndex = i * count.x + j;
 			sf::Vector2f quadPos(j * size.x, i * size.y);
@@ -140,7 +136,6 @@ void TileMap::Set(const sf::Vector2i& count, const sf::Vector2f& size)
 				int vertexIndex = quadIndex * 4 + k;
 				va[vertexIndex].position = quadPos + posOffset[k];
 				va[vertexIndex].texCoords = texCoords[k];
-				va[vertexIndex].texCoords.y += texIndex * 50.f;
 			}
 		}
 	}

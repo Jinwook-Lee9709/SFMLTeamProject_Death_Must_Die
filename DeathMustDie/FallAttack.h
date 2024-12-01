@@ -24,6 +24,7 @@ protected:
 	bool isImpacted;
 	Info info;
 
+	std::unordered_set<GameObject*> excludedTargets;
 public:
 	FallAttack(const std::string& name = "");
 	~FallAttack() = default;
@@ -38,6 +39,7 @@ public:
 	void Draw(sf::RenderWindow& window) override;
 
 	void SetInfo(const json& j)override;
+	void ChangeInfo(const json& j)override;
 	void Activate()override;
 	void StartImpactAnim();
 };

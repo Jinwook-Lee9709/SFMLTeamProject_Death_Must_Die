@@ -9,16 +9,19 @@ class TrailEntity : public AttackEntity
 		float damage;
 		float duration;
 		float interval;
+		float width;
+		float height;
 		NLOHMANN_DEFINE_TYPE_INTRUSIVE(Info, AnimIdStart, AnimIdLoop,
-			AnimIdEnd, damage, duration, interval);
+			AnimIdEnd, damage, duration, interval, width, height);
 	};
 private:
 
 	Effector effector;
 	Info info;
-
 	float timer;
+	bool isEnd;
 	std::unordered_map<GameObject*, float> excludedTargets;
+
 public:
 	TrailEntity(const std::string& name = "");
 	~TrailEntity() = default;
@@ -32,6 +35,7 @@ public:
 	void Draw(sf::RenderWindow& window) override;
 
 	void SetInfo(const json& j)override;
+	void ChangeInfo(const json& j)override;
 	void Activate()override;
 
 };

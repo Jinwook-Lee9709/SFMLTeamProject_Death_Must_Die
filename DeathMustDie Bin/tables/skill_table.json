@@ -5,75 +5,111 @@
         "abilityType": 0,
         "spawnType": 3,
         "entityType": 6,
-        "attackCounter":
+        "damage": 1.0,
+        "ChangeableValue":
         {
-            "maxCount": 1,
-            "probability": 1.0
+            "damage": 1.0
         },
         "AttackEntity":
         {
-            "damage": 14,
+            "damage": 0,
             "rangeDegree": 170,
-            "radius": 140
+            "radius": 140,
+            "SideEffect":
+            {
+                "effectType" : -1
+            }
         }
     },
     "Meteor Shower":
     {
-        "triggerType": 2,
+        "triggerType": 3,
         "abilityType": 3,
         "spawnType": 1,
         "entityType": 2,
         "projectileCount": 4,
         "coolTime": 2,
         "projectiles": 4, 
+        "damage": 1.0,
+        "ChangeableValue":
+        {
+            "damage": 1.0
+        },
         "AttackEntity":
         {
             "fallAnimId": "meteor_fall",
             "impactAnimId": "meteor_explode",
             "impactFrame": 14,
             "fallAnimSize": 0.5,
-            "damage": 10,
+            "damage": 0,
             "speed": 2000,
             "ellipseWidth": 64,
-            "ellipseHeight": 32
+            "ellipseHeight": 32,
+            "SideEffect":
+            {
+                "effectType" : 0,
+                "debuffType" : 0
+            }
         }
     },
     "Breath of Fire":
     {
-        "triggerType": 0,
-        "abilityType": 0,
+        "triggerType": 1,
+        "abilityType": 2,
         "spawnType": 3,
         "entityType": 3,
+        "damage": 1.0,
         "attackCounter":
         {
             "maxCount": 1,
             "probability": 1.0
         },
+        "ChangeableValue":
+        {
+            "damage": 1.0
+        },
         "AttackEntity":
         {
             "AnimId": "breath_fire",
             "AnimSize" : 0.5,
-            "damage": 14,
+            "damage": 0,
             "rangeDegree": 60,
-            "radius": 431
+            "radius": 431,
+            "SideEffect":
+            {
+                "effectType" : 0,
+                "debuffType" : 0
+            }
         }
     },
     "Trail of Fire":
     {
-        "triggerType": 1,
+        "triggerType": 2,
         "abilityType": 1,
-        "spawnType": 3,
+        "spawnType": 2,
         "entityType": 4,
         "duration" : 1.6,
         "interval" : 0.2,
+        "damage": 1.0,
+        "ChangeableValue":
+        {
+            "damage": 1.0
+        },
         "AttackEntity":
         {
             "AnimIdStart": "fire_start",
             "AnimIdLoop": "fire_loop",
             "AnimIdEnd": "fire_end",
-            "damage": 14,
+            "damage": 0,
             "duration" : 1.6,
-            "interval" : 0.2
+            "interval" : 0.2,
+            "width" : 38,
+            "height" : 47,
+            "SideEffect":
+            {
+                "effectType" : 0,
+                "debuffType" : 0
+            }
         }
     }
 }

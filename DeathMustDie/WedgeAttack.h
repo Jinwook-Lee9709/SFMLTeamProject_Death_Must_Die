@@ -33,6 +33,7 @@ public:
 	void Draw(sf::RenderWindow& window) override;
 
 	void SetInfo(const json& j)override;
+	void ChangeInfo(const json& j)override;
 	void Activate()override;
 
 

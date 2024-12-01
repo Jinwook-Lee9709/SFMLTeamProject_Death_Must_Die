@@ -34,6 +34,7 @@ using json = nlohmann::json;
 #include "ResourceTableManager.h"
 #include "HitBox.h"
 #include "Framework.h"
+#include "EventHandler.h"
 #include "InputMgr.h"
 #include "Animator.h"
 #include "ResourceMgr.h"

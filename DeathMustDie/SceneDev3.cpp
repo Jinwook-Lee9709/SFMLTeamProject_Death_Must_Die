@@ -2,11 +2,16 @@
 #include "SceneDev3.h"
 #include "FallAttack.h"
 #include "AttackEntityPoolMgr.h"
+#include "MonsterPoolManager.h"
 #include "AbilityMgr.h"
 #include "Player.h"
+<<<<<<< HEAD
+#include "CalculatorMgr.h"
+=======
 #include "AniSkeleton.h"
 #include "MonsterPool.h"
 #include "MonsterSpawner.h"
+>>>>>>> origin/hayoung
 
 SceneDev3::SceneDev3() :Scene(SceneIds::Dev3)
 {
@@ -17,10 +22,8 @@ void SceneDev3::Init()
 	sf::Vector2f size = FRAMEWORK.GetWindowSizeF();
 
 	player = AddGo(new Player("Player"));
-	
 	worldView.setSize(size);
 	worldView.setCenter(0.f, 0.f);
-
 	uiView.setSize(size);
 	uiView.setCenter(size.x * 0.5f, size.y * 0.5f);
 
@@ -42,7 +45,9 @@ void SceneDev3::Release()
 void SceneDev3::Enter()
 {
 	RES_TABLE_MGR.LoadScene("Dev1");
+	RES_TABLE_MGR.LoadScene("Dev2");
 	RES_TABLE_MGR.LoadAnimation();
+
 	AddGo(new AttackEntityPoolMgr("entityPoolMgr"));
 	MPMgr = AddGo(new MonsterPoolManager());
 	abilMgr = AddGo(new AbilityMgr("abilityMgr"));
@@ -52,7 +57,6 @@ void SceneDev3::Enter()
 	ApplyAddGo();
 
 	MPMgr->CreatePool(MonsterTypes::Skeleton, j["Skeleton"], "Skeleton");
-
 	Scene::Enter();
 	player->SetScale({ 3.f, 3.f });
 }
@@ -79,6 +83,13 @@ void SceneDev3::Update(float dt)
 	{
 		abilMgr->AddAbility("Base Attack");
 	}
+	if (InputMgr::GetKeyDown(sf::Keyboard::F))
+	{
+		auto monster = MPMgr->GetMonster("Skeleton");
+		monster->SetPosition({ 100.f, 100.f });
+		monster->SetScale({ 3.f, 3.f });
+	}
+
 	worldView.setCenter(player->GetPosition());
 
 	Scene::Update(dt);

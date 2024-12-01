@@ -191,6 +191,7 @@
     <ClCompile Include="SceneDev3.cpp" />
     <ClCompile Include="SceneGame.cpp" />
     <ClCompile Include="Framework\Variables.cpp" />
+    <ClCompile Include="SideEffect.cpp" />
     <ClCompile Include="SkillTable.cpp" />
     <ClCompile Include="TileMap.cpp" />
     <ClCompile Include="Timer.cpp" />
@@ -248,6 +249,7 @@
     <ClInclude Include="SceneDev3.h" />
     <ClInclude Include="SceneGame.h" />
     <ClInclude Include="Framework\Variables.h" />
+    <ClInclude Include="SideEffect.h" />
     <ClInclude Include="SkillTable.h" />
     <ClInclude Include="TileMap.h" />
     <ClInclude Include="Timer.h" />

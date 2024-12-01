@@ -64,6 +64,7 @@ void AniSkeleton::Reset()
 	HPBarFrame.setPosition({ position.x, position.y - 140 });
 
 	player = dynamic_cast<Player*>(SCENE_MGR.GetCurrentScene()->FindGo("Player"));
+
 }
 
 void AniSkeleton::Update(float dt)
@@ -230,7 +231,6 @@ void AniSkeleton::OnHit(float damage)
 	{
 
 	}
-
 	if (hp < 0)
 	{
 		hp = 0;
