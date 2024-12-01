@@ -74,6 +74,7 @@ enum class AbilitySpawnType
 
 enum class AbilityTriggerType
 {
+	BasicAttack,
 	Attack, // When Hit enemy
 	Dash, // When Dash
 	AutoCast, //Actiavte by CoolTime

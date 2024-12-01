@@ -18,6 +18,7 @@ class AbilityMgr : public GameObject
 	};
 
 private:
+	Ability* basicAttack;
 	std::vector<std::pair<AttackCounter, Ability*>> attack;
 	std::vector<Ability*> dash;
 	std::vector<std::pair<CoolTime, Ability*>> autoCast;
@@ -34,6 +35,7 @@ public:
 	void Release() override;
 
 	void Update(float dt) override;
+	void UpdateBasicAttack();
 	void UpdateAttack();
 	void UpdateDash();
 	void UpdateAutoCast(float dt);

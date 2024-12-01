@@ -4,6 +4,7 @@
 class AbilityMgr;
 class MonsterPoolManager;
 class Player;
+class TileMap;
 
 class SceneGame : public Scene
 {
@@ -15,7 +16,7 @@ private:
 	AbilityMgr* abilMgr;
 	MonsterPoolManager* MPMgr;
 
-
+	TileMap* map;
 protected:
 
 public:

@@ -6,11 +6,6 @@
         "spawnType": 3,
         "entityType": 6,
         "damage": 1.0,
-        "attackCounter":
-        {
-            "maxCount": 1,
-            "probability": 1.0
-        },
         "ChangeableValue":
         {
             "damage": 1.0
@@ -28,7 +23,7 @@
     },
     "Meteor Shower":
     {
-        "triggerType": 2,
+        "triggerType": 3,
         "abilityType": 3,
         "spawnType": 1,
         "entityType": 2,
@@ -59,7 +54,7 @@
     },
     "Breath of Fire":
     {
-        "triggerType": 0,
+        "triggerType": 1,
         "abilityType": 2,
         "spawnType": 3,
         "entityType": 3,
@@ -89,7 +84,7 @@
     },
     "Trail of Fire":
     {
-        "triggerType": 1,
+        "triggerType": 2,
         "abilityType": 1,
         "spawnType": 2,
         "entityType": 4,

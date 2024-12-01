@@ -54,6 +54,10 @@ void BasicAttack::FixedUpdate(float dt)
 	
 	}
 	sideEffect->TriggerEffect(monsterBuf);
+	if (!monsterBuf.empty())
+	{
+		EVENT_HANDLER.InvokeEvent("OnHit");
+	}
 	active = false;
 }
 
