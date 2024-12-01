@@ -5,8 +5,9 @@ class SpriteGo : public GameObject
 protected:
 	sf::Sprite sprite;
 	std::string textureId;
+	std::string playername;
 public:
-	SpriteGo(const std::string& texId = "", const std::string& name = "");
+	SpriteGo(const std::string & texId = "", const std::string & name = "");
 	~SpriteGo() = default;
 
 	void SetTextureId(const std::string& id) { textureId = id; }

@@ -101,16 +101,34 @@ void AniSkeleton::MoveUpdate(float dt)
 {
 	Walk(dt);
 	attackDelay += dt;
+	sf::Vector2f pos = player->GetPosition();
 	sf::Vector2f playerPos = player->GetPosition() - position;
 
 	if (Utils::Magnitude(playerPos) < DISTANCE_TO_PLAYER)
 	{
+		if (position.x > pos.x)
+		{
+			Anim.SetFlip(true);
+		}
+		else
+		{
+			Anim.SetFlip(false);
+		}
+
 		isAttack = true;
 		Anim.Play(info.attackAnimId);
 		attackDelay = 0.f;
 		beforeStatus = currentStatus;
 		currentStatus = Status::Attack;
 		return;
+	}
+
+	if (InputMgr::GetKeyDown(sf::Keyboard::P))
+	{
+		hp -= 15.f;
+		Anim.Play(info.getHitAnimId);
+		beforeStatus = currentStatus;
+		currentStatus = Status::GetHit;
 	}
 }
 
@@ -127,12 +145,29 @@ void AniSkeleton::AttackUpdate(float dt)
 
 void AniSkeleton::GetHitUpdate(float dt)
 {
+	if (!Anim.IsPlay())
+	{
+		Anim.Play(info.walkAnimId);
+		beforeStatus = currentStatus;
+		currentStatus = Status::Move;
+	}
 
+	if (hp < 0)
+	{
+		hp = 0.f;
+		Anim.Play(info.deathAnimId);
+		beforeStatus = currentStatus;
+		currentStatus = Status::Death;
+	}
 }
 
 void AniSkeleton::DeathUpdate(float dt)
 {
-
+	if (!Anim.IsPlay())
+	{
+		isDead = true;
+		active = false;
+	}
 }
 
 void AniSkeleton::Draw(sf::RenderWindow& window)
@@ -159,6 +194,15 @@ void AniSkeleton::Walk(float dt)
 	Utils::Normalize(direction);
 
 	SetPosition(position + direction * speed * dt);
+	}
+
+	if (position.x > playerPos.x)
+	{
+		SetScale({ -3.f, 3.f });
+	}
+	else
+	{
+		SetScale({ 3.f,3.f });
 	}
 }
 
@@ -191,19 +235,5 @@ void AniSkeleton::OnHit(float damage)
 	{
 		hp = 0;
 		//Die()
-	}
-}
-
-void AniSkeleton::OnDie()
-{
-	Anim.Play(info.deathAnimId);
-	if (!Anim.IsPlay())
-	{
-		Anim.SetEnd();
-	}
-	else if (Anim.IsEnd())
-	{
-		isDead = true;
-		active = false;
 	}
 }

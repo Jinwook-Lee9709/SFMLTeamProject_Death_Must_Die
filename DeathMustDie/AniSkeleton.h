@@ -90,6 +90,5 @@ public:
 	void Walk(float dt);
 	void CheckAttack(float dt);
 	void OnHit(float damage);
-	void OnDie();
 };
 

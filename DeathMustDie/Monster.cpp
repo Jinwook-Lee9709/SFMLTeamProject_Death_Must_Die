@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Monster.h"
 #include "SceneDev2.h"
+#include "MonsterSpawner.h"
 
 Monster::Monster(const std::string& name)
 	:GameObject(name)
@@ -19,4 +20,13 @@ void Monster::Draw(sf::RenderWindow& window)
 {
 	window.draw(HPBarFrame);
 	window.draw(HPBar);
+}
+
+void Monster::OnDeath()
+{
+	active = false; // 비활성화
+	MonsterSpawner* spawner = dynamic_cast<MonsterSpawner*>(SCENE_MGR.GetCurrentScene()->FindGo("MonsterSpawner"));
+	if (spawner) {
+		spawner->OnMonsterDeactivated();
+	}
 }
