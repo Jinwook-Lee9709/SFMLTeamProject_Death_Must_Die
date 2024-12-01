@@ -9,7 +9,7 @@ protected:
 	std::unordered_map<std::string, std::list<AttackEntity*>> attackEntities;
 	
 public:
-	AttackEntityPoolMgr(const std::string& name = "entityPoolMgr");
+	AttackEntityPoolMgr(const std::string& name = "AttackEntityPoolMgr");
 	~AttackEntityPoolMgr() = default;
 
 	void Init() override;

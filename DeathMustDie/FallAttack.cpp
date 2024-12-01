@@ -58,20 +58,34 @@ void FallAttack::Update(float dt)
 
 void FallAttack::FixedUpdate(float dt)
 {
+	std::vector<Monster*> monsterBuf;
 	if (isImpacted)
 	{
-		auto obj = SCENE_MGR.GetCurrentScene()->FindGo("Rect");
-		if (obj != nullptr)
+		auto& container = monsters->GetMonsterList();
+		for (auto pair : container)
 		{
-			sf::FloatRect rectSize = obj->GetGlobalBounds();
-			sf::Vector2f ellipseRadius = { info.ellipseWidth, info.ellipseHeight };
-			if (Utils::CheckCollision(position, ellipseRadius, rectSize))
+			auto it = pair.second.begin();
+			while (it != pair.second.end())
 			{
-				std::cout << "Hit!" << std::endl;
+				if (excludedTargets.find(*it) != excludedTargets.end())
+				{
+					it++;
+					continue;
+				}
+				sf::FloatRect rect = (*it)->GetHitBox().rect.getGlobalBounds();
+				sf::Vector2f ellipseRadius = { info.ellipseWidth, info.ellipseHeight };
+				if (Utils::CheckCollision(position, ellipseRadius, rect))
+				{
+					std::cout << "Hit!" << std::endl;
+					(*it)->OnHit(info.damage);
+					excludedTargets.insert((*it));
+					monsterBuf.push_back(*it);
+				}
+				it++;
 			}
 		}
 	}
-	
+	sideEffect->TriggerEffect(monsterBuf);
 }
 
 void FallAttack::Draw(sf::RenderWindow& window)
@@ -84,6 +98,19 @@ void FallAttack::Draw(sf::RenderWindow& window)
 void FallAttack::SetInfo(const json& j)
 {
 	info = j;
+	SetSideEffect(j["SideEffect"]);
+}
+
+void FallAttack::ChangeInfo(const json& j)
+{
+	json originalJson = info;
+	for (auto it = j.begin(); it != j.end(); ++it) {
+		if (originalJson.contains(it.key()))
+		{
+			originalJson[it.key()] = it.value();
+		}
+	}
+	info = originalJson;
 }
 
 void FallAttack::Activate()

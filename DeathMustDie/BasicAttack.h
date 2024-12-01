@@ -12,8 +12,6 @@ class BasicAttack : public AttackEntity
 
 protected:
 	Info info;
-
-	std::unordered_set<GameObject*> excludedTargets;
 public:
 	BasicAttack(const std::string& name = "");
 	~BasicAttack() = default;
@@ -28,6 +26,7 @@ public:
 	void Draw(sf::RenderWindow& window) override;
 
 	void SetInfo(const json& j)override;
+	void ChangeInfo(const json& j)override;
 	void Activate()override;
 
 

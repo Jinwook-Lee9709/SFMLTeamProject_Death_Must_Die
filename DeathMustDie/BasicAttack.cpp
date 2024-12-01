@@ -32,22 +32,28 @@ void BasicAttack::Update(float dt)
 
 void BasicAttack::FixedUpdate(float dt)
 {
-	auto obj = SCENE_MGR.GetCurrentScene()->FindGo("Rect");
-	if (excludedTargets.find(obj) != excludedTargets.end())
-		return;
-	if (obj != nullptr)
+	std::vector<Monster*> monsterBuf;
+	auto& container = monsters->GetMonsterList();
+	for (auto pair : container)
 	{
-		std::cout << position.x << " " << position.y << std::endl;
-		sf::FloatRect rectSize = obj->GetGlobalBounds();
-		sf::Vector2f look = 10.f * Utils::AngleToVector(rotation);
-		look.x *= 2;
-		float margin = Utils::Magnitude(look);
-		if (Utils::CheckCollision(position, rotation, info.rangeDegree, info.radius + margin, rectSize))
+		auto it = pair.second.begin();
+		while (it != pair.second.end())
 		{
-			std::cout << "Hit!" << std::endl;
-			excludedTargets.insert(obj);
+			sf::FloatRect rect = (*it)->GetHitBox().rect.getGlobalBounds();
+			sf::Vector2f look = 10.f * Utils::AngleToVector(rotation);
+			look.x *= 2;
+			float margin = Utils::Magnitude(look);
+			if (Utils::CheckCollision(position, rotation, info.rangeDegree, info.radius + margin, rect))
+			{
+				(*it)->OnHit(info.damage);
+				std::cout << "Hit!" << std::endl;
+				monsterBuf.push_back(*it);
+			}
+			it++;
 		}
+	
 	}
+	sideEffect->TriggerEffect(monsterBuf);
 	active = false;
 }
 
@@ -58,6 +64,22 @@ void BasicAttack::Draw(sf::RenderWindow& window)
 void BasicAttack::SetInfo(const json& j)
 {
 	info = j;
+	if (j.contains("SideEffect"))
+	{
+		SetSideEffect(j["SideEffect"]);
+	}
+}
+
+void BasicAttack::ChangeInfo(const json& j)
+{
+	json originalJson = info;
+	for (auto it = j.begin(); it != j.end(); ++it) {
+		if (originalJson.contains(it.key()))
+		{
+			originalJson[it.key()] = it.value();
+		}
+	}
+	info = originalJson;
 }
 
 void BasicAttack::Activate()

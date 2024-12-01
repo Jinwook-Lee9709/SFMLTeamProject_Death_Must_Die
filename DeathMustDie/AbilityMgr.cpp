@@ -2,6 +2,7 @@
 #include "Ability.h"
 #include "AbilityMgr.h"
 #include "AttackEntityPoolMgr.h"
+#include "EventHandler.h"
 
 AbilityMgr::AbilityMgr(const std::string& name)
 	:GameObject(name)
@@ -10,14 +11,18 @@ AbilityMgr::AbilityMgr(const std::string& name)
 
 void AbilityMgr::Reset()
 {
-	entityPool = (AttackEntityPoolMgr*)SCENE_MGR.GetCurrentScene()->FindGo("entityPoolMgr");
+	entityPool = (AttackEntityPoolMgr*)SCENE_MGR.GetCurrentScene()->FindGo("AttackEntityPoolMgr");
+	std::function<void()> func1 = std::bind(&AbilityMgr::UpdateAttack, this);
+	std::function<void()> func2 = std::bind(&AbilityMgr::UpdateDash, this);
+	EVENT_HANDLER.AddEvent("OnAttack", func1);
+	EVENT_HANDLER.AddEvent("OnDash", func2);
 }
 
 void AbilityMgr::AddAbility(const std::string& skillId)
 {
 	json j = SKILL_TABLE->Get(skillId);
 	Ability* abil = new Ability(j, entityPool, skillId);
-	abil->SetSkillInfo();
+	abil->Reset();
 	switch ((AbilityTriggerType)j["triggerType"].get<int>())
 	{
 		case AbilityTriggerType::Attack:
@@ -44,25 +49,19 @@ void AbilityMgr::AddAbility(const std::string& skillId)
 	}
 }
 
+void AbilityMgr::Release()
+{
+	EVENT_HANDLER.DeleteEvenet("OnAttack");
+	EVENT_HANDLER.DeleteEvenet("OnDash");
+}
+
 void AbilityMgr::Update(float dt)
 {
 	UpdateAll(dt);
 	UpdateAutoCast(dt);
-	if (InputMgr::GetKeyDown(sf::Keyboard::Space))
-	{
-		for (auto& abil : dash)
-		{
-			abil->UseAbility();
-		}
-	}
-	if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
-	{
-			UpdateAttack(dt);
-
-	}
 }
 
-void AbilityMgr::UpdateAttack(float dt)
+void AbilityMgr::UpdateAttack()
 {
 	for (auto& abil : attack)
 	{
@@ -85,6 +84,14 @@ void AbilityMgr::UpdateAttack(float dt)
 				}
 			}
 		}
+	}
+}
+
+void AbilityMgr::UpdateDash()
+{
+	for (auto& abil : dash)
+	{
+		abil->UseAbility();
 	}
 }
 

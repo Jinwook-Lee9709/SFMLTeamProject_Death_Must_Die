@@ -26,14 +26,16 @@ private:
 	//Reference
 	AttackEntityPoolMgr* entityPool;
 public:
-	AbilityMgr(const std::string& name = "");
+	AbilityMgr(const std::string& name = "AbilityMgr");
 	~AbilityMgr() = default;
 
 	void Reset() override;
 	void AddAbility(const std::string& skillId);
+	void Release() override;
 
 	void Update(float dt) override;
-	void UpdateAttack(float dt);
+	void UpdateAttack();
+	void UpdateDash();
 	void UpdateAutoCast(float dt);
 	void UpdateAll(float dt);
 

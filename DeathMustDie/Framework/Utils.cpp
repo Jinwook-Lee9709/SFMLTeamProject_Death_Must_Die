@@ -31,8 +31,8 @@ float Utils::RandomValue()
 }
 
 bool Utils::RollTheDice(float probability)
-{
-    return RandomRange(0.f, 1.f) < probability;
+{ 
+    return RandomRange(0.f, 1.f) <= probability;
 }
 
 sf::Vector2f Utils::RandomOnUnitCircle()

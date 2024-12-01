@@ -16,7 +16,7 @@ void WedgeAttack::SetPosition(const sf::Vector2f& pos)
 void WedgeAttack::SetRotation(float degree)
 {
 	rotation = degree;
-	sprite.rotate(rotation + 90.f);
+	sprite.setRotation(rotation + 90.f);
 }
 
 void WedgeAttack::SetScale(const sf::Vector2f& scale)
@@ -37,6 +37,7 @@ void WedgeAttack::Update(float dt)
 	}
 	if (!animator.IsPlay())
 	{
+		excludedTargets.clear();
 		active = false;
 	}
 	animator.Update(dt);
@@ -44,19 +45,30 @@ void WedgeAttack::Update(float dt)
 
 void WedgeAttack::FixedUpdate(float dt)
 {
-	auto obj = SCENE_MGR.GetCurrentScene()->FindGo("Rect");
-	if (excludedTargets.find(obj) != excludedTargets.end())
-		return;
-	if (obj != nullptr)
+	std::vector<Monster*> monsterBuf;
+	auto& container = monsters->GetMonsterList();
+	for (auto pair : container)
 	{
-		sf::FloatRect rectSize = obj->GetGlobalBounds();
-		if (Utils::CheckCollision(position, rotation, info.rangeDegree, info.radius, rectSize))
+		auto it = pair.second.begin();
+		while (it != pair.second.end())
 		{
-			std::cout << "Hit!" << std::endl;
-			excludedTargets.insert(obj);
+			if (excludedTargets.find(*it) != excludedTargets.end())
+			{
+				it++;
+				continue;
+			}
+			sf::FloatRect rect= (*it)->GetHitBox().rect.getGlobalBounds();
+			if (Utils::CheckCollision(position, rotation, info.rangeDegree, info.radius, rect))
+			{
+				(*it)->OnHit(info.damage);
+				std::cout << "Hit!" << std::endl;
+				excludedTargets.insert((*it));
+				monsterBuf.push_back(*it);
+			}
+			it++;
 		}
 	}
-
+	sideEffect->TriggerEffect(monsterBuf);
 }
 
 void WedgeAttack::Draw(sf::RenderWindow& window)
@@ -67,6 +79,22 @@ void WedgeAttack::Draw(sf::RenderWindow& window)
 void WedgeAttack::SetInfo(const json& j)
 {
 	info = j;
+	if (j.contains("SideEffect"))
+	{
+		SetSideEffect(j["SideEffect"]);
+	}
+}
+
+void WedgeAttack::ChangeInfo(const json& j)
+{
+	json originalJson = info;
+	for (auto it = j.begin(); it != j.end(); ++it) {
+		if (originalJson.contains(it.key()))
+		{
+			originalJson[it.key()] = it.value();
+		}
+	}
+	info = originalJson;
 }
 
 void WedgeAttack::Activate()

@@ -2,8 +2,10 @@
 #include "SceneDev3.h"
 #include "FallAttack.h"
 #include "AttackEntityPoolMgr.h"
+#include "MonsterPoolManager.h"
 #include "AbilityMgr.h"
 #include "Player.h"
+#include "CalculatorMgr.h"
 
 SceneDev3::SceneDev3() :Scene(SceneIds::Dev3)
 {
@@ -12,13 +14,18 @@ SceneDev3::SceneDev3() :Scene(SceneIds::Dev3)
 void SceneDev3::Init()
 {
 	sf::Vector2f size = FRAMEWORK.GetWindowSizeF();
-
-	player = AddGo(new Player("Player"));
 	worldView.setSize(size);
 	worldView.setCenter(0.f, 0.f);
-
 	uiView.setSize(size);
 	uiView.setCenter(size.x * 0.5f, size.y * 0.5f);
+
+	player = AddGo(new Player("Player"));
+	std::ifstream file1("tables/monster_table.json", std::ios::in);
+	if (!file1) {
+		std::cerr << "Failed to Read File";
+	}
+	j = json::parse(file1);
+	file1.close();
 
 	Scene::Init();
 }
@@ -31,12 +38,16 @@ void SceneDev3::Release()
 void SceneDev3::Enter()
 {
 	RES_TABLE_MGR.LoadScene("Dev1");
+	RES_TABLE_MGR.LoadScene("Dev2");
 	RES_TABLE_MGR.LoadAnimation();
-	AddGo(new AttackEntityPoolMgr("entityPoolMgr"));
-	abilMgr = AddGo(new AbilityMgr("abilityMgr"));
-	sprite = AddGo(new SpriteGo("retreat","Rect"));
-	sprite->sortingLayer = SortingLayers::Foreground;
+	AddGo(new AttackEntityPoolMgr("AttackEntityPoolMgr"));
+	AddGo(new CalculatorMgr("CalculatorMgr"));
+	MPMgr = AddGo(new MonsterPoolManager("monsterPoolMgr"));
+	abilMgr = AddGo(new AbilityMgr("AbilityMgr"));
 	ApplyAddGo();
+	MPMgr->CreatePool(MonsterTypes::Skeleton, j["Skeleton"], "Skeleton");
+
+
 	Scene::Enter();
 	player->SetScale({ 3.f, 3.f });
 }
@@ -63,6 +74,13 @@ void SceneDev3::Update(float dt)
 	{
 		abilMgr->AddAbility("Base Attack");
 	}
+	if (InputMgr::GetKeyDown(sf::Keyboard::F))
+	{
+		auto monster = MPMgr->GetMonster("Skeleton");
+		monster->SetPosition({ 100.f, 100.f });
+		monster->SetScale({ 3.f, 3.f });
+	}
+
 	worldView.setCenter(player->GetPosition());
 	Scene::Update(dt);
 }

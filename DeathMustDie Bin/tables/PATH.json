@@ -51,8 +51,6 @@
         "Dev3":{
             "Texture" : {
                "fireRing" : "resource/texture/test/fireRing.png"
-
-            
             },
             "Font" :{
                 "Sansation" : "fonts/Sansation.ttf"
@@ -60,6 +58,17 @@
             "Sound" :{
                 
             }
+        },
+        "Game":{
+            "Texture" : {
+                "background" : "resource/texture/TerrainWilderness_Spr_01.png"
+             },
+             "Font" :{
+                 "Sansation" : "fonts/Sansation.ttf"
+             },
+             "Sound" :{
+                 
+             }
         }
   
     }

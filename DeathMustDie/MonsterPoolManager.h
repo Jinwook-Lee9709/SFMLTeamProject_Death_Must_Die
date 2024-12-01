@@ -9,6 +9,8 @@ private:
 	std::unordered_map<std::string, std::list<Monster*>> monsters;
 
 public:
+	MonsterPoolManager(const std::string& name = "");
+	~MonsterPoolManager() = default;
 	void Init();
 	void Release();
 
@@ -19,6 +21,9 @@ public:
 	void Draw(sf::RenderWindow& window);
 
 	void CreatePool(MonsterTypes type, json j, std::string name);
+
+	std::unordered_map<std::string, std::list<Monster*>>&
+		GetMonsterList() { return monsters; }
 	Monster* GetMonster(std::string name);
 };
 

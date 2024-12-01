@@ -233,6 +233,7 @@ void Player::Attack(float dt)
 			attackPos = look * 10.f;
 			body3.setPosition(position + attackPos);
 			attackTerm = 0.f;
+			EVENT_HANDLER.InvokeEvent("OnAttack");
 			temp.pop();
 		}
 	}
@@ -271,6 +272,7 @@ void Player::Dash(float dt)
 		animator4.Play(clipId4, flip);
 		dashDirection = Utils::GetNormal(direction);
 		dashPos = position + dashDirection * 600.f * 0.4f;
+		EVENT_HANDLER.InvokeEvent("OnDash");
 		std::cout << dashCharge << std::endl;
 	}
 
@@ -307,6 +309,11 @@ void Player::LoadStat()
 	stat.godBlessing = j["godBlessing"];
 	stat.offensive = j["offensive"];
 	stat.utility = j["utility"];
+}
+
+Stat& Player::GetStat()
+{
+	return this->stat;
 }
 
 void Player::ChangeAttackColor(sf::Color color)

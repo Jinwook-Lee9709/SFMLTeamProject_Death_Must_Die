@@ -12,6 +12,18 @@ void EventHandler::AddEvent(const std::string& id, std::function<void()> action)
 	}
 }
 
+void EventHandler::DeleteEvenet(const std::string& id)
+{
+	auto it = events.find(id);
+	if (it == events.end()) {
+		return;
+	}
+	else {
+		it->second.clear();
+		events.erase(it);
+	}
+}
+
 void EventHandler::InvokeEvent(const std::string& id)
 {
 	auto it = events.find(id);

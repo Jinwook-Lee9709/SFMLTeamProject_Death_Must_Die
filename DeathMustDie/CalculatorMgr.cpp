@@ -1,8 +1,9 @@
 #include "stdafx.h"
 #include "CalculatorMgr.h"
-CalculatorMgr::CalculatorMgr()
+CalculatorMgr::CalculatorMgr(const std::string& name)
+	:GameObject(name)
 {
-	for (int i = 0 ; i<(int)ValueType::Count ; i++)
+	for (int i = 0; i < (int)ValueType::Count; i++)
 	{
 		container.insert({ (ValueType)i, Calculator() });
 	}
@@ -30,3 +31,11 @@ float CalculatorMgr::GetValue(const ValueType& type, float value)
 {
 	return container[type].CalculateValue(value);
 }
+
+float CalculatorMgr::GetValue(const AbilityType& type, float value)
+{
+	float baseDamage = GetValue(ValueType::BaseDamage, value);
+	return GetValue((ValueType)type, value);
+}
+
+

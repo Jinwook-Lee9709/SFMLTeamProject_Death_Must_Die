@@ -1,6 +1,7 @@
 #pragma once
 class AbilityMgr;
 class Player;
+class MonsterPoolManager;
 
 class SceneDev3 : public Scene
 {
@@ -8,6 +9,9 @@ private:
 	SpriteGo* sprite;
 	Player* player;
 	AbilityMgr* abilMgr;
+	MonsterPoolManager* MPMgr;
+
+	json j;
 public:
 
 	SceneDev3();

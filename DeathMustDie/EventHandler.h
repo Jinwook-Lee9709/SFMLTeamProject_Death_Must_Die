@@ -14,6 +14,8 @@ protected:
 
 public:
 	void AddEvent(const std::string& id, std::function<void()>action);
+	void DeleteEvenet(const std::string& id);
 	void InvokeEvent(const std::string& id);
 };
 
+#define EVENT_HANDLER (EventHandler::Instance())

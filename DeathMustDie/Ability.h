@@ -2,6 +2,7 @@
 #include "AttackEntityPoolMgr.h"
 
 class Player;
+class CalculatorMgr;
 
 class Ability : public GameObject
 {
@@ -10,6 +11,7 @@ protected:
 	AbilityType type;
 
 	json info;
+	CalculatorMgr* calc;
 	AttackEntityPoolMgr* entityPool;
 
 	float timer = 0;
@@ -21,15 +23,24 @@ protected:
 
 	Player* player;
 
-	std::function<void()> activateFunc;
+	std::function<AttackEntity* ()> instantiateFunc;
+	std::function<void(AttackEntity*)> changeInfoFunc;
+	std::function<void(AttackEntity*)> spawnFunc;
+
+	std::vector<std::function<void(json&)>> activeHandlers;
 public:
 	Ability(const json& info, AttackEntityPoolMgr* pool,const std::string& name = "");
 	~Ability() = default;
 
+	void Reset()override;
 	void Update(float dt)override;
 
 	void SetSkillInfo();
-	void SetActivateFunc();
+	void SetFunc();
+	void CreateEntityPool();
+	void SetInstantiateFunc();
+	void SetChangeInfoFunc();
+	void SetSpawnFunc();
 	void UseAbility();
 
 	AbilityGrade GetGrade() const { return this->grade; }

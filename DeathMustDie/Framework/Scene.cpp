@@ -180,6 +180,7 @@ void Scene::ApplyRemoveGO()
 {
 	for (auto go : removeGameObjects)
 	{
+		delete go;
 		gameObjects.remove(go);
 	}
 	removeGameObjects.clear();

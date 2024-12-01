@@ -91,6 +91,11 @@ enum class AttackEntityType
 	BasicAttack,
 };
 
+enum class DebuffType
+{
+	Burn
+};
+
 enum class MonsterTypes
 {
 	None = -1,
