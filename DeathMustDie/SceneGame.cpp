@@ -39,7 +39,7 @@ void SceneGame::Enter()
 	AddGo(new CalculatorMgr("CalculatorMgr"));
 	abilMgr = AddGo(new AbilityMgr("AbilityMgr"));
 	map = AddGo(new TileMap("map"));
-	skeletonMPMgr = AddGo(new MonsterPoolManager("skletonPoolMgr"));
+	skeletonMPMgr = AddGo(new MonsterPoolManager("monsterPoolMgr"));
 	skeletonSpawn = AddGo(new MonsterSpawner(skeletonMPMgr, mapBound, 30));
 
 	ApplyAddGo();

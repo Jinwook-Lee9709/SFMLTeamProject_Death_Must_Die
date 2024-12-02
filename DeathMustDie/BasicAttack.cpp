@@ -46,6 +46,7 @@ void BasicAttack::FixedUpdate(float dt)
 			if (Utils::CheckCollision(position, rotation, info.rangeDegree, info.radius + margin, rect))
 			{
 				(*it)->OnHit(info.damage);
+				(*it)->OnDebuff(dt);
 				std::cout << "Hit!" << std::endl;
 				monsterBuf.push_back(*it);
 			}

@@ -6,9 +6,9 @@
 Monster::Monster(const std::string& name)
 	:GameObject(name)
 {
-	HPBar.setSize({65, 10});
-	HPBarFrame.setSize({65, 10});
-	
+	HPBar.setSize({ 65, 10 });
+	HPBarFrame.setSize({ 65, 10 });
+
 	HPBar.setFillColor(sf::Color::Red);
 	HPBarFrame.setFillColor(sf::Color::Black);
 
@@ -28,3 +28,4 @@ void Monster::OnDeath()
 {
 	active = false; // 비활성화
 }
+

@@ -24,10 +24,8 @@ public:
 
 	std::vector<Monster*> GetAllActiveMonsters();
 
-	std::unordered_map<std::string, std::list<Monster*>>&
-		GetMonsterList() { return monsters; }
-	int GetMonsterCount();
 	std::unordered_map<std::string, std::list<Monster*>>& GetMonsterList() { return monsters; }
+	int GetMonsterCount();
 	Monster* GetMonster(std::string name);
 };
 

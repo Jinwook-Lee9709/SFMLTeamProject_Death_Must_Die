@@ -17,7 +17,7 @@ sf::Vector2f MonsterSpawner::GenerateSpawnPosition()
     sf::Vector2f playerPos =  player->GetPosition();
     xDist = std::uniform_real_distribution<float>(playerPos.x - mapBounds.width * 0.5f -100.f, playerPos.x + mapBounds.width + 100.f);
     yDist = std::uniform_real_distribution<float>(playerPos.y - mapBounds.height * 0.5f -100.f, playerPos.y + mapBounds.height + 100.f);
-    // �� �ܰ������� �����ϵ��� ��ġ ����
+    
     if (Utils::RandomValue() < 0.5f)
     {
         Utils::RandomValue() < 0.5f ? x = playerPos.x - mapBounds.width * 0.5f - 100.f : x = playerPos.x + mapBounds.width * 0.5f + 100.f;
@@ -35,7 +35,7 @@ void MonsterSpawner::SpawnMonster(const std::string& monsterName)
 {
     if (currentMonsterCount >= maxMonsters) 
     {
-        return; // �ִ� ���� ���� ���������� ���� �ߴ�
+        return; 
     }
     for (int i = 0; i < poolSize; i++)
     {
@@ -43,7 +43,7 @@ void MonsterSpawner::SpawnMonster(const std::string& monsterName)
         if (monster) {
             monster->SetPosition(GenerateSpawnPosition());
             monster->SetScale({ 3.f, 3.f });
-            currentMonsterCount++; // Ȱ��ȭ�� ���� �� ����
+            currentMonsterCount++; 
         }
     }
 
@@ -51,7 +51,7 @@ void MonsterSpawner::SpawnMonster(const std::string& monsterName)
 
 void MonsterSpawner::Init() 
 {
-    // �ʱ�ȭ ����
+    
 }
 
 void MonsterSpawner::Reset()
@@ -62,16 +62,13 @@ void MonsterSpawner::Reset()
 
 void MonsterSpawner::Update(float dt) 
 {
-    // ���� �ڵ� ���� ���� (��: ���� �ð�����)
-    // SpawnMonster("Skeleton"); // ����
-
-
-    static float spawnTimer = 0.0f; // Ÿ�̸�
-    const float spawnInterval = 1.0f; // 5�ʸ��� ����
+    static float spawnTimer = 0.0f; 
+    const float spawnInterval = 2.0f; 
 
     spawnTimer += dt;
-    if (spawnTimer >= spawnInterval) {
-        SpawnMonster("Skeleton"); // "Skeleton" ���� ����
-        spawnTimer = 0.0f; // Ÿ�̸� �ʱ�ȭ
+    if (spawnTimer >= spawnInterval) 
+    {
+        SpawnMonster("Skeleton"); 
+        spawnTimer = 0.0f; 
     }
 }

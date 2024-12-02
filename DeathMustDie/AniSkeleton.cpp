@@ -59,7 +59,7 @@ void AniSkeleton::Reset()
 	hitbox.rect.setSize({ 40, 120 });
 	hitbox.rect.setPosition({ position });
 	Utils::SetOrigin(hitbox.rect, Origins::BC);
-	HPBar.setPosition({ position.x - HPBar.getSize().x * 0.5f, position.y - 140});
+	HPBar.setPosition({ position.x - HPBar.getSize().x * 0.5f, position.y - 140 });
 	HPBarFrame.setPosition({ position.x - HPBar.getSize().x * 0.5f, position.y - 140 });
 	if (player == nullptr)
 	{
@@ -127,18 +127,23 @@ void AniSkeleton::MoveUpdate(float dt)
 		currentStatus = Status::Attack;
 		return;
 	}
-
-	if (InputMgr::GetKeyDown(sf::Keyboard::P))
-	{
-		hp -= 15.f;
-		Anim.Play(info.getHitAnimId);
-		beforeStatus = currentStatus;
-		currentStatus = Status::GetHit;
-	}
 }
 
 void AniSkeleton::AttackUpdate(float dt)
 {
+	sf::Vector2f pos = player->GetPosition();
+	sf::Vector2f playerPos = player->GetPosition() - position;
+
+	if (position.x > pos.x)
+	{
+		Anim.SetFlip(true);
+	}
+	else
+	{
+		Anim.SetFlip(false);
+	}
+
+
 	if (!Anim.IsPlay())
 	{
 		Anim.Play(info.walkAnimId);
@@ -150,6 +155,35 @@ void AniSkeleton::AttackUpdate(float dt)
 
 void AniSkeleton::GetHitUpdate(float dt)
 {
+	sf::Vector2f pos = player->GetPosition();
+	sf::Vector2f playerPos = player->GetPosition() - position;
+
+	if (position.x > pos.x)
+	{
+		Anim.SetFlip(true);
+	}
+	else
+	{
+		Anim.SetFlip(false);
+	}
+
+	if (isDebuff)
+	{
+		debuffTimer += dt;
+
+		if (debuffTimer >= debuffInterval)
+		{
+			hp -= tikDamage;
+			debuffTimer = 0.f;
+			debuffCount++;
+		}
+		else if (debuffCount >= 6.f)
+		{
+			isDebuff = false;
+			debuffTimer = 0.f;
+		}
+	}
+
 	if (!Anim.IsPlay())
 	{
 		Anim.Play(info.walkAnimId);
@@ -161,6 +195,7 @@ void AniSkeleton::GetHitUpdate(float dt)
 	{
 		hp = 0.f;
 		Anim.Play(info.deathAnimId);
+		HPBar.setScale({ 0.f, 0.f });
 		beforeStatus = currentStatus;
 		currentStatus = Status::Death;
 	}
@@ -168,6 +203,18 @@ void AniSkeleton::GetHitUpdate(float dt)
 
 void AniSkeleton::DeathUpdate(float dt)
 {
+	sf::Vector2f pos = player->GetPosition();
+	sf::Vector2f playerPos = player->GetPosition() - position;
+
+	if (position.x > pos.x)
+	{
+		Anim.SetFlip(true);
+	}
+	else
+	{
+		Anim.SetFlip(false);
+	}
+
 	if (!Anim.IsPlay())
 	{
 		isDead = true;
@@ -195,10 +242,10 @@ void AniSkeleton::Walk(float dt)
 
 	if (Utils::Magnitude(playerPos - position) > DISTANCE_TO_PLAYER)
 	{
-	direction = playerPos - position;
-	Utils::Normalize(direction);
+		direction = playerPos - position;
+		Utils::Normalize(direction);
 
-	SetPosition(position + direction * speed * dt);
+		SetPosition(position + direction * speed * dt);
 	}
 
 	if (position.x > playerPos.x)
@@ -229,20 +276,17 @@ void AniSkeleton::OnHit(float damage)
 	if (currentStatus == Status::Death)
 		return;
 
-	hp -= damage;
 	Anim.Play(info.getHitAnimId);
-	if (!Anim.IsPlay())
-	{
-		Anim.SetEnd();
-	}
-	else if (Anim.IsEnd())
-	{
 
-	}
-	if (hp <= 0)
-	{
-		hp = 0;
-		currentStatus = Status::Death;
-	}
+	beforeStatus = currentStatus;
+	currentStatus = Status::GetHit;
+
+	hp -= damage;
+
 	HPBar.setScale({ hp / info.hp, 1.0f });
+}
+
+void AniSkeleton::OnDebuff(float dt)
+{
+	isDebuff = true;
 }
