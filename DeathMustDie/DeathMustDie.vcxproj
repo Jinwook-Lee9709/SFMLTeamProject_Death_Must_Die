@@ -182,6 +182,7 @@
     <ClCompile Include="Framework\StringTable.cpp" />
     <ClCompile Include="Framework\Utils.cpp" />
     <ClCompile Include="AttackEntityPoolMgr.cpp" />
+    <ClCompile Include="PlayUi.cpp" />
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="Monster.cpp" />
     <ClCompile Include="MonsterPoolManager.cpp" />
@@ -240,6 +241,7 @@
     <ClInclude Include="Framework\StringTable.h" />
     <ClInclude Include="Framework\Utils.h" />
     <ClInclude Include="AttackEntityPoolMgr.h" />
+    <ClInclude Include="PlayUi.h" />
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="Monster.h" />
     <ClInclude Include="MonsterPool.h" />

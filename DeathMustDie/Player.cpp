@@ -63,7 +63,7 @@ void Player::SetOrigin(const sf::Vector2f& newOrigin)
 
 void Player::Init()
 {
-	SaveStat();
+	LoadStat();
 	animator.SetTarget(&body);
 	animator2.SetTarget(&body2);
 	animator3.SetTarget(&body3);
@@ -171,6 +171,7 @@ void Player::Draw(sf::RenderWindow& window)
 void Player::SetDashAndHp()
 {
 	dashCharge = baseStat.dash.dashCharge;
+	hp = baseStat.defensive.life;
 	hp = baseStat.defensive.life;
 
 	backHpBar.setSize({ 70.f, 7.f});
@@ -409,7 +410,7 @@ void Player::Damage(float damage)
 {
 	sf::Vector2f maxSize = { 68.f, 3.f };
 	float value = Utils::Clamp(damage - curStat.defensive.armor, 0, hp) / curStat.defensive.life;
-	hp = Utils::Clamp(hp - damage - curStat.defensive.armor, 0, curStat.defensive.life);
+	hp = Utils::Clamp(hp - (damage - curStat.defensive.armor), 0, curStat.defensive.life);
 	damageBar.setSize({ maxSize.x * value, maxSize.y });
 	hpBar.setSize({ maxSize.x * hp / curStat.defensive.life, maxSize.y });
 	damageBar.setPosition(hpBar.getGlobalBounds().left + hpBar.getGlobalBounds().width, hpBar.getGlobalBounds().top);

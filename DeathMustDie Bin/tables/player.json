@@ -13,12 +13,12 @@
         "summonSlot": 1
     },
     "dash": {
-        "dashCharge": 2,
+        "dashCharge": 3,
         "dashDistance": 230,
         "dashRechargeTime": 1.6
     },
     "defensive": {
-        "armor": 0,
+        "armor": 5,
         "damageReduction": 0.0,
         "evasion": 0,
         "life": 45,
