@@ -74,17 +74,17 @@ void AttackEntityPoolMgr::Draw(sf::RenderWindow& window)
 	}
 }
 
-AttackEntity* AttackEntityPoolMgr::GetEntity(const std::string& name)
+AttackEntity* AttackEntityPoolMgr::GetEntity(const std::string& name, const std::string& user)
 {
 	//Find Pool
-	auto& pool = poolContainer.find(name)->second;
+	auto& pool = poolContainer.find({ name, user })->second;
 	AttackEntity* entity = pool->Take();
 	//Check already in
-	auto it = attackEntities.find(name);
+	auto it = attackEntities.find({ name, user });
 	if (it == attackEntities.end())
 	{
 		std::list<AttackEntity*> list = { entity };
-		attackEntities.insert({ name, list });
+		attackEntities.insert({ { name, user }, list });
 	}
 	else
 	{
@@ -93,8 +93,9 @@ AttackEntity* AttackEntityPoolMgr::GetEntity(const std::string& name)
 	return entity;
 }
 
-void AttackEntityPoolMgr::CreatePool(const std::string& name, const AttackEntityType& type, const json data)
+void AttackEntityPoolMgr::CreatePool(const std::string& name, const AttackEntityType& type, const json data, const std::string& user)
 {
 	AttackEntityPool* pool = new AttackEntityPool(type, data, 10);
-	poolContainer.insert({ name, pool });
+	std::pair < std::string, std::string> pair = { name, user };
+	poolContainer.insert({ pair, pool });
 }

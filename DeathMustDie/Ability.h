@@ -14,6 +14,9 @@ protected:
 	CalculatorMgr* calc;
 	AttackEntityPoolMgr* entityPool;
 
+	std::string userName;
+	GameObject* user;
+
 	float timer = 0;
 	float elapsedTimer = 0;
 	float interval = 0;
@@ -29,7 +32,7 @@ protected:
 
 	std::vector<std::function<void(json&)>> activeHandlers;
 public:
-	Ability(const json& info, AttackEntityPoolMgr* pool,const std::string& name = "");
+	Ability(const json& info, AttackEntityPoolMgr* pool, const std::string& user, const std::string& name = "");
 	~Ability() = default;
 
 	void Reset()override;

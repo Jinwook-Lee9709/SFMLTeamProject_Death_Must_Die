@@ -3,14 +3,16 @@
 #include "Player.h"
 #include "CalculatorMgr.h"
 
-Ability::Ability(const json& info, AttackEntityPoolMgr* pool, const std::string& name)
-	:  info(info), entityPool(pool), GameObject(name)
+Ability::Ability(const json& info, AttackEntityPoolMgr* pool, const std::string& user, const std::string& name)
+	:  info(info), entityPool(pool), userName(user), GameObject(name)
 {
+	this->user = SCENE_MGR.GetCurrentScene()->FindGo(userName);
 }
 
 void Ability::Reset()
 {
 	SetSkillInfo();
+
 	player = (Player*)SCENE_MGR.GetCurrentScene()->FindGo("Player");
 	calc = (CalculatorMgr*)SCENE_MGR.GetCurrentScene()->FindGo("CalculatorMgr");
 }
@@ -71,35 +73,36 @@ void Ability::SetFunc()
 
 void Ability::CreateEntityPool()
 {
-	switch ((AttackEntityType)info["entityType"].get<int>())
+	entityPool->CreatePool(name, info["entityType"], info["AttackEntity"], userName);
+	/*switch ((AttackEntityType)info["entityType"].get<int>())
 	{
 	case AttackEntityType::Fall:
 	{
-		entityPool->CreatePool(name, info["entityType"], info["AttackEntity"]);
+		entityPool->CreatePool(name, info["entityType"], info["AttackEntity"], userName);
 		break;
 	}
 	case AttackEntityType::Wedge:
 	{
-		entityPool->CreatePool(name, info["entityType"], info["AttackEntity"]);
+		entityPool->CreatePool(name, info["entityType"], info["AttackEntity"], userName);
 		break;
 	}
 	case AttackEntityType::Trail:
 	{
-		entityPool->CreatePool(name, info["entityType"], info["AttackEntity"]);
+		entityPool->CreatePool(name, info["entityType"], info["AttackEntity"], userName);
 		break;
 	}
 	case AttackEntityType::BasicAttack:
 	{
-		entityPool->CreatePool(name, info["entityType"], info["AttackEntity"]);
+		entityPool->CreatePool(name, info["entityType"], info["AttackEntity"], userName);
 		break;
 	}
-	}
+	}*/
 }
 
 void Ability::SetInstantiateFunc()
 {
 	instantiateFunc = [&]()->AttackEntity* {
-		return entityPool->GetEntity(name);
+		return entityPool->GetEntity(name, userName);
 		};
 }
 
@@ -155,11 +158,11 @@ void Ability::SetSpawnFunc()
 			};
 		break;
 	}
-	case AbilitySpawnType::CharacterToMouse:
+	case AbilitySpawnType::UserToMouse:
 	{
 		spawnFunc = [&](AttackEntity* entity) {
 			sf::Vector2f mPos = WORLD_MOUSE_POS;
-			sf::Vector2f center = player->GetPosition();
+			sf::Vector2f center = user->GetPosition();
 			sf::Vector2f dir = mPos - center;
 			float angle = Utils::Angle(dir);
 
@@ -169,11 +172,44 @@ void Ability::SetSpawnFunc()
 			};
 		break;
 	}
-	case AbilitySpawnType::OnCharacter:
+	case AbilitySpawnType::OnUser:
 	{
 		spawnFunc = [&](AttackEntity* entity) {
-			sf::Vector2f pos = player->GetPosition() + sf::Vector2f(0.f, 70.f);
+			sf::Vector2f pos = user->GetPosition() + sf::Vector2f(0.f, 70.f);
 			entity->SetPosition(pos);
+			entity->Activate();
+			};
+		break;
+	}
+	case AbilitySpawnType::ClosestEnemy:
+	{
+		spawnFunc = [&](AttackEntity* entity) {
+			auto& monsters = ((MonsterPoolManager*)SCENE_MGR.GetCurrentScene()->FindGo("monsterPoolMgr"))->GetMonsterList();
+			if (monsters.empty())
+				return;
+			sf::Vector2f pos = user->GetPosition();
+
+			float distance = Utils::Magnitude(monsters.begin()->second.front()->GetPosition() - pos);
+			Monster* closestMonster = monsters.begin()->second.front();
+			for (auto& pair : monsters)
+			{
+				for (auto& monster : pair.second)
+				{
+					float distanceBuf = Utils::Magnitude(monster->GetPosition() - pos);
+					if (distanceBuf < distance)
+					{
+						distance = distanceBuf;
+						closestMonster = monster;
+					}
+				}
+			}
+			sf::Vector2f mPos = closestMonster->GetPosition();
+
+			sf::Vector2f dir = mPos - pos;
+			float angle = Utils::Angle(dir);
+
+			entity->SetPosition(pos);
+			entity->SetRotation(angle);
 			entity->Activate();
 			};
 		break;

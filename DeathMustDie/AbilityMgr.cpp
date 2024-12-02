@@ -22,10 +22,10 @@ void AbilityMgr::Reset()
 	EVENT_HANDLER.AddEvent("OnDash", func3);
 }
 
-void AbilityMgr::AddAbility(const std::string& skillId)
+void AbilityMgr::AddAbility(const std::string& skillId, const std::string& user)
 {
 	json j = SKILL_TABLE->Get(skillId);
-	Ability* abil = new Ability(j, entityPool, skillId);
+	Ability* abil = new Ability(j, entityPool, user, skillId);
 	abil->Reset();
 	switch ((AbilityTriggerType)j["triggerType"].get<int>())
 	{
@@ -62,6 +62,11 @@ void AbilityMgr::AddAbility(const std::string& skillId)
 			time.coolTime = j["coolTime"];
 			autoCast.push_back({ time, abil });
 			break;
+		}
+		case AbilityTriggerType::Earn:
+		{
+			abil->UseAbility();
+			earn.push_back(abil);
 		}
 	}
 }

@@ -10,8 +10,9 @@ class AttackEntity :
 protected:
     MonsterPoolManager* monsters;
     SideEffect* sideEffect;
+    static int entityCount;
 public:
-    AttackEntity(const std::string& name);
+    AttackEntity();
     ~AttackEntity();
 
     virtual void SetInfo(const json& j) {}

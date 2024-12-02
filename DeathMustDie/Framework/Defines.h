@@ -68,8 +68,9 @@ enum class AbilitySpawnType
 {
 	BasicAttack,
 	OnRandomEnemy, 
-	OnCharacter,
-	CharacterToMouse, 
+	OnUser,
+	UserToMouse,
+	ClosestEnemy
 };
 
 enum class AbilityTriggerType

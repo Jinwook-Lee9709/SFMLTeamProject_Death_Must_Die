@@ -44,6 +44,9 @@ void MonsterSpawner::SpawnMonster(const std::string& monsterName)
             monster->SetScale({ 3.f, 3.f });
             currentMonsterCount++; // 활성화된 몬스터 수 증가
         }
+        if (currentMonsterCount >= maxMonsters) {
+            return; // 최대 몬스터 수에 도달했으면 스폰 중단
+        }
     }
 
 }
@@ -66,7 +69,7 @@ void MonsterSpawner::Update(float dt)
 
 
     static float spawnTimer = 0.0f; // 타이머
-    const float spawnInterval = 1.0f; // 5초마다 스폰
+    const float spawnInterval = 1.f; // 5초마다 스폰
 
     spawnTimer += dt;
     if (spawnTimer >= spawnInterval) {

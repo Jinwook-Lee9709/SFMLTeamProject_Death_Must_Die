@@ -74,6 +74,10 @@ void SceneGame::Update(float dt)
 	{
 		abilMgr->AddAbility("Searing Attack");
 	}
+	if (InputMgr::GetKeyDown(sf::Keyboard::Num6))
+	{
+		abilMgr->AddAbility("Fire Dragon");
+	}
 
 	worldView.setCenter(player->GetPosition());
 	Scene::Update(dt);

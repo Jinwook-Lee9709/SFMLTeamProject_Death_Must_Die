@@ -31,7 +31,7 @@ public:
 	~AbilityMgr() = default;
 
 	void Reset() override;
-	void AddAbility(const std::string& skillId);
+	void AddAbility(const std::string& skillId, const std::string& user = "Player");
 	void Release() override;
 
 	void Update(float dt) override;
