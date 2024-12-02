@@ -55,7 +55,6 @@ protected:
 	bool isDead = false;
 
 	SkeletonInfo info;
-	AniSlime* aniSlime;
 	Scene* scene;
 public:
 	AniSkeleton(const std::string& name = "");

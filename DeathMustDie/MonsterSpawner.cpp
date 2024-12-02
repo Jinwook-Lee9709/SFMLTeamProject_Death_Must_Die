@@ -15,10 +15,11 @@ sf::Vector2f MonsterSpawner::GenerateSpawnPosition()
     float y = yDist(rng);
 
     // 맵 외곽에서만 스폰하도록 위치 조정
-    if (x < 0 || x > mapBounds.width) {
+    if (x < 0 || x > mapBounds.width) 
+    {
         y = yDist(rng); // x가 맵 외곽이면 y는 랜덤
     }
-    else if(y < 0 || y < mapBounds.height)
+    else if(y < 0 || y > mapBounds.height)
     {
         x = xDist(rng); // y는 상/하 외곽
     }
@@ -27,12 +28,14 @@ sf::Vector2f MonsterSpawner::GenerateSpawnPosition()
 
 void MonsterSpawner::SpawnMonster(const std::string& monsterName) 
 {
-    if (currentMonsterCount >= maxMonsters) {
+    if (currentMonsterCount >= maxMonsters) 
+    {
         return; // 최대 몬스터 수에 도달했으면 스폰 중단
     }
 
     Monster* monster = poolManager->GetMonster(monsterName);
-    if (monster) {
+    if (monster)
+    {
         monster->SetPosition(GenerateSpawnPosition());
         monster->SetScale({ 3.f, 3.f });
         currentMonsterCount++; // 활성화된 몬스터 수 증가

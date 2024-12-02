@@ -40,8 +40,8 @@ void SceneGame::Enter()
 	AddGo(new CalculatorMgr("CalculatorMgr"));
 	abilMgr = AddGo(new AbilityMgr("AbilityMgr"));
 	map = AddGo(new TileMap("map"));
-	MPMgr = AddGo(new MonsterPoolManager("monsterPoolMgr"));
-	monsterSpawn = AddGo(new MonsterSpawner(MPMgr, mapBound, 30));
+	skeletonMPMgr = AddGo(new MonsterPoolManager("skletonPoolMgr"));
+	skeletonSpawn = AddGo(new MonsterSpawner(skeletonMPMgr, mapBound, 30));
 
 	ApplyAddGo();
 
@@ -50,7 +50,7 @@ void SceneGame::Enter()
 		std::cerr << "Failed to Read File";
 	}
 	json j = json::parse(file1);
-	MPMgr->CreatePool(MonsterTypes::Skeleton, j["Skeleton"], "Skeleton");
+	skeletonMPMgr->CreatePool(MonsterTypes::Skeleton, j["Skeleton"], "Skeleton");
 
 	Scene::Enter();
 	map->SetOrigin(Origins::MC);
@@ -80,23 +80,24 @@ void SceneGame::Update(float dt)
 	{
 		abilMgr->AddAbility("Base Attack");
 	}
-	if (InputMgr::GetKeyDown(sf::Keyboard::F))
+	/*if (InputMgr::GetKeyDown(sf::Keyboard::F))
 	{
-		auto monster = MPMgr->GetMonster("Skeleton");
+		auto monster = skeletonMPMgr->GetMonster("Skeleton");
 		monster->SetPosition({ 100.f, 100.f });
 		monster->SetScale({ 3.f, 3.f });
-	}
+	}*/
 
 	worldView.setCenter(player->GetPosition());
 	Scene::Update(dt);
 
-	static float spawnTimer = 0.0f; // Ÿ�̸�
-	const float spawnInterval = 5.0f; // 5�ʸ��� ����
+	static float spawnTimer = 0.0f;
+	const float spawnInterval = 5.0f;
 
 	spawnTimer += dt;
-	if (spawnTimer >= spawnInterval) {
-		monsterSpawn->SpawnMonster("Skeleton"); // "Skeleton" ���� ����
-		spawnTimer = 0.0f; // Ÿ�̸� �ʱ�ȭ
+	if (spawnTimer >= spawnInterval) 
+	{
+		skeletonSpawn->SpawnMonster("Skeleton");
+		spawnTimer = 0.0f;
 	}
 }
 

@@ -15,15 +15,15 @@ private:
 	
 	//Managers
 	AbilityMgr* abilMgr;
-	MonsterPoolManager* MPMgr;
-	MonsterSpawner* monsterSpawn;
+	MonsterPoolManager* skeletonMPMgr;
+	MonsterPoolManager* slimeMPMgr;
+	MonsterSpawner* skeletonSpawn;
+	MonsterSpawner* slimeSpawn;
 
 	sf::FloatRect mapBound = { 0, 0, 1920, 1080 };
 
-	MonsterSpawner* monsterSpawn;
 	json j;
 
-	sf::FloatRect mapBound = { 0, 0, 1920, 1080 };
 
 	TileMap* map;
 protected:
