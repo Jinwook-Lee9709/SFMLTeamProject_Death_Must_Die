@@ -38,12 +38,14 @@ void SceneDev1::Enter()
 	
 
 	RES_TABLE_MGR.LoadScene("Dev1");
+	
 	Scene::Enter();
+	player->SetScale({ 3.f, 3.f });
 	sprite = new SpriteGo("background");
 	sprite->Reset();
-	player->SetScale({3.f, 3.f});
+	
 
-	sf::Vector2f tileSize = { tiles[0][0]->GetGlobalBounds().width * 0.5f + 5.f,  tiles[0][0]->GetGlobalBounds().height * 0.5f };
+	sf::Vector2f tileSize = { tiles[0][0]->GetGlobalBounds().width * 0.5f,  tiles[0][0]->GetGlobalBounds().height * 0.5f };
 
 	for (int i = 0; i < tilesCount.x; i++)
 	{

@@ -84,11 +84,11 @@ void TileMap2::Reset()
 
 	Set({ 2, 2 }, { (float)tSize.x / 2, (float)tSize.y / 2 });
 	SetOrigin(Origins::MC);
-	SetScale({ 0.1f, 0.1f });
+	SetScale({ 1.f, 1.f });
 	SetPosition({0.f, 0.f});
-	temp.setTexture(TEXTURE_MGR.Get("graphics/test.png"));
-	Utils::SetOrigin(temp, Origins::TC);
-	SetPoint(temp, { 0,0 });
+	//temp.setTexture(TEXTURE_MGR.Get("graphics/test.png"));
+	//Utils::SetOrigin(temp, Origins::TC);
+	//SetPoint(temp, { 0,0 });
 }
 
 void TileMap2::Update(float dt)

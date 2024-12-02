@@ -119,7 +119,7 @@ protected:
 	bool dashFlip;
 	sf::Vector2f direction;
 
-	std::queue<Status> temp;
+	std::queue<Status> dashQueue;
 
 	std::string clipId = "knight_idle";
 	std::string clipId2 = "knight_soward1";
@@ -140,7 +140,18 @@ protected:
 	sf::Vector2f dashPos;
 	sf::Vector2f dashDirection;
 
-	Stat stat;
+	sf::RectangleShape backDashBar;
+	std::vector<sf::RectangleShape> dashBlock;
+
+	sf::RectangleShape backHpBar;
+	sf::RectangleShape hpBar;
+	sf::RectangleShape damageBar;
+	float hp;
+	bool isDamage;
+	float damageBarTime;
+
+	Stat baseStat;
+	Stat curStat;
 	Scene* scene;
 public:
 	Player(const std::string& name = "");
@@ -159,6 +170,9 @@ public:
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
 
+	void SetDashAndHp();
+	void UpdateDashCount();
+
 	void SetStatus(Status cur);
 	void Move(float dt);
 
@@ -170,5 +184,7 @@ public:
 	Stat& GetStat();
 
 	void ChangeAttackColor(sf::Color color);
+
+	void Damage(float damage);
 };
 

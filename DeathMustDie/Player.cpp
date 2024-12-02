@@ -14,6 +14,12 @@ void Player::SetPosition(const sf::Vector2f& pos)
 	body3.setPosition(position + attackPos);
 	body4.setPosition({ position.x, position.y});
 	hitbox.rect.setPosition({position.x, position.y + 15.f});
+	backHpBar.setPosition({ position.x,  position.y -body.getGlobalBounds().height * 0.5f + 20.f});
+	hpBar.setPosition({ backHpBar.getGlobalBounds().left + 1.f, backHpBar.getGlobalBounds().top + 2.f });
+	backDashBar.setPosition({ backHpBar.getPosition().x, backHpBar.getPosition().y - 10.f });
+	for (int i = 0; i < curStat.dash.dashCharge; i++)
+		dashBlock[i].setPosition({backDashBar.getGlobalBounds().left + 3.f + 7.f * i, backDashBar.getGlobalBounds().top + 2.f});
+	damageBar.setPosition(hpBar.getGlobalBounds().left + hpBar.getGlobalBounds().width, hpBar.getGlobalBounds().top);
 }
 
 void Player::SetRotation(float angle)
@@ -30,6 +36,7 @@ void Player::SetScale(const sf::Vector2f& s)
 	body3.setScale(body3.getScale().x * scale.x, body3.getScale().y * scale.y);
 	body4.setScale(body4.getScale().x * scale.x, body4.getScale().y * scale.y);
 	hitbox.rect.setScale(hitbox.rect.getScale().x * scale.x, hitbox.rect.getScale().y * scale.y);
+	
 }
 
 void Player::SetOrigin(Origins preset)
@@ -86,8 +93,9 @@ void Player::Reset()
 	SetOrigin(Origins::MC);
 	
 	//Utils::SetOrigin(body4, Origins::BC);
-	dashCharge = stat.dash.dashCharge;
+	
 	scene = SCENE_MGR.GetCurrentScene();
+	SetDashAndHp();
 }
 
 void Player::Update(float dt)
@@ -100,15 +108,28 @@ void Player::Update(float dt)
 	Attack(dt);
 	Dash(dt);
 	
+	if (InputMgr::GetKeyDown(sf::Keyboard::K))
+		Damage(10.f);
 	
-	if (direction.x < 0 && !isAttack)
+	if (isDamage)
+	{
+		damageBarTime += dt;
+		if (damageBarTime > 0.1f)
+		{
+			damageBar.setSize({ 0.f,0.f });
+			damageBarTime = 0;
+			isDamage = false;
+		}
+	}
+
+	if (direction.x < 0 && (!isAttack || isDash))
 	{
 		flip = true;
 		dashFlip = true;
 		animator.SetFlip(true);
 		animator2.SetFlip(true);
 	}
-	else if (direction.x > 0 && !isAttack)
+	else if (direction.x > 0 && (!isAttack || isDash))
 	{
 		flip = false;
 		dashFlip = false;
@@ -136,8 +157,56 @@ void Player::Draw(sf::RenderWindow& window)
 	{
 		window.draw(body4);
 	}
+	
+	//hitbox.Draw(window);
 	window.draw(body);
-	hitbox.Draw(window);
+	window.draw(backHpBar);
+	window.draw(hpBar);
+	window.draw(damageBar);
+	window.draw(backDashBar);
+	for (auto& dashes : dashBlock)
+		window.draw(dashes);
+}
+
+void Player::SetDashAndHp()
+{
+	dashCharge = baseStat.dash.dashCharge;
+	hp = baseStat.defensive.life;
+
+	backHpBar.setSize({ 70.f, 7.f});
+	backHpBar.setFillColor(sf::Color::Black);
+	Utils::SetOrigin(backHpBar, Origins::MC);
+	backHpBar.setPosition({ position.x, position.y - 50.f});
+
+	hpBar.setSize({ 68.f, 3.f });
+	hpBar.setFillColor(sf::Color(156,3,0));
+	hpBar.setPosition({ backHpBar.getGlobalBounds().left, body.getGlobalBounds().top - 2.f});
+
+	backDashBar.setSize({ 4.f + 7.f * dashCharge, 7.f });
+	backDashBar.setFillColor(sf::Color::Black);
+	Utils::SetOrigin(backDashBar, Origins::MC);
+	backDashBar.setPosition({ backHpBar.getPosition().x, backHpBar.getPosition().y - 6.f});
+
+	for (int i = 0; i < dashCharge; i++)
+	{
+		dashBlock.push_back(sf::RectangleShape({ 5.f,3.f }));
+		dashBlock[i].setFillColor(sf::Color(249, 206, 107));
+		dashBlock[i].setPosition({ backDashBar.getGlobalBounds().left + 3.f * i, backDashBar.getGlobalBounds().top - 2.f });
+	}
+	
+}
+
+void Player::UpdateDashCount()
+{
+	int count = curStat.dash.dashCharge;
+	for (int i = 0; i < count; i++)
+	{
+		dashBlock[i].setSize({ 0.f,0.f });
+	}
+	for (int i = 0; i < dashCharge; i++)
+	{
+		dashBlock[i].setSize({ 5.f,3.f });
+	}
 }
 
 void Player::SetStatus(Status cur)
@@ -190,9 +259,8 @@ void Player::Move(float dt)
 			direction = { 0, direction.y };
 		if ((InputMgr::GetKey(sf::Keyboard::W) && InputMgr::GetKey(sf::Keyboard::S)))
 			direction = { direction.x, 0 };
-		SetPosition(position + direction * (float)stat.defensive.moveSpeed * dt);
+		SetPosition(position + direction * (float)baseStat.defensive.moveSpeed * dt);
 	}
-	
 	if (!isAttack && !isDash)
 	{
 		direction.x != 0.f || direction.y != 0.f ? SetStatus(Status::WALK) : SetStatus(Status::IDLE);
@@ -206,11 +274,11 @@ void Player::Attack(float dt)
 	float directionX;
 	
 	
-	if (temp.empty())
+	if (dashQueue.empty())
 	{
-		temp.push(Status::ATTACK);
-		temp.push(Status::ATTACK2);
-		temp.push(Status::ATTACK);
+		dashQueue.push(Status::ATTACK);
+		dashQueue.push(Status::ATTACK2);
+		dashQueue.push(Status::ATTACK);
 	}
 	if (InputMgr::GetMouseButton(sf::Mouse::Left) && !isDash)
 	{
@@ -224,15 +292,15 @@ void Player::Attack(float dt)
 			flip = false;
 		}
 		sf::Vector2f look = Utils::GetNormal(mousePos - body3.getPosition());
-		if (attackTerm > stat.attack.attackTime)
+		if (attackTerm > baseStat.attack.attackTime)
 		{
 			
-			SetStatus(temp.front());
+			SetStatus(dashQueue.front());
 
 			animator.Play(clipId, flip);
-			if(temp.front() == Status::ATTACK2 && !flip)
+			if(dashQueue.front() == Status::ATTACK2 && !flip)
 				animator3.Play(clipId3, true);
-			else if (temp.front() == Status::ATTACK2 && flip)
+			else if (dashQueue.front() == Status::ATTACK2 && flip)
 				animator3.Play(clipId3, false);
 			else
 				animator3.Play(clipId3, flip);
@@ -244,13 +312,13 @@ void Player::Attack(float dt)
 			body3.setPosition(position + attackPos);
 			attackTerm = 0.f;
 			EVENT_HANDLER.InvokeEvent("OnAttack");
-			temp.pop();
+			dashQueue.pop();
 		}
 	}
 	if (InputMgr::GetMouseButtonUp(sf::Mouse::Left))
 	{
- 		while (!temp.empty())
-			temp.pop();
+ 		while (!dashQueue.empty())
+			dashQueue.pop();
 	}
 	if (animator.IsEnd())
 		isAttack = false;
@@ -261,18 +329,18 @@ void Player::Attack(float dt)
 
 void Player::Dash(float dt)
 {
-	dashCharge = 100;
-	dashChargeTime += dt;
-	if (dashChargeTime > stat.dash.dashRechargeTime && dashCharge < stat.dash.dashCharge)
+	if (dashCharge < curStat.dash.dashCharge)
+		dashChargeTime += dt;
+	if (dashChargeTime > curStat.dash.dashRechargeTime)
 	{
 		dashCharge++;
 		dashChargeTime = 0;
+		
 	}       
 	if ((direction.x == 0.f && direction.y == 0.f && !isDash))
 		return;
 	if (InputMgr::GetKeyDown(sf::Keyboard::Space))
 	{
-		std::cout << direction.x << " " << direction.y << std::endl;
 		if (dashCharge == 0)
 			return;
 		isDash = true;
@@ -289,7 +357,6 @@ void Player::Dash(float dt)
 		
 		dashPos = position + dashDirection * 600.f * 0.4f;
 		EVENT_HANDLER.InvokeEvent("OnDash");
-		std::cout << dashCharge << std::endl;
 	}
 
 	if (animator2.IsPlay() && isDash)
@@ -297,18 +364,17 @@ void Player::Dash(float dt)
 		sf::Vector2f newPos = position;
 		newPos = Utils::Lerp(newPos, dashPos, dt * 6, true);
 		SetPosition(newPos);
-	}
-	if (!animator2.IsPlay())
+	}else
 	{
 		isDash = false;
 	}
-	
+	UpdateDashCount();
 	
 }
 
 void Player::SaveStat()
 {
-	json j = stat;
+	json j = baseStat;
 	std::ofstream f("tables/player.json");
 	f << j.dump(4) << std::endl;
 	f.close();
@@ -318,21 +384,34 @@ void Player::LoadStat()
 {
 	std::ifstream f("tables/player.json");
 	json j = json::parse(f);
-	stat.attack = j["attack"];
-	stat.blessingSlot = j["blessingSlot"];
-	stat.dash = j["dash"];
-	stat.defensive = j["defensive"];
-	stat.godBlessing = j["godBlessing"];
-	stat.offensive = j["offensive"];
-	stat.utility = j["utility"];
+	baseStat.attack = j["attack"];
+	baseStat.blessingSlot = j["blessingSlot"];
+	baseStat.dash = j["dash"];
+	baseStat.defensive = j["defensive"];
+	baseStat.godBlessing = j["godBlessing"];
+	baseStat.offensive = j["offensive"];
+	baseStat.utility = j["utility"];
+
+	curStat = baseStat;
 }
 
 Stat& Player::GetStat()
 {
-	return this->stat;
+	return this->baseStat;
 }
 
 void Player::ChangeAttackColor(sf::Color color)
 {
 	body3.setColor(color);
+}
+
+void Player::Damage(float damage)
+{
+	sf::Vector2f maxSize = { 68.f, 3.f };
+	float value = Utils::Clamp(damage - curStat.defensive.armor, 0, hp) / curStat.defensive.life;
+	hp = Utils::Clamp(hp - damage - curStat.defensive.armor, 0, curStat.defensive.life);
+	damageBar.setSize({ maxSize.x * value, maxSize.y });
+	hpBar.setSize({ maxSize.x * hp / curStat.defensive.life, maxSize.y });
+	damageBar.setPosition(hpBar.getGlobalBounds().left + hpBar.getGlobalBounds().width, hpBar.getGlobalBounds().top);
+	isDamage = true;
 }
