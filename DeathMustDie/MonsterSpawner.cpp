@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "MonsterSpawner.h"
 #include "Utils.h"
+#include "Player.h"
 
 MonsterSpawner::MonsterSpawner(MonsterPoolManager* manager, const sf::FloatRect& bounds, int maxMonsters)
     : GameObject("MonsterSpawner"), poolManager(manager), mapBounds(bounds), rng(std::random_device{}()), maxMonsters(maxMonsters)
@@ -11,17 +12,21 @@ MonsterSpawner::MonsterSpawner(MonsterPoolManager* manager, const sf::FloatRect&
 
 sf::Vector2f MonsterSpawner::GenerateSpawnPosition() 
 {
-    float x = xDist(rng);
-    float y = yDist(rng);
-
-    // ¸Ê ¿Ü°û¿¡¼­¸¸ ½ºÆùÇÏµµ·Ï À§Ä¡ Á¶Á¤
-    if (x < 0 || x > mapBounds.width) 
+    float x = 0;
+    float y = 0;
+    sf::Vector2f playerPos =  player->GetPosition();
+    xDist = std::uniform_real_distribution<float>(playerPos.x - mapBounds.width * 0.5f -100.f, playerPos.x + mapBounds.width + 100.f);
+    yDist = std::uniform_real_distribution<float>(playerPos.y - mapBounds.height * 0.5f -100.f, playerPos.y + mapBounds.height + 100.f);
+    // ï¿½ï¿½ ï¿½Ü°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½
+    if (Utils::RandomValue() < 0.5f)
     {
-        y = yDist(rng); // x°¡ ¸Ê ¿Ü°ûÀÌ¸é y´Â ·£´ý
+        Utils::RandomValue() < 0.5f ? x = playerPos.x - mapBounds.width * 0.5f - 100.f : x = playerPos.x + mapBounds.width * 0.5f + 100.f;
+        y = yDist(rng);
     }
-    else if(y < 0 || y > mapBounds.height)
+    else
     {
-        x = xDist(rng); // y´Â »ó/ÇÏ ¿Ü°û
+        Utils::RandomValue() < 0.5f ? y = playerPos.y - mapBounds.height * 0.5f - 100.f : y = playerPos.y + mapBounds.height * 0.5f + 100.f;
+        x = xDist(rng);
     }
     return { x, y };
 }
@@ -30,34 +35,43 @@ void MonsterSpawner::SpawnMonster(const std::string& monsterName)
 {
     if (currentMonsterCount >= maxMonsters) 
     {
-        return; // ÃÖ´ë ¸ó½ºÅÍ ¼ö¿¡ µµ´ÞÇßÀ¸¸é ½ºÆù Áß´Ü
+        return; // ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ß´ï¿½
+    }
+    for (int i = 0; i < poolSize; i++)
+    {
+        Monster* monster = poolManager->GetMonster(monsterName);
+        if (monster) {
+            monster->SetPosition(GenerateSpawnPosition());
+            monster->SetScale({ 3.f, 3.f });
+            currentMonsterCount++; // È°ï¿½ï¿½È­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        }
     }
 
-    Monster* monster = poolManager->GetMonster(monsterName);
-    if (monster)
-    {
-        monster->SetPosition(GenerateSpawnPosition());
-        monster->SetScale({ 3.f, 3.f });
-        currentMonsterCount++; // È°¼ºÈ­µÈ ¸ó½ºÅÍ ¼ö Áõ°¡
-    }
 }
 
 void MonsterSpawner::Init() 
 {
-    // ÃÊ±âÈ­ ·ÎÁ÷
+    // ï¿½Ê±ï¿½È­ ï¿½ï¿½ï¿½ï¿½
+}
+
+void MonsterSpawner::Reset()
+{
+    player = (Player*)SCENE_MGR.GetCurrentScene()->FindGo("Player");
+    EVENT_HANDLER.AddEvent("OnMonsterDie", [&]() { currentMonsterCount--; });
 }
 
 void MonsterSpawner::Update(float dt) 
 {
-    // ¸ó½ºÅÍ ÀÚµ¿ ½ºÆù ·ÎÁ÷ (¿¹: ÀÏÁ¤ ½Ã°£¸¶´Ù)
-    // SpawnMonster("Skeleton"); // ¿¹½Ã
-    SpawnMonster("Skeleton");
-}
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½Úµï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½: ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ï¿½ï¿½ï¿½ï¿½)
+    // SpawnMonster("Skeleton"); // ï¿½ï¿½ï¿½ï¿½
 
-void MonsterSpawner::OnMonsterDeactivated()
-{
-    if (currentMonsterCount > 0) 
-    {
-        currentMonsterCount--;
+
+    static float spawnTimer = 0.0f; // Å¸ï¿½Ì¸ï¿½
+    const float spawnInterval = 1.0f; // 5ï¿½Ê¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+
+    spawnTimer += dt;
+    if (spawnTimer >= spawnInterval) {
+        SpawnMonster("Skeleton"); // "Skeleton" ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        spawnTimer = 0.0f; // Å¸ï¿½Ì¸ï¿½ ï¿½Ê±ï¿½È­
     }
 }

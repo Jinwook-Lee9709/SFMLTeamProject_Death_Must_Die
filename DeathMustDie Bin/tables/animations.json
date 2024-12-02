@@ -34,6 +34,11 @@
         "ID": "fire_end",
         "TEX_ID": "resource/texture/Sheet/skill/fire_end.png"
     },
+    "DRAGON_FIRE":
+    {
+        "ID": "dragon_fire",
+        "TEX_ID": "resource/texture/Sheet/skill/fire_dragon.png"
+    },
     "SKELETON_WALK":
     {
         "ID": "skeleton_walk",

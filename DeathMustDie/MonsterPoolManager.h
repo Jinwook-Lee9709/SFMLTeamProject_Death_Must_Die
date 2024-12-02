@@ -26,6 +26,8 @@ public:
 
 	std::unordered_map<std::string, std::list<Monster*>>&
 		GetMonsterList() { return monsters; }
+	int GetMonsterCount();
+	std::unordered_map<std::string, std::list<Monster*>>& GetMonsterList() { return monsters; }
 	Monster* GetMonster(std::string name);
 };
 

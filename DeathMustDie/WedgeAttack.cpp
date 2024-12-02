@@ -83,8 +83,13 @@ void WedgeAttack::SetInfo(const json& j)
 	{
 		SetSideEffect(j["SideEffect"]);
 	}
+	else
+	{
+		json buf;
+		buf["effectType"] = -1;
+		SetSideEffect(buf);
+	}
 }
-
 void WedgeAttack::ChangeInfo(const json& j)
 {
 	json originalJson = info;

@@ -27,8 +27,4 @@ void Monster::Draw(sf::RenderWindow& window)
 void Monster::OnDeath()
 {
 	active = false; // 비활성화
-	MonsterSpawner* spawner = dynamic_cast<MonsterSpawner*>(SCENE_MGR.GetCurrentScene()->FindGo("MonsterSpawner"));
-	if (spawner) {
-		spawner->OnMonsterDeactivated();
-	}
 }
