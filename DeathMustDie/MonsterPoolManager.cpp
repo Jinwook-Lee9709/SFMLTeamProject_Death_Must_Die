@@ -17,6 +17,7 @@ void MonsterPoolManager::Release()
 
 void MonsterPoolManager::Reset()
 {
+	CreatePool(MonsterTypes::Skeleton, MONSTER_TABLE->Get("Skeleton"), "Skeleton");
 }
 
 void MonsterPoolManager::Update(float dt)
@@ -30,6 +31,7 @@ void MonsterPoolManager::Update(float dt)
 			{
 				poolContainer[pair.first]->Return(*it);
 				it = pair.second.erase(it);
+				EVENT_HANDLER.InvokeEvent("OnMonsterDie");
 			}
 			else
 			{
@@ -51,6 +53,7 @@ void MonsterPoolManager::FixedUpdate(float dt)
 			{
 				poolContainer[pair.first]->Return(*it);
 				it = pair.second.erase(it);
+				EVENT_HANDLER.InvokeEvent("OnMonsterDie");
 			}
 			else
 			{
@@ -77,6 +80,20 @@ void MonsterPoolManager::CreatePool(MonsterTypes type, json j, std::string name)
 	MonsterPool* obj = new MonsterPool(type, j);
 
 	poolContainer.insert({ name, obj });
+}
+
+int MonsterPoolManager::GetMonsterCount()
+{
+	int count = 0;
+	for (auto& pair : monsters)
+	{
+		for (auto& list : pair.second)
+		{
+			count++;
+		}
+	}
+
+	return count;
 }
 
 Monster* MonsterPoolManager::GetMonster(std::string name)

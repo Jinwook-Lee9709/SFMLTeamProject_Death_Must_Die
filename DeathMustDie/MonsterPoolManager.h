@@ -22,8 +22,8 @@ public:
 
 	void CreatePool(MonsterTypes type, json j, std::string name);
 
-	std::unordered_map<std::string, std::list<Monster*>>&
-		GetMonsterList() { return monsters; }
+	int GetMonsterCount();
+	std::unordered_map<std::string, std::list<Monster*>>& GetMonsterList() { return monsters; }
 	Monster* GetMonster(std::string name);
 };
 

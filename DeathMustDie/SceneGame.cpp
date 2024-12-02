@@ -34,7 +34,6 @@ void SceneGame::Enter()
 	RES_TABLE_MGR.LoadScene("Game");
 	RES_TABLE_MGR.LoadAnimation();
 
-
 	AddGo(new AttackEntityPoolMgr("AttackEntityPoolMgr"));
 	AddGo(new CalculatorMgr("CalculatorMgr"));
 	abilMgr = AddGo(new AbilityMgr("AbilityMgr"));
@@ -42,13 +41,6 @@ void SceneGame::Enter()
 	MPMgr = AddGo(new MonsterPoolManager("monsterPoolMgr"));
 	monsterSpawn = AddGo(new MonsterSpawner(MPMgr, mapBound, 30));
 	ApplyAddGo();
-
-	std::ifstream file1("tables/monster_table.json", std::ios::in);
-	if (!file1) {
-		std::cerr << "Failed to Read File";
-	}
-	json j = json::parse(file1);
-	MPMgr->CreatePool(MonsterTypes::Skeleton, j["Skeleton"], "Skeleton");
 
 	Scene::Enter();
 	map->SetOrigin(Origins::MC);
@@ -78,25 +70,14 @@ void SceneGame::Update(float dt)
 	{
 		abilMgr->AddAbility("Base Attack");
 	}
-	if (InputMgr::GetKeyDown(sf::Keyboard::F))
+	if (InputMgr::GetKeyDown(sf::Keyboard::Num5))
 	{
-		auto monster = MPMgr->GetMonster("Skeleton");
-		monster->SetPosition({ 100.f, 100.f });
-		monster->SetScale({ 3.f, 3.f });
+		abilMgr->AddAbility("Searing Attack");
 	}
 
 	worldView.setCenter(player->GetPosition());
 	Scene::Update(dt);
 
-	static float spawnTimer = 0.0f; // 타이머
-	const float spawnInterval = 5.0f; // 5초마다 스폰
-
-
-	spawnTimer += dt;
-	if (spawnTimer >= spawnInterval) {
-		monsterSpawn->SpawnMonster("Skeleton"); // "Skeleton" 몬스터 스폰
-		spawnTimer = 0.0f; // 타이머 초기화
-	}
 }
 
 void SceneGame::FixedUpdate(float dt)

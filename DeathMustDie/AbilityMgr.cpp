@@ -3,6 +3,7 @@
 #include "AbilityMgr.h"
 #include "AttackEntityPoolMgr.h"
 #include "EventHandler.h"
+#include "Player.h"
 
 AbilityMgr::AbilityMgr(const std::string& name)
 	:GameObject(name)
@@ -35,6 +36,10 @@ void AbilityMgr::AddAbility(const std::string& skillId)
 				delete basicAttack;
 			}
 			basicAttack = abil;
+			Player* player = (Player*)SCENE_MGR.GetCurrentScene()->FindGo("Player");
+			std::vector<int> colorCode = j["attackColor"].get<std::vector<int>>();
+			sf::Color color(colorCode[0], colorCode[1], colorCode[2]);
+			player->ChangeAttackColor(color);
 			break;
 		}
 		case AbilityTriggerType::Attack:
