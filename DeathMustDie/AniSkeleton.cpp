@@ -13,8 +13,8 @@ void AniSkeleton::SetPosition(const sf::Vector2f& pos)
 	position = pos;
 	body.setPosition(position);
 	hitbox.rect.setPosition(position);
-	HPBar.setPosition({ position.x, position.y - 140 });
-	HPBarFrame.setPosition({ position.x, position.y - 140 });
+	HPBar.setPosition({ position.x - HPBar.getSize().x * 0.5f, position.y - 140 });
+	HPBarFrame.setPosition({ position.x - HPBar.getSize().x * 0.5f, position.y - 140 });
 }
 
 void AniSkeleton::SetRotation(float angle)
@@ -59,12 +59,17 @@ void AniSkeleton::Reset()
 	hitbox.rect.setSize({ 40, 120 });
 	hitbox.rect.setPosition({ position });
 	Utils::SetOrigin(hitbox.rect, Origins::BC);
+	HPBar.setPosition({ position.x - HPBar.getSize().x * 0.5f, position.y - 140});
+	HPBarFrame.setPosition({ position.x - HPBar.getSize().x * 0.5f, position.y - 140 });
+	if (player == nullptr)
+	{
+		player = dynamic_cast<Player*>(SCENE_MGR.GetCurrentScene()->FindGo("Player"));
+	}
+	hp = info.hp;
+	HPBar.setScale({ 1.0f, 1.0f });
 
-	HPBar.setPosition({ position.x, position.y - 140 });
-	HPBarFrame.setPosition({ position.x, position.y - 140 });
-
-	player = dynamic_cast<Player*>(SCENE_MGR.GetCurrentScene()->FindGo("Player"));
-
+	Anim.Play(info.walkAnimId);
+	currentStatus = Status::Move;
 }
 
 void AniSkeleton::Update(float dt)
@@ -166,7 +171,7 @@ void AniSkeleton::DeathUpdate(float dt)
 	if (!Anim.IsPlay())
 	{
 		isDead = true;
-		active = false;
+		Monster::OnDeath();
 	}
 }
 
@@ -221,6 +226,9 @@ void AniSkeleton::CheckAttack(float dt)
 
 void AniSkeleton::OnHit(float damage)
 {
+	if (currentStatus == Status::Death)
+		return;
+
 	hp -= damage;
 	Anim.Play(info.getHitAnimId);
 	if (!Anim.IsPlay())
@@ -231,9 +239,10 @@ void AniSkeleton::OnHit(float damage)
 	{
 
 	}
-	if (hp < 0)
+	if (hp <= 0)
 	{
 		hp = 0;
-		//Die()
+		currentStatus = Status::Death;
 	}
+	HPBar.setScale({ hp / info.hp, 1.0f });
 }

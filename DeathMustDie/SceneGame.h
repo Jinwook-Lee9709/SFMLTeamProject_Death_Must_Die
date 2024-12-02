@@ -20,6 +20,11 @@ private:
 
 	sf::FloatRect mapBound = { 0, 0, 1920, 1080 };
 
+	MonsterSpawner* monsterSpawn;
+	json j;
+
+	sf::FloatRect mapBound = { 0, 0, 1920, 1080 };
+
 	TileMap* map;
 protected:
 

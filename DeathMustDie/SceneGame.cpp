@@ -6,6 +6,7 @@
 #include "CalculatorMgr.h"
 #include "Player.h"
 #include "TileMap.h"
+#include "MonsterSpawner.h"
 
 SceneGame::SceneGame()
 	: Scene(SceneIds::Game)
@@ -34,12 +35,14 @@ void SceneGame::Enter()
 	RES_TABLE_MGR.LoadScene("Game");
 	RES_TABLE_MGR.LoadAnimation();
 
-	map = AddGo(new TileMap("map"));
+
 	AddGo(new AttackEntityPoolMgr("AttackEntityPoolMgr"));
 	AddGo(new CalculatorMgr("CalculatorMgr"));
 	abilMgr = AddGo(new AbilityMgr("AbilityMgr"));
+	map = AddGo(new TileMap("map"));
 	MPMgr = AddGo(new MonsterPoolManager("monsterPoolMgr"));
-	//monsterSpawn = AddGo(new MonsterSpawner(MPMgr, mapBound, 30));
+	monsterSpawn = AddGo(new MonsterSpawner(MPMgr, mapBound, 30));
+
 	ApplyAddGo();
 
 	std::ifstream file1("tables/monster_table.json", std::ios::in);
@@ -87,14 +90,14 @@ void SceneGame::Update(float dt)
 	worldView.setCenter(player->GetPosition());
 	Scene::Update(dt);
 
-	//static float spawnTimer = 0.0f; // Å¸ÀÌ¸Ó
-	//const float spawnInterval = 5.0f; // 5ÃÊ¸¶´Ù ½ºÆù
+	static float spawnTimer = 0.0f; // Å¸ï¿½Ì¸ï¿½
+	const float spawnInterval = 5.0f; // 5ï¿½Ê¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
-	//spawnTimer += dt;
-	//if (spawnTimer >= spawnInterval) {
-	//	monsterSpawn->SpawnMonster("Skeleton"); // "Skeleton" ¸ó½ºÅÍ ½ºÆù
-	//	spawnTimer = 0.0f; // Å¸ÀÌ¸Ó ÃÊ±âÈ­
-	//}
+	spawnTimer += dt;
+	if (spawnTimer >= spawnInterval) {
+		monsterSpawn->SpawnMonster("Skeleton"); // "Skeleton" ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+		spawnTimer = 0.0f; // Å¸ï¿½Ì¸ï¿½ ï¿½Ê±ï¿½È­
+	}
 }
 
 void SceneGame::FixedUpdate(float dt)

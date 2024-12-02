@@ -15,7 +15,7 @@ public:
 	~Monster() = default;
 
 	virtual void SetInfo(const json& j) {}
-	virtual void OnHit(float damage) {}
+	virtual void OnHit(float damage) {};
 	virtual void OnDebuffed(DebuffType type) { }
 	void Draw(sf::RenderWindow& window) override;
 

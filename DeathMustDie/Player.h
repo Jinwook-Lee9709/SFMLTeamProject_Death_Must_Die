@@ -118,6 +118,7 @@ protected:
 	Animator animator4;
 
 	bool flip;
+	bool dashFlip;
 	sf::Vector2f direction;
 
 	std::queue<Status> temp;

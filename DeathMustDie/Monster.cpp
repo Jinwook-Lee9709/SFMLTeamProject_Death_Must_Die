@@ -12,9 +12,11 @@ Monster::Monster(const std::string& name)
 	HPBar.setFillColor(sf::Color::Red);
 	HPBarFrame.setFillColor(sf::Color::Black);
 
-	Utils::SetOrigin(HPBar, Origins::BC);
-	Utils::SetOrigin(HPBarFrame, Origins::BC);
+	Utils::SetOrigin(HPBar, Origins::BL);
+	Utils::SetOrigin(HPBarFrame, Origins::BL);
 }
+
+
 
 void Monster::Draw(sf::RenderWindow& window)
 {
