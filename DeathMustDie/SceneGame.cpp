@@ -2,6 +2,7 @@
 #include "SceneGame.h"
 #include "AbilityMgr.h"
 #include "AttackEntityPoolMgr.h"
+#include "MonsterSpawner.h"
 #include "CalculatorMgr.h"
 #include "Player.h"
 #include "TileMap.h"
@@ -38,6 +39,7 @@ void SceneGame::Enter()
 	AddGo(new CalculatorMgr("CalculatorMgr"));
 	abilMgr = AddGo(new AbilityMgr("AbilityMgr"));
 	MPMgr = AddGo(new MonsterPoolManager("monsterPoolMgr"));
+	//monsterSpawn = AddGo(new MonsterSpawner(MPMgr, mapBound, 30));
 	ApplyAddGo();
 
 	std::ifstream file1("tables/monster_table.json", std::ios::in);
@@ -84,6 +86,15 @@ void SceneGame::Update(float dt)
 
 	worldView.setCenter(player->GetPosition());
 	Scene::Update(dt);
+
+	//static float spawnTimer = 0.0f; // 타이머
+	//const float spawnInterval = 5.0f; // 5초마다 스폰
+
+	//spawnTimer += dt;
+	//if (spawnTimer >= spawnInterval) {
+	//	monsterSpawn->SpawnMonster("Skeleton"); // "Skeleton" 몬스터 스폰
+	//	spawnTimer = 0.0f; // 타이머 초기화
+	//}
 }
 
 void SceneGame::FixedUpdate(float dt)

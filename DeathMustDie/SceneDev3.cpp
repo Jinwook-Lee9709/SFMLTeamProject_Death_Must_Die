@@ -5,13 +5,10 @@
 #include "MonsterPoolManager.h"
 #include "AbilityMgr.h"
 #include "Player.h"
-<<<<<<< HEAD
 #include "CalculatorMgr.h"
-=======
 #include "AniSkeleton.h"
 #include "MonsterPool.h"
 #include "MonsterSpawner.h"
->>>>>>> origin/hayoung
 
 SceneDev3::SceneDev3() :Scene(SceneIds::Dev3)
 {
@@ -21,7 +18,7 @@ void SceneDev3::Init()
 {
 	sf::Vector2f size = FRAMEWORK.GetWindowSizeF();
 
-	player = AddGo(new Player("Player"));
+	
 	worldView.setSize(size);
 	worldView.setCenter(0.f, 0.f);
 	uiView.setSize(size);
@@ -49,6 +46,7 @@ void SceneDev3::Enter()
 	RES_TABLE_MGR.LoadAnimation();
 
 	AddGo(new AttackEntityPoolMgr("entityPoolMgr"));
+	player = AddGo(new Player("Player"));
 	MPMgr = AddGo(new MonsterPoolManager());
 	abilMgr = AddGo(new AbilityMgr("abilityMgr"));
 	sprite = AddGo(new SpriteGo("retreat","Rect"));
@@ -57,8 +55,11 @@ void SceneDev3::Enter()
 	ApplyAddGo();
 
 	MPMgr->CreatePool(MonsterTypes::Skeleton, j["Skeleton"], "Skeleton");
+
 	Scene::Enter();
+
 	player->SetScale({ 3.f, 3.f });
+	player->Init();
 }
 
 void SceneDev3::Exit()

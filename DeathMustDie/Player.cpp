@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Player.h"
+#include "MonsterPoolManager.h"
 
 Player::Player(const std::string& name)
 	: GameObject(name)
@@ -194,8 +195,7 @@ void Player::Attack(float dt)
 	attackTerm += dt;
 	sf::Vector2f mousePos  = scene->ScreenToWorld(InputMgr::GetMousePosition());
 	float directionX;
-	
-	
+
 	if (temp.empty())
 	{
 		temp.push(Status::ATTACK);
@@ -220,6 +220,7 @@ void Player::Attack(float dt)
 			SetStatus(temp.front());
 
 			animator.Play(clipId, flip);
+
 			if(temp.front() == Status::ATTACK2 && !flip)
 				animator3.Play(clipId3, true);
 			else if (temp.front() == Status::ATTACK2 && flip)

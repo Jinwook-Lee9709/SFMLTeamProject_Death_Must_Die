@@ -89,6 +89,8 @@ struct Stat
 	NLOHMANN_DEFINE_TYPE_INTRUSIVE(Stat, offensive, attack, dash, defensive, utility, blessingSlot, godBlessing)
 };
 
+class MonsterPoolManager;
+
 class Player : public GameObject
 {
 public:

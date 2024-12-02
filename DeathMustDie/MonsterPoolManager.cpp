@@ -79,6 +79,22 @@ void MonsterPoolManager::CreatePool(MonsterTypes type, json j, std::string name)
 	poolContainer.insert({ name, obj });
 }
 
+std::vector<Monster*> MonsterPoolManager::GetAllActiveMonsters()
+{
+	std::vector<Monster*> activeMonsters;
+	for (auto& pair : monsters)
+	{
+		for (auto& monster : pair.second)
+		{
+			if (monster->IsActive())
+			{
+				activeMonsters.push_back(monster);
+			}
+		}
+	}
+	return activeMonsters;
+}
+
 Monster* MonsterPoolManager::GetMonster(std::string name)
 {
 	MonsterPool* obj = poolContainer.find(name)->second;
