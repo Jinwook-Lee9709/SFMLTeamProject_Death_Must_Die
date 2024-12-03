@@ -22,3 +22,8 @@ const json& SkillTable::Get(const std::string& skillId)
 {
 	return TABLE[skillId];
 }
+
+const json& SkillTable::GetAll()
+{
+	return TABLE;
+}

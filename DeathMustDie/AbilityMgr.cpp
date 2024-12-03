@@ -10,6 +10,19 @@ AbilityMgr::AbilityMgr(const std::string& name)
 {
 }
 
+int AbilityMgr::GetRemainAbilityCount()
+{
+	return remainAbility.size();
+}
+
+const std::string& AbilityMgr::GetRandomRemainAbility()
+{
+	int index = Utils::RandomRange(0, remainAbility.size() - 1);
+	auto it = remainAbility.begin();
+	(std::advance(it, index));
+	return *it;
+}
+
 void AbilityMgr::Reset()
 {
 	entityPool = (AttackEntityPoolMgr*)SCENE_MGR.GetCurrentScene()->FindGo("AttackEntityPoolMgr");
@@ -20,11 +33,22 @@ void AbilityMgr::Reset()
 	EVENT_HANDLER.AddEvent("OnAttack", func1);
 	EVENT_HANDLER.AddEvent("OnHit", func2);
 	EVENT_HANDLER.AddEvent("OnDash", func3);
+
+	json skillList = SKILL_TABLE->GetAll();
+	auto it = skillList.begin();
+	while(it != skillList.end())
+	{
+		remainAbility.push_back(it.key());
+	}
+
 }
 
 void AbilityMgr::AddAbility(const std::string& skillId, const std::string& user)
 {
 	json j = SKILL_TABLE->Get(skillId);
+	auto it = std::find(remainAbility.begin(), remainAbility.end(), skillId);
+	remainAbility.erase(it);
+
 	Ability* abil = new Ability(j, entityPool, user, skillId);
 	abil->Reset();
 	switch ((AbilityTriggerType)j["triggerType"].get<int>())

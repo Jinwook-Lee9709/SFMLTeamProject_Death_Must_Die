@@ -14,6 +14,14 @@ struct TextInfo
 	std::string font;
 };
 
+enum class UpgradeType
+{
+	Earn,
+	LevelUp,
+	GradeUp
+};
+
+
 
 class SkillSelectPanel : public GameObject
 {
@@ -23,6 +31,16 @@ protected:
 	Animator animator;
 	std::unordered_map<std::string, sf::Sprite*> sprites;
 	std::unordered_map<std::string, TextGo> texts;
+	std::list<std::pair<std::string, std::string>>  valueTexts;
+
+	int valueCharacterSize;
+	std::string fontId;
+
+	std::vector<std::pair<TextGo, TextGo>> skillValue;
+	sf::RenderTexture* texBuf;
+	sf::Sprite canvas;
+	float opacity;
+
 	//sf::Sprite Panel;
 	//sf::Sprite rarityFrame;
 	//TextGo skillName;
@@ -30,10 +48,6 @@ protected:
 	//TextGo rarityText;
 	//TextGo skillType;
 	//TextGo instruct;
-	std::vector<std::pair<TextGo, TextGo>> skillValue;
-	sf::RenderTexture* texBuf;
-	sf::Sprite canvas;
-	float opacity;
 public:
 	SkillSelectPanel(const std::string& name = "");
 	~SkillSelectPanel() = default;
@@ -52,6 +66,12 @@ public:
 	void Draw(sf::RenderWindow& window) override;
 
 	void SetComponent();
+	void UpdateDisplay(const json& skillInfo, UpgradeType type);
+	void CreateValueText(int count);
+	void SetValueText(const json& valueText);
+
+	const std::string& SkillTypeToString(const AbilityType& type);
+	const std::string& GradeToString(const AbilityGrade& grade);
 };
 
 

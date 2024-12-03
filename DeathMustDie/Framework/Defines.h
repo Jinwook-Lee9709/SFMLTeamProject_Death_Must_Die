@@ -55,6 +55,14 @@ enum class AbilityGrade
 	Legend,
 };
 
+AbilityGrade& operator++(AbilityGrade& abilitiy) {
+	if (abilitiy == AbilityGrade::Legend) {
+		throw std::out_of_range("Cannot increment beyond the last enum value.");
+	}
+	abilitiy = (AbilityGrade)((int)(abilitiy) + 1);
+	return abilitiy;
+}
+
 enum class AbilityType
 {
 	Attack,

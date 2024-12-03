@@ -14,6 +14,7 @@ public:
 	~TextGo() = default;
 
 	const sf::Text& GetText();
+	const int& GetFontSize() { return text.getCharacterSize(); }
 
 	void SetOrigin(Origins preset);
 	void SetOrigin(const sf::Vector2f& newOrigin);

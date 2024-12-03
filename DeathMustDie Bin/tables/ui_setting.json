@@ -28,38 +28,39 @@
                     "scale" : [1.0, 1.0],
                     "origin" : 4,
                     "characterSize" : 45,
-                    "font": "Sansation"
+                    "font": "LinBiolinum_RB"
                 }, 
                 "level":{
                     "position" : [225.0, 270.0],
                     "scale" : [1.0, 1.0],
                     "origin" : 4,
                     "characterSize" : 15,
-                    "font": "Sansation"
+                    "font": "LinBiolinum_RB"
                 },
                 "rarityText":{
                     "position" : [225.0, 300.0],
                     "scale" : [1.0, 1.0],
                     "origin" : 4,
                     "characterSize" : 17,
-                    "font": "Sansation"
+                    "font": "LinBiolinum_RB"
                 },
                 "skillType":{
                     "position" : [60.0, 340.0],
                     "scale" : [1.0, 1.0],
                     "origin" : 3,
                     "characterSize" : 17,
-                    "font": "Sansation"
+                    "font": "LinBiolinum_RB"
                 },
                 "instruct":{
                     "position" : [60.0, 380.0],
                     "scale" : [1.0, 1.0],
                     "origin" : 3,
                     "characterSize" : 19,
-                    "font": "Sansation"
+                    "font": "LinBiolinum_RB"
                 }
             },
-            "RenderTextureSize" : [450, 852]
-
+            "RenderTextureSize" : [450, 852],
+            "ValueTextSize" : 19,
+            "ValueTextFont" :"LinBiolinum_RB"
         }
 }

@@ -1,9 +1,11 @@
 #pragma once
 #include "GameObject.h"
 
+class AbilityMgr;
 class UISkillSelect;
 
-class GameManager : public GameObject
+
+class GameMgr : public GameObject
 {
 public:
 	enum class Status
@@ -17,10 +19,11 @@ protected:
 	Status beforeStatus;
 	Status currentStatus;
 	
+	AbilityMgr* abilMgr;
 	UISkillSelect* skillSelectUi;
 public:
-	GameManager(const std::string& name = "");
-	~GameManager() = default;
+	GameMgr(const std::string& name = "");
+	~GameMgr() = default;
 
 
 	void Init() override;
@@ -30,4 +33,6 @@ public:
 	void UpdateIdle(float dt);
 	void UpdateSelectSkill(float dt);
 	void Draw(sf::RenderWindow& window) override;
+
+	void SelectSkill();
 };

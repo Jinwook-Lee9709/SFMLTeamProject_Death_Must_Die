@@ -64,7 +64,8 @@
                 "background" : "resource/texture/TerrainWilderness_Spr_01.png"
              },
              "Font" :{
-                 "Sansation" : "fonts/Sansation.ttf"
+                 "Sansation" : "fonts/Sansation.ttf",
+                 "LinBiolinum_RB" : "resource/fonts/LinBiolinum_RB.otf"
              },
              "Sound" :{
                  

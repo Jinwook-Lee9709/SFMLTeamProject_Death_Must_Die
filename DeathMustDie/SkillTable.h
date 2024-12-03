@@ -13,5 +13,6 @@ public:
     void Release() override;
 
     const json& Get(const std::string& skillId);
+    const json& GetAll();
 };
 

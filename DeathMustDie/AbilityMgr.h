@@ -24,11 +24,16 @@ private:
 	std::vector<std::pair<CoolTime, Ability*>> autoCast;
 	std::vector<Ability*> earn;
 
+	//RemainAbilityList
+	std::list<std::string> remainAbility;
 	//Reference
 	AttackEntityPoolMgr* entityPool;
 public:
 	AbilityMgr(const std::string& name = "AbilityMgr");
 	~AbilityMgr() = default;
+
+	int GetRemainAbilityCount();
+	const std::string& GetRandomRemainAbility();
 
 	void Reset() override;
 	void AddAbility(const std::string& skillId, const std::string& user = "Player");

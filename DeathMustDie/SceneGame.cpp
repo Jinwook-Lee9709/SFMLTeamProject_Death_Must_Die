@@ -7,7 +7,7 @@
 #include "TileMap.h"
 #include "MonsterSpawner.h"
 #include "UISkillSelect.h"
-#include "GameManager.h"
+#include "GameMgr.h"
 
 SceneGame::SceneGame()
 	: Scene(SceneIds::Game)
@@ -38,7 +38,7 @@ void SceneGame::Enter()
 
 	AddGo(new AttackEntityPoolMgr("AttackEntityPoolMgr"));
 	AddGo(new CalculatorMgr("CalculatorMgr"));
-	AddGo(new GameManager("GameManager"));
+	AddGo(new GameMgr("GameMgr"));
 	abilMgr = AddGo(new AbilityMgr("AbilityMgr"));
 	map = AddGo(new TileMap("map"));
 	MPMgr = AddGo(new MonsterPoolManager("monsterPoolMgr"));
