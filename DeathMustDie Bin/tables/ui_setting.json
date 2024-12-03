@@ -1,0 +1,65 @@
+{
+   "SkillSelect":
+   {
+        
+   },
+    "SkillSelectPanel":
+        {
+            "Sprites":
+            {
+                "panel":
+                {
+                    "position" : [0.0, 0.0],
+                    "scale" : [3.0, 3.0],
+                    "origin" : 0
+                },
+                "rarityFrame":
+                {
+                    "position" : [75.0, 100.0],
+                    "scale" : [1.0, 1.0],
+                    "origin" : 0
+                }
+
+            },
+            "Texts":
+            {
+                "skillName":{
+                    "position" : [225.0, 220.0],
+                    "scale" : [1.0, 1.0],
+                    "origin" : 4,
+                    "characterSize" : 45,
+                    "font": "Sansation"
+                }, 
+                "level":{
+                    "position" : [225.0, 270.0],
+                    "scale" : [1.0, 1.0],
+                    "origin" : 4,
+                    "characterSize" : 15,
+                    "font": "Sansation"
+                },
+                "rarityText":{
+                    "position" : [225.0, 300.0],
+                    "scale" : [1.0, 1.0],
+                    "origin" : 4,
+                    "characterSize" : 17,
+                    "font": "Sansation"
+                },
+                "skillType":{
+                    "position" : [60.0, 340.0],
+                    "scale" : [1.0, 1.0],
+                    "origin" : 3,
+                    "characterSize" : 17,
+                    "font": "Sansation"
+                },
+                "instruct":{
+                    "position" : [60.0, 380.0],
+                    "scale" : [1.0, 1.0],
+                    "origin" : 3,
+                    "characterSize" : 19,
+                    "font": "Sansation"
+                }
+            },
+            "RenderTextureSize" : [450, 852]
+
+        }
+}

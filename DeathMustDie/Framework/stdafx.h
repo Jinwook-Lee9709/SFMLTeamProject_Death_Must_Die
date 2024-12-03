@@ -31,6 +31,7 @@ using json = nlohmann::json;
 #include "StringTable.h"
 #include "SkillTable.h"
 #include "MonsterTable.h"
+#include "UISettingTable.h"
 #include "DataTableMgr.h"
 #include "ResourceTableManager.h"
 #include "HitBox.h"

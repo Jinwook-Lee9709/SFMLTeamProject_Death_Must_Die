@@ -1,5 +1,7 @@
 #pragma once
 
+#define VAR_TO_STRING(var) #var
+
 enum class Languages
 {
 	Korean,

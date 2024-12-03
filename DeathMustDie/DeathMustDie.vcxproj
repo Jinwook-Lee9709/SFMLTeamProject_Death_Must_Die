@@ -182,6 +182,7 @@
     <ClCompile Include="Framework\StringTable.cpp" />
     <ClCompile Include="Framework\Utils.cpp" />
     <ClCompile Include="AttackEntityPoolMgr.cpp" />
+    <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="Monster.cpp" />
     <ClCompile Include="MonsterPoolManager.cpp" />
@@ -192,6 +193,7 @@
     <ClCompile Include="SceneGame.cpp" />
     <ClCompile Include="Framework\Variables.cpp" />
     <ClCompile Include="SideEffect.cpp" />
+    <ClCompile Include="SkillSelectPanel.cpp" />
     <ClCompile Include="SkillTable.cpp" />
     <ClCompile Include="SummonEntity.cpp" />
     <ClCompile Include="TileMap.cpp" />
@@ -199,6 +201,9 @@
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="FallAttack.cpp" />
     <ClCompile Include="TrailEntity.cpp" />
+    <ClCompile Include="UIPopup.cpp" />
+    <ClCompile Include="UISettingTable.cpp" />
+    <ClCompile Include="UISkillSelect.cpp" />
     <ClCompile Include="WedgeAttack.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -241,6 +246,7 @@
     <ClInclude Include="Framework\StringTable.h" />
     <ClInclude Include="Framework\Utils.h" />
     <ClInclude Include="AttackEntityPoolMgr.h" />
+    <ClInclude Include="GameManager.h" />
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="Monster.h" />
     <ClInclude Include="MonsterPool.h" />
@@ -252,6 +258,7 @@
     <ClInclude Include="SceneGame.h" />
     <ClInclude Include="Framework\Variables.h" />
     <ClInclude Include="SideEffect.h" />
+    <ClInclude Include="SkillSelectPanel.h" />
     <ClInclude Include="SkillTable.h" />
     <ClInclude Include="SummonEntity.h" />
     <ClInclude Include="TileMap.h" />
@@ -259,6 +266,9 @@
     <ClInclude Include="Timer.h" />
     <ClInclude Include="FallAttack.h" />
     <ClInclude Include="TrailEntity.h" />
+    <ClInclude Include="UIPopup.h" />
+    <ClInclude Include="UISettingTable.h" />
+    <ClInclude Include="UISkillSelect.h" />
     <ClInclude Include="WedgeAttack.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

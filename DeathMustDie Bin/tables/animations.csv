@@ -24,3 +24,6 @@ knight_attack_range,"21",0,3,7,408,290
 knight_dash,"28",0,4,14,78,65
 knight_dash_glow,"28",0,3,9,78,65
 dash_spr,"28",0,3,7,35,85
+boon_appear,"10",0,4,13,150,284
+boon_hover,"10",0,4,11,150,284
+boon_selected,"10",0,2,4,378,319

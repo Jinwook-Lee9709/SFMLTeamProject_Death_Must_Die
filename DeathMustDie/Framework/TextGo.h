@@ -13,6 +13,8 @@ public:
 	TextGo(const std::string& fontId, const std::string& name = "");
 	~TextGo() = default;
 
+	const sf::Text& GetText();
+
 	void SetOrigin(Origins preset);
 	void SetOrigin(const sf::Vector2f& newOrigin);
 
@@ -27,8 +29,8 @@ public:
 	void SetCharacterSize(int size);
 	void SetOutline(int tickness, sf::Color color);
 	void SetFont(const std::string& font);
+	void SetFont(const sf::Font& font);
 
-	
 	sf::FloatRect GetLocalBounds();
 	sf::FloatRect GetGlobalBounds();
 

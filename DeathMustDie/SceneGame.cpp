@@ -6,6 +6,8 @@
 #include "Player.h"
 #include "TileMap.h"
 #include "MonsterSpawner.h"
+#include "UISkillSelect.h"
+#include "GameManager.h"
 
 SceneGame::SceneGame()
 	: Scene(SceneIds::Game)
@@ -36,10 +38,13 @@ void SceneGame::Enter()
 
 	AddGo(new AttackEntityPoolMgr("AttackEntityPoolMgr"));
 	AddGo(new CalculatorMgr("CalculatorMgr"));
+	AddGo(new GameManager("GameManager"));
 	abilMgr = AddGo(new AbilityMgr("AbilityMgr"));
 	map = AddGo(new TileMap("map"));
 	MPMgr = AddGo(new MonsterPoolManager("monsterPoolMgr"));
 	monsterSpawn = AddGo(new MonsterSpawner(MPMgr, mapBound, 30));
+	auto obj = AddGo(new UISkillSelect("UISkillSelect"));
+	obj->sortingLayer = SortingLayers::UI;
 	ApplyAddGo();
 
 	Scene::Enter();
