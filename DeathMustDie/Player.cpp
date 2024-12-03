@@ -107,6 +107,7 @@ void Player::Update(float dt)
 	Move(dt);
 	Attack(dt);
 	Dash(dt);
+	UpdateDashCount();
 	
 	if (InputMgr::GetKeyDown(sf::Keyboard::K))
 		Damage(10.f);
@@ -158,7 +159,7 @@ void Player::Draw(sf::RenderWindow& window)
 		window.draw(body4);
 	}
 	
-	//hitbox.Draw(window);
+	hitbox.Draw(window);
 	window.draw(body);
 	window.draw(backHpBar);
 	window.draw(hpBar);
@@ -369,8 +370,6 @@ void Player::Dash(float dt)
 	{
 		isDash = false;
 	}
-	UpdateDashCount();
-	
 }
 
 void Player::SaveStat()
@@ -399,6 +398,11 @@ void Player::LoadStat()
 Stat& Player::GetStat()
 {
 	return this->baseStat;
+}
+
+Stat& Player::GetCurStat()
+{
+	return this->curStat;
 }
 
 void Player::ChangeAttackColor(sf::Color color)

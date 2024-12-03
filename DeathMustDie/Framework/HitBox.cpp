@@ -11,6 +11,7 @@ HitBox::HitBox()
 bool HitBox::CheckContains(sf::Vector2f coord)
 {
 	rect.getGlobalBounds().contains(coord);
+	std::cout << rect.getGlobalBounds().left << " " << rect.getGlobalBounds().top << std::endl;
 	return false;
 }
 

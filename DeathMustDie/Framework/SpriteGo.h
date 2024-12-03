@@ -30,6 +30,7 @@ public:
 
 	void SetFillColor(const sf::Color& color);
 	void ChangeTexture(const std::string& texId);
+	void SetTextureRect(const sf::IntRect& rect);
 
 	virtual sf::Vector2f GetSize();
 };

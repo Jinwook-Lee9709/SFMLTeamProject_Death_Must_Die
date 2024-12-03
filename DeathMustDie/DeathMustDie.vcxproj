@@ -194,6 +194,7 @@
     <ClCompile Include="Framework\Variables.cpp" />
     <ClCompile Include="SideEffect.cpp" />
     <ClCompile Include="SkillTable.cpp" />
+    <ClCompile Include="StatusUi.cpp" />
     <ClCompile Include="TileMap.cpp" />
     <ClCompile Include="TileMap2.cpp" />
     <ClCompile Include="Timer.cpp" />
@@ -254,6 +255,7 @@
     <ClInclude Include="Framework\Variables.h" />
     <ClInclude Include="SideEffect.h" />
     <ClInclude Include="SkillTable.h" />
+    <ClInclude Include="StatusUi.h" />
     <ClInclude Include="TileMap.h" />
     <ClInclude Include="TileMap2.h" />
     <ClInclude Include="Timer.h" />

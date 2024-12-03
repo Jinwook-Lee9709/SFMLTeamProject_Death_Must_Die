@@ -175,13 +175,15 @@ public:
 
 	void SetStatus(Status cur);
 	void Move(float dt);
-
 	void Attack(float dt);
 	void Dash(float dt);
+
+	int GetDashCharge() const { return dashCharge; }
 
 	void SaveStat();
 	void LoadStat();
 	Stat& GetStat();
+	Stat& GetCurStat();
 
 	void ChangeAttackColor(sf::Color color);
 

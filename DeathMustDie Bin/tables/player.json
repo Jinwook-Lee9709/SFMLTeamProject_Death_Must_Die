@@ -13,7 +13,7 @@
         "summonSlot": 1
     },
     "dash": {
-        "dashCharge": 3,
+        "dashCharge": 2,
         "dashDistance": 230,
         "dashRechargeTime": 1.6
     },

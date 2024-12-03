@@ -69,6 +69,32 @@
              "Sound" :{
                  
              }
+        },
+        "UI":{
+          "Texture" : {
+                "boonsButton" : "resource/texture/Sprite/playUi/BoonsButton_Spr.png",
+                "boonsButtonGlow" : "resource/texture/Sprite/playUi/BoonsButton_Spr_Glow.png",
+                "inventoryButton" : "resource/texture/Sprite/playUi/InventoryButton_Spr.png",
+                "inventoryButtonGlow" : "resource/texture/Sprite/playUi/InventoryButton_Spr_Glow.png",
+                "expFrame" : "resource/texture/Sprite/playUi/ExperienceFrame_Spr_01.png",
+                "expUnderFrame" : "resource/texture/Sprite/playUi/Experience_Spr_UnderGlass.png",
+                "exp" : "resource/texture/Sprite/playUi/Experience_Spr_Fill.png",
+                "portrait" : "resource/texture/Sprite/playUi/PortraitFrame_Spr_01.png",
+                "knight" : "resource/texture/Sprite/playUi/Knight_Spr_Portrait.png",
+                "level" : "resource/texture/Sprite/playUi/ExperienceLevelIndicator_Spr_01.png",
+                "hpFrame" : "resource/texture/Sprite/playUi/HealthFrame_Spr_02.png",
+                "hp" : "resource/texture/Sprite/playUi/HealthBar_Spr_01.png",
+                "hpTrace" : "resource/texture/Sprite/playUi/HealthBar_Spr_01_Trace.png",
+                "staminaFrame" : "resource/texture/Sprite/playUi/Stamina_Spr_Frame.png",
+                "stamina" : "resource/texture/Sprite/playUi/Stamina_Spr_Fill.png",
+                "staminaFrameEnd" : "resource/texture/Sprite/playUi/Stamina_Spr_End.png"
+             },
+             "Font" :{
+                 "Sansation" : "fonts/Sansation.ttf"
+             },
+             "Sound" :{
+                 
+             }  
         }
   
     }
