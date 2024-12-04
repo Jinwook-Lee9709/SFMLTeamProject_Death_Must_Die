@@ -1,30 +1,30 @@
 #pragma once
 #include "Monster.h"
 
-enum class Status
+enum class BossStatus
 {
 	None = -1,
 	Move,
 	Attack,
 	GetHit,
+	Channel,
 	Death,
 };
 
-class AniSlime;
 class Player;
 
-class AniSkeleton : public Monster
+class AniBoss : public Monster
 {
 public:
-	struct SkeletonInfo
+	struct BossInfo
 	{
 		std::string walkAnimId;
-		std::string attackAnimId;
 		std::string getHitAnimId;
+		std::string channelAnimId;
 		std::string deathAnimId;
 		int walkFrame;
-		int attackFrame;
 		int getHitFrame;
+		int channelFrame;
 		int deathFrame;
 		float damage;
 		float speed;
@@ -32,19 +32,16 @@ public:
 		float ellipseWidth;
 		float ellipseHeight;
 
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(SkeletonInfo, walkAnimId, attackAnimId, getHitAnimId, deathAnimId,
-			walkFrame, attackFrame, getHitFrame, deathFrame,
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(BossInfo, walkAnimId, getHitAnimId, channelAnimId, deathAnimId,
+			walkFrame, getHitFrame, channelFrame, deathFrame,
 			damage, speed, hp, ellipseWidth, ellipseHeight);
 	};
-
 protected:
 	sf::Sprite body;
 	Animator Anim;
 	std::string textureId;
-	Status beforeStatus = Status::None;
-	Status currentStatus = Status::Move;
-
-	Player* player;
+	BossStatus beforeStatus = BossStatus::None;
+	BossStatus currentStatus = BossStatus::Move;
 
 	sf::Vector2f direction;
 	float speed = 70.f;
@@ -54,12 +51,12 @@ protected:
 	bool isAttack = false;
 	bool isDead = false;
 
-	SkeletonInfo info;
+	Player* player;
+	BossInfo info;
 	Scene* scene;
-	HitBox hitbox2;
 public:
-	AniSkeleton(const std::string& name = "");
-	~AniSkeleton() = default;
+	AniBoss(const std::string& name = "");
+	~AniBoss() = default;
 
 	void SetPosition(const sf::Vector2f& pos) override;
 	void SetRotation(float angle) override;
@@ -71,7 +68,6 @@ public:
 	sf::FloatRect GetGlobalBound() { return hitbox.rect.getGlobalBounds(); }
 	sf::Vector2f GetPosition() { return position; }
 	sf::Sprite GetSprite() const { return body; }
-	HitBox& GetHitBox2() { return hitbox2; }
 
 	bool GetIsAttack() { return isAttack; }
 	bool GetIsDead() { return isDead; }
@@ -83,6 +79,7 @@ public:
 	void MoveUpdate(float dt);
 	void AttackUpdate(float dt);
 	void GetHitUpdate(float dt);
+	void ChannelUpdate(float dt);
 	void DeathUpdate(float dt);
 	void Draw(sf::RenderWindow& window) override;
 

@@ -40,7 +40,8 @@ void MonsterSpawner::SpawnMonster(const std::string& monsterName)
     for (int i = 0; i < poolSize; i++)
     {
         Monster* monster = poolManager->GetMonster(monsterName);
-        if (monster) {
+        if (monster)
+        {
             monster->SetPosition(GenerateSpawnPosition());
             monster->SetScale({ 3.f, 3.f });
             currentMonsterCount++; 
@@ -62,13 +63,23 @@ void MonsterSpawner::Reset()
 
 void MonsterSpawner::Update(float dt) 
 {
-    static float spawnTimer = 0.0f; 
-    const float spawnInterval = 2.0f; 
-
     spawnTimer += dt;
+    slimeSpawnTimer += dt;
     if (spawnTimer >= spawnInterval) 
     {
         SpawnMonster("Skeleton"); 
         spawnTimer = 0.0f; 
+    }
+
+    if (slimeSpawnTimer >= 30.0f)
+    {
+        isSlimeSpawn = true;
+        slimeSpawnTimer = 0.0f;
+    }
+
+    if (isSlimeSpawn && slimeSpawnTimer >= slimeSpawnInterval)
+    {
+        SpawnMonster("Slime");
+        spawnTimer = 0.0f;
     }
 }

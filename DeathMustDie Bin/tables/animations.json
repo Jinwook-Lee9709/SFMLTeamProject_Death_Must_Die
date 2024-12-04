@@ -130,5 +130,25 @@
     {
         "ID": "dash_spr",
         "TEX_ID": "resource/texture/Sheet/player_knight/dash_spr_sheet.png"
+    },
+    "SORCEROR_WALK" :
+    {
+        "ID": "sorceror_walk",
+        "TEX_ID": "resource/texture/Sheet/boss/Sorceror_Walk_Sheet.png"
+    },
+    "SORCEROR_GETHIT" :
+    {
+        "ID": "sorceror_gethit",
+        "TEX_ID": "resource/texture/Sheet/boss/Sorceror_GetHit_Sheet.png"
+    },
+    "SORCEROR_CHANNEL" :
+    {
+        "ID": "sorceror_channel",
+        "TEX_ID": "resource/texture/Sheet/boss/Sorceror_Channel_Sheet.png"
+    },
+    "SORCEROR_DEATH" :
+    {
+        "ID": "sorceror_death",
+        "TEX_ID": "resource/texture/Sheet/boss/Sorceror_Death_Sheet.png"
     }
 }

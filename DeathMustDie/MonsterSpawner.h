@@ -6,7 +6,8 @@
 
 class Player;
 
-class MonsterSpawner : public GameObject {
+class MonsterSpawner : public GameObject 
+{
 private:
     sf::FloatRect mapBounds; // 맵 크기
     MonsterPoolManager* poolManager; // MonsterPoolManager와 연동
@@ -18,6 +19,13 @@ private:
     int currentMonsterCount = 0;  // 현재 활성화된 몬스터 수
     int poolSize = 10;
 
+    float spawnTimer = 0.0f;
+    float spawnInterval = 2.0f;
+
+    float slimeSpawnTimer = 0.0f;
+    float slimeSpawnInterval = 2.0f;
+
+    bool isSlimeSpawn = false;
 
     sf::Vector2f GenerateSpawnPosition();
 

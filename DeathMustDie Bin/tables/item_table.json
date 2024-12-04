@@ -1,0 +1,11 @@
+{
+     "Gem":
+     {
+          "textureId": "resource/texture/Sprite/gem.png"
+     },
+
+     "Heart":
+     {
+          "textureId": "resource/texture/Sprite/gem.png"
+     }
+}

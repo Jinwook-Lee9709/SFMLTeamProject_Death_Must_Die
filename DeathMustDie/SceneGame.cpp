@@ -7,6 +7,9 @@
 #include "Player.h"
 #include "TileMap.h"
 #include "MonsterSpawner.h"
+#include "ItemSpawner.h"
+#include "ItemPoolManager.h"
+#include "AniBoss.h"
 
 SceneGame::SceneGame()
 	: Scene(SceneIds::Game)
@@ -39,8 +42,10 @@ void SceneGame::Enter()
 	AddGo(new CalculatorMgr("CalculatorMgr"));
 	abilMgr = AddGo(new AbilityMgr("AbilityMgr"));
 	map = AddGo(new TileMap("map"));
-	skeletonMPMgr = AddGo(new MonsterPoolManager("monsterPoolMgr"));
-	skeletonSpawn = AddGo(new MonsterSpawner(skeletonMPMgr, mapBound, 30));
+	MPMgr = AddGo(new MonsterPoolManager("monsterPoolMgr"));
+	itemMPMgr = AddGo(new ItemPoolManager("itemPoolMgr"));
+	skeletonSpawn = AddGo(new MonsterSpawner(MPMgr, mapBound, 30));
+	itemSpawn = AddGo(new ItemSpawner(itemMPMgr));
 
 	ApplyAddGo();
 
@@ -80,6 +85,10 @@ void SceneGame::Update(float dt)
 	worldView.setCenter(player->GetPosition());
 	Scene::Update(dt);
 
+	if (MPMgr)
+	{
+		MPMgr->CheckCollisions();
+	}
 }
 
 void SceneGame::FixedUpdate(float dt)

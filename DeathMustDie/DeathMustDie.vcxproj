@@ -150,6 +150,7 @@
   <ItemGroup>
     <ClCompile Include="Ability.cpp" />
     <ClCompile Include="AbilityMgr.cpp" />
+    <ClCompile Include="AniBoss.cpp" />
     <ClCompile Include="AttackEntity.cpp" />
     <ClCompile Include="AniSkeleton.cpp" />
     <ClCompile Include="AniSlime.cpp" />
@@ -182,6 +183,11 @@
     <ClCompile Include="Framework\StringTable.cpp" />
     <ClCompile Include="Framework\Utils.cpp" />
     <ClCompile Include="AttackEntityPoolMgr.cpp" />
+    <ClCompile Include="Gem.cpp" />
+    <ClCompile Include="Item.cpp" />
+    <ClCompile Include="ItemPoolManager.cpp" />
+    <ClCompile Include="ItemSpawner.cpp" />
+    <ClCompile Include="ItemTable.cpp" />
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="Monster.cpp" />
     <ClCompile Include="MonsterPoolManager.cpp" />
@@ -204,6 +210,7 @@
   <ItemGroup>
     <ClInclude Include="Ability.h" />
     <ClInclude Include="AbilityMgr.h" />
+    <ClInclude Include="AniBoss.h" />
     <ClInclude Include="AttackEntity.h" />
     <ClInclude Include="AttackEntityPool.h" />
     <ClInclude Include="AniSkeleton.h" />
@@ -241,6 +248,12 @@
     <ClInclude Include="Framework\StringTable.h" />
     <ClInclude Include="Framework\Utils.h" />
     <ClInclude Include="AttackEntityPoolMgr.h" />
+    <ClInclude Include="Gem.h" />
+    <ClInclude Include="Item.h" />
+    <ClInclude Include="ItemPool.h" />
+    <ClInclude Include="ItemPoolManager.h" />
+    <ClInclude Include="ItemSpawner.h" />
+    <ClInclude Include="ItemTable.h" />
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="Monster.h" />
     <ClInclude Include="MonsterPool.h" />

@@ -81,7 +81,7 @@ void TrailEntity::FixedUpdate(float dt)
 			it++;
 		}
 	}
-	sideEffect->TriggerEffect(monsterBuf);
+	sideEffect->TriggerEffect(monsterBuf, dt);
 }
 
 void TrailEntity::Draw(sf::RenderWindow& window)

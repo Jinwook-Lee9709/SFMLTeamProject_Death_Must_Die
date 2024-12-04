@@ -85,7 +85,7 @@ void FallAttack::FixedUpdate(float dt)
 			}
 		}
 	}
-	sideEffect->TriggerEffect(monsterBuf);
+	sideEffect->TriggerEffect(monsterBuf, dt);
 }
 
 void FallAttack::Draw(sf::RenderWindow& window)
