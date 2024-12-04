@@ -17,6 +17,7 @@ protected:
 	std::string userName;
 	GameObject* user;
 
+	float level = 1;
 	float timer = 0;
 	float elapsedTimer = 0;
 	float interval = 0;
@@ -46,7 +47,12 @@ public:
 	void SetSpawnFunc();
 	void UseAbility();
 
+	void ChangeInfo(const json& j);
+	void SetLevel(int level);
+
 	AbilityGrade GetGrade() const { return this->grade; }
 	void SetGrade(const AbilityGrade& grade) { this->grade = grade; }
 	AbilityType GetType() const { return type; }
+	int GetLevel() const { return level; }
+	json GetInfo() const { return info; }
 };

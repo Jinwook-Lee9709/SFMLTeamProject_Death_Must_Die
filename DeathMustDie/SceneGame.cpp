@@ -6,7 +6,7 @@
 #include "Player.h"
 #include "TileMap.h"
 #include "MonsterSpawner.h"
-#include "UISkillSelect.h"
+#include "UIAbilitySelect.h"
 #include "GameMgr.h"
 
 SceneGame::SceneGame()
@@ -43,7 +43,7 @@ void SceneGame::Enter()
 	map = AddGo(new TileMap("map"));
 	MPMgr = AddGo(new MonsterPoolManager("monsterPoolMgr"));
 	monsterSpawn = AddGo(new MonsterSpawner(MPMgr, mapBound, 30));
-	auto obj = AddGo(new UISkillSelect("UISkillSelect"));
+	auto obj = AddGo(new UIAbilitySelect("UIAbilitySelect"));
 	obj->sortingLayer = SortingLayers::UI;
 	ApplyAddGo();
 

@@ -39,7 +39,8 @@ void TextGo::Reset()
 	{
 		SetString(stringId);
 	}
-	
+	SetOrigin(originPreset);
+
 }
 
 void TextGo::SetPosition(const sf::Vector2f& pos)
@@ -98,6 +99,11 @@ void TextGo::SetString(const std::wstring& str)
 {
 	text.setString(str);
 	SetOrigin(originPreset);
+}
+
+void TextGo::SetStringByString(const std::string& str)
+{
+	text.setString(str);
 }
 
 

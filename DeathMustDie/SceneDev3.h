@@ -8,7 +8,7 @@ class MonsterSpawner;
 class SceneDev3 : public Scene
 {
 private:
-
+	Player* player;
 	sf::Sprite sprite;
 	sf::Sprite sprite2;
 	sf::Text text;

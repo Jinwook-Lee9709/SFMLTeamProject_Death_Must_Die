@@ -14,16 +14,9 @@ struct TextInfo
 	std::string font;
 };
 
-enum class UpgradeType
-{
-	Earn,
-	LevelUp,
-	GradeUp
-};
 
 
-
-class SkillSelectPanel : public GameObject
+class AbilitySelectPanel : public GameObject
 {
 public:
 	
@@ -49,8 +42,8 @@ protected:
 	//TextGo skillType;
 	//TextGo instruct;
 public:
-	SkillSelectPanel(const std::string& name = "");
-	~SkillSelectPanel() = default;
+	AbilitySelectPanel(const std::string& name = "");
+	~AbilitySelectPanel() = default;
 
 	void SetPosition(const sf::Vector2f& pos) override;
 	void SetRotation(float angle) override;
@@ -70,8 +63,8 @@ public:
 	void CreateValueText(int count);
 	void SetValueText(const json& valueText);
 
-	const std::string& SkillTypeToString(const AbilityType& type);
-	const std::string& GradeToString(const AbilityGrade& grade);
+	std::string AbilityTypeToString(const AbilityType& type);
+	std::string GradeToString(const AbilityGrade& grade);
 };
 
 

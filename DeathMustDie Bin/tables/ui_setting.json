@@ -15,9 +15,9 @@
                 },
                 "rarityFrame":
                 {
-                    "position" : [75.0, 100.0],
-                    "scale" : [1.0, 1.0],
-                    "origin" : 0
+                    "position" : [32.0, 115.0],
+                    "scale" : [3.0, 3.0],
+                    "origin" : 1
                 }
 
             },
@@ -44,15 +44,15 @@
                     "characterSize" : 17,
                     "font": "LinBiolinum_RB"
                 },
-                "skillType":{
-                    "position" : [60.0, 340.0],
+                "abilityType":{
+                    "position" : [50.0, 340.0],
                     "scale" : [1.0, 1.0],
                     "origin" : 3,
                     "characterSize" : 17,
                     "font": "LinBiolinum_RB"
                 },
                 "instruct":{
-                    "position" : [60.0, 380.0],
+                    "position" : [50.0, 380.0],
                     "scale" : [1.0, 1.0],
                     "origin" : 3,
                     "characterSize" : 19,

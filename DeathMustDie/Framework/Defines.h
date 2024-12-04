@@ -53,9 +53,10 @@ enum class AbilityGrade
 	Expert,
 	Master,
 	Legend,
+	Count
 };
 
-AbilityGrade& operator++(AbilityGrade& abilitiy) {
+inline AbilityGrade& operator++(AbilityGrade& abilitiy) {
 	if (abilitiy == AbilityGrade::Legend) {
 		throw std::out_of_range("Cannot increment beyond the last enum value.");
 	}
@@ -103,10 +104,18 @@ enum class AttackEntityType
 	BasicAttack,
 };
 
+enum class UpgradeType
+{
+	Earn,
+	LevelUp,
+	GradeUp
+};
+
 enum class DebuffType
 {
 	Burn
 };
+
 
 enum class MonsterTypes
 {

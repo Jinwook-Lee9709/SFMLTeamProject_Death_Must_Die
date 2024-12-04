@@ -27,6 +27,7 @@ public:
 	void Set(int size, const sf::Color& color = sf::Color::White);
 	void SetString(const std::string& id);
 	void SetString(const std::wstring& str);
+	void SetStringByString(const std::string& str);
 	void SetCharacterSize(int size);
 	void SetOutline(int tickness, sf::Color color);
 	void SetFont(const std::string& font);

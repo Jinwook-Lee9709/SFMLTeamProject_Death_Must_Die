@@ -15,6 +15,8 @@ void Ability::Reset()
 
 	player = (Player*)SCENE_MGR.GetCurrentScene()->FindGo("Player");
 	calc = (CalculatorMgr*)SCENE_MGR.GetCurrentScene()->FindGo("CalculatorMgr");
+
+ 
 }
 
 void Ability::Update(float dt)
@@ -224,3 +226,19 @@ void Ability::UseAbility()
 	isActive = true;
 }
 
+void Ability::ChangeInfo(const json& j)
+{
+	json originalJson = info;
+	for (auto it = j.begin(); it != j.end(); ++it) {
+		if (originalJson["ChangeableValue"].contains(it.key()))
+		{
+			originalJson["ChangeableValue"][it.key()] = it.value();
+		}
+	}
+	info = originalJson;
+}
+
+void Ability::SetLevel(int level)
+{
+	this->level = level;
+}

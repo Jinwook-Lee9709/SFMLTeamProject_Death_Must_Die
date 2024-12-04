@@ -1,30 +1,30 @@
 #include "stdafx.h"
-#include "SkillSelectPanel.h"
+#include "AbilitySelectPanel.h"
 
-SkillSelectPanel::SkillSelectPanel(const std::string& name)
+AbilitySelectPanel::AbilitySelectPanel(const std::string& name)
 	: GameObject(name)
 {
 }
 
-void SkillSelectPanel::SetPosition(const sf::Vector2f& pos)
+void AbilitySelectPanel::SetPosition(const sf::Vector2f& pos)
 {
 	position = pos;
 	canvas.setPosition(position);
 }
 
-void SkillSelectPanel::SetRotation(float angle)
+void AbilitySelectPanel::SetRotation(float angle)
 {
 	rotation = angle;
 	canvas.setRotation(rotation);
 }
 
-void SkillSelectPanel::SetScale(const sf::Vector2f& s)
+void AbilitySelectPanel::SetScale(const sf::Vector2f& s)
 {
 	scale = s;
 	canvas.setScale(scale);
 }
 
-void SkillSelectPanel::SetOrigin(Origins preset)
+void AbilitySelectPanel::SetOrigin(Origins preset)
 {
 	originPreset = preset;
 	if (originPreset != Origins::Custom)
@@ -33,17 +33,17 @@ void SkillSelectPanel::SetOrigin(Origins preset)
 	}
 }
 
-void SkillSelectPanel::SetOrigin(const sf::Vector2f& newOrigin)
+void AbilitySelectPanel::SetOrigin(const sf::Vector2f& newOrigin)
 {
 	originPreset = Origins::Custom;
 	canvas.setOrigin(origin);
 }
 
-void SkillSelectPanel::Init()
+void AbilitySelectPanel::Init()
 {
 }
 
-void SkillSelectPanel::Release()
+void AbilitySelectPanel::Release()
 {
 
 	for (auto& pair : sprites)
@@ -59,13 +59,14 @@ void SkillSelectPanel::Release()
 	delete texBuf;
 }
 
-void SkillSelectPanel::Reset()
+void AbilitySelectPanel::Reset()
 {
 	texBuf = new sf::RenderTexture();
 	SetComponent();
+	sprites["rarityFrame"]->setTexture(GET_TEX("rarityFrame"));
 }
 
-void SkillSelectPanel::Update(float dt)
+void AbilitySelectPanel::Update(float dt)
 {
 	if (InputMgr::GetKeyDown(sf::Keyboard::R))
 	{
@@ -80,7 +81,7 @@ void SkillSelectPanel::Update(float dt)
 	animator.Update(dt);
 }
 
-void SkillSelectPanel::Draw(sf::RenderWindow& window)
+void AbilitySelectPanel::Draw(sf::RenderWindow& window)
 {
 	texBuf->clear();
 	for (auto& pair : sprites) { texBuf->draw(*pair.second); }
@@ -90,7 +91,7 @@ void SkillSelectPanel::Draw(sf::RenderWindow& window)
 	window.draw(canvas);
 }
 
-void SkillSelectPanel::SetComponent()
+void AbilitySelectPanel::SetComponent()
 {
 	sprites.clear();
 	texts.clear();
@@ -136,37 +137,38 @@ void SkillSelectPanel::SetComponent()
 	animator.SetTarget(sprites["panel"]);
 }
 
-void SkillSelectPanel::UpdateDisplay(const json& skillInfo, UpgradeType type)
+void AbilitySelectPanel::UpdateDisplay(const json& skillInfo, UpgradeType type)
 {
 	AbilityGrade grade = skillInfo["grade"].get<AbilityGrade>();
-	texts["skillName"].SetString(skillInfo["name"].get<std::string>());
-	texts["skillType"].SetString(SkillTypeToString(skillInfo["skillType"].get<AbilityType>()));
-	texts["skillType"].SetFillColor(sf::Color(120, 120, 120));
-	texts["instruct"].SetString(STR(skillInfo["grade"].get<std::string>()));
+	texts["skillName"].SetStringByString(skillInfo["name"].get<std::string>());
+	texts["abilityType"].SetStringByString(AbilityTypeToString(skillInfo["abilityType"].get<AbilityType>()));
+	texts["abilityType"].SetFillColor(sf::Color(120, 120, 120));
+	std::wstring instruct = STR(skillInfo["name"].get<std::string>());
+	texts["instruct"].SetString(Utils::ReplaceEscapeSequences(instruct));
 	switch (type)
 	{
 		case UpgradeType::Earn:
 		{
-			texts["level"].SetString("LV.1");
-			texts["rarityText"].SetString(GradeToString(grade));
+			texts["level"].SetStringByString("LV.1");
+			texts["rarityText"].SetStringByString(GradeToString(grade));
 			break;
 		}
 		case UpgradeType::LevelUp:
 		{
 			int level = skillInfo["level"].get<int>();
 			std::string str = "LV." + std::to_string(level) + " -> " + "LV." + std::to_string(level + 1);
-			texts["level"].SetString(str);
-			texts["rarityText"].SetString(GradeToString(grade));
+			texts["level"].SetStringByString(str);
+			texts["rarityText"].SetStringByString(GradeToString(grade));
 			break;
 		}
 		case UpgradeType::GradeUp:
 		{
 			int level = skillInfo["level"].get<int>();
 			std::string str = "LV." + std::to_string(level) + " -> " + "LV." + std::to_string(level + 1);
-			texts["level"].SetString(str);
+			texts["level"].SetStringByString(str);
 			AbilityGrade nextGrade = ++grade;
 			str = GradeToString(grade) + " -> " + GradeToString(nextGrade);
-			texts["rarityText"].SetString(GradeToString(grade));
+			texts["rarityText"].SetStringByString(GradeToString(grade));
 			break;
 		}
 			
@@ -207,9 +209,13 @@ void SkillSelectPanel::UpdateDisplay(const json& skillInfo, UpgradeType type)
 	}
 	CreateValueText(skillInfo["valueCount"].get<int>());
 	SetValueText(skillInfo["valueText"]);
+	for (auto& text : texts)
+	{
+		text.second.Reset();
+	}
 }
 
-void SkillSelectPanel::CreateValueText(int count)
+void AbilitySelectPanel::CreateValueText(int count)
 {
 	valueTexts.clear();
 	for (int i = 0; i < count; i++)
@@ -222,17 +228,17 @@ void SkillSelectPanel::CreateValueText(int count)
 	}
 }
 
-void SkillSelectPanel::SetValueText(const json& valueText)
+void AbilitySelectPanel::SetValueText(const json& valueText)
 {
 	for (auto& pair : valueText)
 	{
 		std::string valueName = pair["valueName"].get<std::string>();
-		std::string value = pair["value"].get<std::string>();
+		std::string value = std::to_string(pair["value"].get<float>());
 
 	}
 }
 
-const std::string& SkillSelectPanel::SkillTypeToString(const AbilityType& type)
+std::string AbilitySelectPanel::AbilityTypeToString(const AbilityType& type)
 {
 	std::string str;
 	switch (type)
@@ -276,7 +282,7 @@ const std::string& SkillSelectPanel::SkillTypeToString(const AbilityType& type)
 	return str;
 }
 
-const std::string& SkillSelectPanel::GradeToString(const AbilityGrade& grade)
+std::string AbilitySelectPanel::GradeToString(const AbilityGrade& grade)
 {
 	std::string str;
 	switch (grade)

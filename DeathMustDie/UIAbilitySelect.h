@@ -1,15 +1,15 @@
 #pragma once
 #include "UIPopup.h"
-#include "SkillSelectPanel.h"
+#include "AbilitySelectPanel.h"
 
-class UISkillSelect : public UIPopup
+class UIAbilitySelect : public UIPopup
 {
 protected:
-	std::vector<SkillSelectPanel> panels;
+	std::vector<AbilitySelectPanel> panels;
 
 public:
-	UISkillSelect(const std::string& name = "");
-	~UISkillSelect() = default;
+	UIAbilitySelect(const std::string& name = "");
+	~UIAbilitySelect() = default;
 
 	void SetPosition(const sf::Vector2f& pos) override;
 	void SetRotation(float angle) override;
@@ -23,4 +23,6 @@ public:
 	void Reset() override;
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
+
+	void SetPanelStatus(std::vector<std::pair<json, UpgradeType>>);
 };

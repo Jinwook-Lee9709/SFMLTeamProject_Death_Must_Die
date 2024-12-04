@@ -8,6 +8,7 @@ public:
 		Skill,
 		Monster,
 		SkillSetting,
+		SkillLevel,
 		Count
 	};
 
