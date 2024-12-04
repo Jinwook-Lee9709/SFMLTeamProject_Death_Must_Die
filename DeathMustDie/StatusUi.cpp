@@ -149,6 +149,8 @@ void StatusUi::SetExpFrame()
 	expUnderFrame.SetPosition({ expFrame.GetPosition().x, expFrame.GetPosition().y - expFrame.GetLocalBounds().height * 0.5f});
 	expUnderFrame.SetFillColor(sf::Color(180, 180, 180, 255));
 	
+	exp.SetTextureRect({ 0,0,0,3 });
+
 	expFrame.SetScale({ 3.f, 3.f });
 	expUnderFrame.SetScale({ 3.f, 3.f });
 	exp.SetScale({ 3.f, 3.f });
@@ -161,7 +163,7 @@ void StatusUi::SetPortrait()
 	portraitFrame = SpriteGo("portrait");
 	portrait = SpriteGo("knight");
 	level = SpriteGo("level");
-	levelNum = TextGo("Sansation");
+	levelNum = TextGo("PtSerifRegular_Font");
 	portraitFrame.Reset();
 	portrait.Reset();
 	level.Reset();
@@ -180,7 +182,7 @@ void StatusUi::SetPortrait()
 	levelNum.SetString(L"1");
 	levelNum.SetCharacterSize(200);
 	levelNum.SetOrigin(Origins::MC);
-	levelNum.SetPosition({ level.GetGlobalBounds().left + level.GetGlobalBounds().width * 0.5f, level.GetGlobalBounds().top});
+	levelNum.SetPosition({ level.GetGlobalBounds().left + level.GetGlobalBounds().width * 0.5f - 2.f, level.GetGlobalBounds().top});
 
 	portraitFrame.SetScale({ 3.f, 3.f });
 	portrait.SetScale({ 3.f, 3.f });
@@ -210,8 +212,7 @@ void StatusUi::SetHpFrame()
 	hpTrace.SetScale({ 3.f, 3.f });
 	hp.SetScale({ 3.f, 3.f });
 
-	hp.SetTextureRect({ 80, 0, 84, 60 });
-	hp.SetOrigin(Origins::BR);
+	
 
 }
 
@@ -295,4 +296,24 @@ void StatusUi::UpdateDashCount(int dashCharge)
 	{
 		stamina[i].SetActive(true);
 	}
+}
+
+void StatusUi::UpdateHp(float changeHp, float damage)
+{
+	hp.SetTextureRect({ (52 + 88 * (int)(stat.defensive.life - changeHp) / stat.defensive.life) , 0,
+		(112 - 88 * (int)(stat.defensive.life - changeHp) / stat.defensive.life), 60 });
+	hp.SetOrigin(Origins::BR);
+}
+
+void StatusUi::UpdateTrace()
+{
+	hpTrace.SetTextureRect(hp.GetTextureRect());
+	hpTrace.SetOrigin(Origins::BR);
+}
+
+void StatusUi::UpdateExp(float exp, int level)
+{
+	int max = EXP_TABLE->Get(level + 1).curExp;
+	this->exp.SetTextureRect({0,0,(int)(640 * exp / max),3});
+	levelNum.SetString(std::to_wstring(level));
 }

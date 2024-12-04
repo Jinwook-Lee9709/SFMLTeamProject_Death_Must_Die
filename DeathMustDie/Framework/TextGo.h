@@ -27,7 +27,7 @@ public:
 	void SetCharacterSize(int size);
 	void SetOutline(int tickness, sf::Color color);
 	void SetFont(const std::string& font);
-
+	void SetLetterSpacing(float spacingFactor);
 	
 	sf::FloatRect GetLocalBounds();
 	sf::FloatRect GetGlobalBounds();

@@ -2,6 +2,8 @@
 #include "DataTableMgr.h"
 #include "StringTable.h"
 #include "SkillTable.h"
+#include "MonsterTable.h"
+#include "ExpTable.h"
 DataTableMgr::~DataTableMgr()
 {
 	Release();
@@ -13,6 +15,7 @@ void DataTableMgr::Init()
 
 	tables.insert({ DataTable::Types::String, new StringTable() });
 	tables.insert({ DataTable::Types::Skill, new SkillTable() });
+	tables.insert({ DataTable::Types::Exp, new ExpTable() });
 
 	for (auto t : tables)
 	{

@@ -87,10 +87,20 @@
                 "hpTrace" : "resource/texture/Sprite/playUi/HealthBar_Spr_01_Trace.png",
                 "staminaFrame" : "resource/texture/Sprite/playUi/Stamina_Spr_Frame.png",
                 "stamina" : "resource/texture/Sprite/playUi/Stamina_Spr_Fill.png",
-                "staminaFrameEnd" : "resource/texture/Sprite/playUi/Stamina_Spr_End.png"
+                "staminaFrameEnd" : "resource/texture/Sprite/playUi/Stamina_Spr_End.png",
+                "timer" : "resource/texture/Sprite/playUi/Timer_Spr.png",
+                "miniMap" : "resource/texture/Sprite/playUi/Minimap_Frame_Spr.png",
+                "miniMapBack" : "resource/texture/Sprite/playUi/Minimap_Circle_Spr.png",
+                "markerP" : "resource/texture/Sprite/playUi/Minimap_Marker_Player_Spr.png",
+                "markerObj" : "resource/texture/Sprite/playUi/Minimap_Marker02_Spr.png"
+                
              },
              "Font" :{
-                 "Sansation" : "fonts/Sansation.ttf"
+                 "Sansation" : "fonts/Sansation.ttf",
+                 "BluuNextBold" : "fonts/BluuNextBold.otf",
+                 "LiberationSans" : "fonts/LiberationSans.ttf",
+                 "PerfectDOSVGA437" : "fonts/PerfectDOSVGA437.ttf",
+                 "PtSerifRegular_Font" : "fonts/PtSerifRegular_Font.ttf"
              },
              "Sound" :{
                  

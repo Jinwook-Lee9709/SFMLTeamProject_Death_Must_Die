@@ -159,6 +159,7 @@
     <ClCompile Include="DamageText.cpp" />
     <ClCompile Include="Effector.cpp" />
     <ClCompile Include="EventHandler.cpp" />
+    <ClCompile Include="ExpTable.cpp" />
     <ClCompile Include="Framework\AnimationClip.cpp" />
     <ClCompile Include="Framework\Animator.cpp" />
     <ClCompile Include="Framework\DataTableMgr.cpp" />
@@ -182,7 +183,6 @@
     <ClCompile Include="Framework\StringTable.cpp" />
     <ClCompile Include="Framework\Utils.cpp" />
     <ClCompile Include="AttackEntityPoolMgr.cpp" />
-    <ClCompile Include="PlayUi.cpp" />
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="Monster.cpp" />
     <ClCompile Include="MonsterPoolManager.cpp" />
@@ -195,10 +195,12 @@
     <ClCompile Include="SideEffect.cpp" />
     <ClCompile Include="SkillTable.cpp" />
     <ClCompile Include="StatusUi.cpp" />
+    <ClCompile Include="Structure.cpp" />
     <ClCompile Include="TileMap.cpp" />
     <ClCompile Include="TileMap2.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="FallAttack.cpp" />
+    <ClCompile Include="TopUi.cpp" />
     <ClCompile Include="TrailEntity.cpp" />
     <ClCompile Include="WedgeAttack.cpp" />
   </ItemGroup>
@@ -215,6 +217,7 @@
     <ClInclude Include="DamageText.h" />
     <ClInclude Include="Effector.h" />
     <ClInclude Include="EventHandler.h" />
+    <ClInclude Include="ExpTable.h" />
     <ClInclude Include="Framework\AnimationClip.h" />
     <ClInclude Include="Framework\Animator.h" />
     <ClInclude Include="Framework\DataTableMgr.h" />
@@ -242,24 +245,25 @@
     <ClInclude Include="Framework\StringTable.h" />
     <ClInclude Include="Framework\Utils.h" />
     <ClInclude Include="AttackEntityPoolMgr.h" />
-    <ClInclude Include="PlayUi.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="Monster.h" />
     <ClInclude Include="MonsterPool.h" />
     <ClInclude Include="MonsterPoolManager.h" />
     <ClInclude Include="MonsterSpawner.h" />
     <ClInclude Include="MonsterTable.h" />
-    <ClInclude Include="Player.h" />
     <ClInclude Include="SceneDev3.h" />
     <ClInclude Include="SceneGame.h" />
     <ClInclude Include="Framework\Variables.h" />
     <ClInclude Include="SideEffect.h" />
     <ClInclude Include="SkillTable.h" />
     <ClInclude Include="StatusUi.h" />
+    <ClInclude Include="Structure.h" />
     <ClInclude Include="TileMap.h" />
     <ClInclude Include="TileMap2.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="FallAttack.h" />
+    <ClInclude Include="TopUi.h" />
     <ClInclude Include="TrailEntity.h" />
     <ClInclude Include="WedgeAttack.h" />
   </ItemGroup>

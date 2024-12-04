@@ -2,6 +2,7 @@
 #include "SceneDev1.h"
 #include "Player.h"
 #include "StatusUi.h"
+#include "TopUi.h"
 
 
 SceneDev1::SceneDev1() : Scene(SceneIds::Dev1)
@@ -11,7 +12,8 @@ SceneDev1::SceneDev1() : Scene(SceneIds::Dev1)
 void SceneDev1::Init()
 {
 	player = AddGo(new Player("Player"));
-	AddGo(new StatusUi());
+	AddGo(new StatusUi("UI"));
+	AddGo(new TopUi("TopUI"));
 ;	Scene::Init();
 	sf::Vector2f size = FRAMEWORK.GetWindowSizeF();
 	worldView.setSize(size);
@@ -41,10 +43,7 @@ void SceneDev1::Exit()
 
 void SceneDev1::Update(float dt)
 { 
-
 	Scene::Update(dt);
-
-	
 }
 
 void SceneDev1::Draw(sf::RenderWindow& window)

@@ -1,12 +1,22 @@
 #pragma once
 
-class PlayUi : public GameObject
+class Structure : public GameObject
 {
+public:
+	enum class Kinds
+	{
+		Back,
+		Obstacle,
+		Interactive,
+	};
 protected:
+	Kinds kind;
+
+	sf::Sprite body;
 
 public:
-	PlayUi(const std::string& name = "");
-	~PlayUi() = default;
+	Structure(const std::string& name = "");
+	~Structure() = default;
 
 	void SetPosition(const sf::Vector2f& pos) override;
 	void SetRotation(float angle) override;
@@ -21,4 +31,3 @@ public:
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
 };
-

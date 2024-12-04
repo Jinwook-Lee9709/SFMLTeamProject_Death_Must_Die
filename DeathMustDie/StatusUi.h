@@ -61,4 +61,7 @@ public:
 	void cursorInventory(float dt);
 
 	void UpdateDashCount(int dashCharge);
+	void UpdateHp(float changeHp, float damage = 0);
+	void UpdateTrace();
+	void UpdateExp(float exp, int level);
 };

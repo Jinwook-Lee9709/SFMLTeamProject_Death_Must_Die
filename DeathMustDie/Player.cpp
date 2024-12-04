@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Player.h"
+#include "StatusUi.h"
 
 Player::Player(const std::string& name)
 	: GameObject(name)
@@ -95,7 +96,11 @@ void Player::Reset()
 	//Utils::SetOrigin(body4, Origins::BC);
 	
 	scene = SCENE_MGR.GetCurrentScene();
+	ui = dynamic_cast<StatusUi*>(scene->FindGo("UI"));
 	SetDashAndHp();
+	level = 1;
+	exp = 0;
+	ui->UpdateExp(exp, level);
 }
 
 void Player::Update(float dt)
@@ -111,12 +116,15 @@ void Player::Update(float dt)
 	
 	if (InputMgr::GetKeyDown(sf::Keyboard::K))
 		Damage(10.f);
+	if (InputMgr::GetKeyDown(sf::Keyboard::L))
+		SetLevel(5.f);
 	
 	if (isDamage)
 	{
 		damageBarTime += dt;
 		if (damageBarTime > 0.1f)
 		{
+			ui->UpdateTrace();
 			damageBar.setSize({ 0.f,0.f });
 			damageBarTime = 0;
 			isDamage = false;
@@ -412,11 +420,30 @@ void Player::ChangeAttackColor(sf::Color color)
 
 void Player::Damage(float damage)
 {
-	sf::Vector2f maxSize = { 68.f, 3.f };
+	
 	float value = Utils::Clamp(damage - curStat.defensive.armor, 0, hp) / curStat.defensive.life;
+	isDamage = true;
 	hp = Utils::Clamp(hp - (damage - curStat.defensive.armor), 0, curStat.defensive.life);
-	damageBar.setSize({ maxSize.x * value, maxSize.y });
+
+	SetHp(hp, value);
+	ui->UpdateHp(hp, value);
+}
+
+void Player::SetHp(float hp, float damage)
+{
+	sf::Vector2f maxSize = { 68.f, 3.f };
+	damageBar.setSize({ maxSize.x * damage, maxSize.y });
 	hpBar.setSize({ maxSize.x * hp / curStat.defensive.life, maxSize.y });
 	damageBar.setPosition(hpBar.getGlobalBounds().left + hpBar.getGlobalBounds().width, hpBar.getGlobalBounds().top);
-	isDamage = true;
+}
+
+void Player::SetLevel(float exp)
+{
+	this->exp += exp;
+	if (this->exp >= EXP_TABLE->Get(level + 1).curExp)
+	{
+		level++;
+		this->exp = 0;
+	}
+	ui->UpdateExp(this->exp, level);
 }

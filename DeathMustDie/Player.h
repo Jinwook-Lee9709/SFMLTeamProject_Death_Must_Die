@@ -89,6 +89,8 @@ struct Stat
 	NLOHMANN_DEFINE_TYPE_INTRUSIVE(Stat, offensive, attack, dash, defensive, utility, blessingSlot, godBlessing)
 };
 
+class StatusUi;
+
 class Player : public GameObject
 {
 public:
@@ -150,9 +152,13 @@ protected:
 	bool isDamage;
 	float damageBarTime;
 
+	int level;
+	float exp;
+
 	Stat baseStat;
 	Stat curStat;
 	Scene* scene;
+	StatusUi* ui;
 public:
 	Player(const std::string& name = "");
 	~Player() = default;
@@ -188,5 +194,7 @@ public:
 	void ChangeAttackColor(sf::Color color);
 
 	void Damage(float damage);
+	void SetHp(float hp, float damage = 0);
+	void SetLevel(float exp);
 };
 

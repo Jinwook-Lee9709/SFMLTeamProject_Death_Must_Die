@@ -100,6 +100,11 @@ void TextGo::SetFont(const std::string& font)
 	text.setFont(FONT_MGR.Get(fontId));
 }
 
+void TextGo::SetLetterSpacing(float spacingFactor)
+{
+	text.setLetterSpacing(spacingFactor);
+}
+
 sf::FloatRect TextGo::GetLocalBounds()
 {
 	return text.getLocalBounds();
