@@ -7,9 +7,14 @@ public:
 		String, 
 		Skill,
 		Monster,
+		SkillSetting,
+		SkillLevel,
 		Item,
+		Exp,
+		Count
 	};
-	static const int TotalTypes = 4;
+
+
 
 protected:
 	Types type;

@@ -2,7 +2,7 @@
 #include "WedgeAttack.h"
 
 WedgeAttack::WedgeAttack(const std::string& name)
-	:AttackEntity(name)
+	:AttackEntity()
 {
 	animator.SetTarget(&sprite);
 }

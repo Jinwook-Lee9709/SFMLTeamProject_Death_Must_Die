@@ -24,16 +24,29 @@ private:
 	std::vector<std::pair<CoolTime, Ability*>> autoCast;
 	std::vector<Ability*> earn;
 
+	std::vector<Ability*> abilityList;
+	//RemainAbilityList
+	std::list<std::string> remainAbility;
 	//Reference
 	AttackEntityPoolMgr* entityPool;
 public:
 	AbilityMgr(const std::string& name = "AbilityMgr");
 	~AbilityMgr() = default;
 
-	void Reset() override;
-	void AddAbility(const std::string& skillId);
-	void Release() override;
+	int GetRemainAbilityCount() const;
+	int GetRemainRegularAbilityCount() const;
+	int GetRemainLegendaryAbilityCount() const;
+	int GetNotMaxLvlAbilCount() const;
+	int GetNotMaxGradeAbilCount() const;
+	std::string GetRandomRemainAbility(bool isLegendary);
+	Ability GetRandomEquipedAbility();
+	Ability GetRdNotMaxLvlAbil();
+	Ability GetRdNotMaxGradeAbil();
 
+	void Reset() override;
+	void AddAbility(const std::string& skillId, const std::string& user = "Player");
+	void ChangeAbility(const json& info, const UpgradeType& type);
+	void Release() override;
 	void Update(float dt) override;
 	void UpdateBasicAttack();
 	void UpdateAttack();
@@ -41,8 +54,11 @@ public:
 	void UpdateAutoCast(float dt);
 	void UpdateAll(float dt);
 
+	Ability* FindAbilityByName(const std::string& name);
 private:
 
 };
+
+#define MAX_LEVEL 30
 
 

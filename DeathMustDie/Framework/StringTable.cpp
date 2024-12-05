@@ -8,7 +8,6 @@ bool StringTable::Load()
 {
 	Release();
 	std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
-
 	rapidcsv::Document doc(filePath, rapidcsv::LabelParams(0, -1));
 	for (int i = 0; i < doc.GetRowCount(); ++i)
 	{

@@ -11,6 +11,11 @@ TextGo::TextGo(const std::string& fontId, const std::string& name)
 }
 
 
+const sf::Text& TextGo::GetText()
+{
+	return this->text;
+}
+
 void TextGo::SetOrigin(Origins preset)
 {
 	originPreset = preset;
@@ -26,8 +31,16 @@ void TextGo::SetOrigin(const sf::Vector2f& newOrigin)
 
 void TextGo::Reset()
 {
-	text.setFont(GET_FONT(fontId));
-	SetString(stringId);
+	if (fontId != "")
+	{
+		text.setFont(GET_FONT(fontId));
+	}
+	if (stringId != "")
+	{
+		SetString(stringId);
+	}
+	SetOrigin(originPreset);
+
 }
 
 void TextGo::SetPosition(const sf::Vector2f& pos)
@@ -88,6 +101,11 @@ void TextGo::SetString(const std::wstring& str)
 	SetOrigin(originPreset);
 }
 
+void TextGo::SetStringByString(const std::string& str)
+{
+	text.setString(str);
+}
+
 
 void TextGo::SetCharacterSize(int size)
 {
@@ -98,6 +116,23 @@ void TextGo::SetFont(const std::string& font)
 {
 	fontId = font;
 	text.setFont(FONT_MGR.Get(fontId));
+}
+
+void TextGo::SetFont(const sf::Font& font)
+{
+	text.setFont(font);
+}
+
+void TextGo::SetOpacity(float opacity)
+{
+	sf::Color color = text.getFillColor();
+	color.a = opacity;
+	text.setFillColor(color);
+}
+
+void TextGo::SetLetterSpacing(float spacingFactor)
+{
+	text.setLetterSpacing(spacingFactor);
 }
 
 sf::FloatRect TextGo::GetLocalBounds()

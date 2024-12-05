@@ -24,15 +24,33 @@ void EventHandler::AddEventGo(const std::string& id, std::function<void(const Ga
 	}
 }
 
-void EventHandler::DeleteEvenet(const std::string& id)
+void EventHandler::DeleteEvent(const std::string& id)
 {
-	auto it = events.find(id);
-	if (it == events.end()) {
-		return;
+	auto it1 = events.find(id);
+	if (it1 != events.end())
+	{
+		events.erase(id);
+	}
+	auto it2 = eventsGo.find(id);
+	if (it2 != eventsGo.end())
+	{
+		events.erase(id);
+	}
+	auto it3 = eventsInt.find(id);
+	if (it3 != eventsInt.end())
+	{
+		eventsInt.erase(id);
+	}
+}
+
+void EventHandler::AddEventInt(const std::string& id, std::function<void(const int&)> action)
+{
+	auto it = eventsInt.find(id);
+	if (it == eventsInt.end()) {
+		eventsInt.emplace(id, std::vector<std::function<void(const int&)>>{action});
 	}
 	else {
-		it->second.clear();
-		events.erase(it);
+		it->second.push_back(action);
 	}
 }
 
@@ -55,5 +73,16 @@ void EventHandler::InvokeEvent(const std::string& id, const GameObject& go)
 	for (auto func : it->second)
 	{
 		func(go);
+	}
+}
+
+void EventHandler::InvokeEvent(const std::string& id, const int& num)
+{
+	auto it = eventsInt.find(id);
+	if (it == eventsInt.end())
+		return;
+	for (auto func : it->second)
+	{
+		func(num);
 	}
 }

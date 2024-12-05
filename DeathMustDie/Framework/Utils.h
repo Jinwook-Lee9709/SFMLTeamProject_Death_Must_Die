@@ -10,9 +10,13 @@ private:
 public:
 	static void Init();
 
+	//String
+	static std::wstring ReplaceEscapeSequences(const std::wstring& input);
+	//
 	static int RandomRange(int min, int max);
 	static float RandomRange(float min, float max);
 	static float RandomValue();	// 0.0f ~ 1.0f
+	static int RandomByWeight(const std::vector<float>& weights);
 	static bool RollTheDice(float probability);
 	static sf::Vector2f RandomOnUnitCircle();
 	static sf::Vector2f RandomInUnitCircle();

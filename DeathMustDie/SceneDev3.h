@@ -8,15 +8,13 @@ class MonsterSpawner;
 class SceneDev3 : public Scene
 {
 private:
-	SpriteGo* sprite;
 	Player* player;
-	AniSkeleton* skeleton;
-	AbilityMgr* abilMgr;
-	MonsterPoolManager* MPMgr;
-	MonsterSpawner* monsterSpawn;
-	json j;
+	sf::Sprite sprite;
+	sf::Sprite sprite2;
+	sf::Text text;
+	sf::Texture tex;
+	sf::RenderTexture renTex;
 
-	sf::FloatRect mapBound = { 0, 0, 1920, 1080 };
 public:
 
 	SceneDev3();

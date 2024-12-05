@@ -13,6 +13,9 @@ public:
 	TextGo(const std::string& fontId, const std::string& name = "");
 	~TextGo() = default;
 
+	const sf::Text& GetText();
+	const int& GetFontSize() { return text.getCharacterSize(); }
+
 	void SetOrigin(Origins preset);
 	void SetOrigin(const sf::Vector2f& newOrigin);
 
@@ -24,10 +27,14 @@ public:
 	void Set(int size, const sf::Color& color = sf::Color::White);
 	void SetString(const std::string& id);
 	void SetString(const std::wstring& str);
+	void SetStringByString(const std::string& str);
 	void SetCharacterSize(int size);
 	void SetOutline(int tickness, sf::Color color);
 	void SetFont(const std::string& font);
+	void SetFont(const sf::Font& font);
+	void SetOpacity(float opacity);
 
+	void SetLetterSpacing(float spacingFactor);
 	
 	sf::FloatRect GetLocalBounds();
 	sf::FloatRect GetGlobalBounds();

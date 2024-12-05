@@ -1,9 +1,7 @@
 ID,Korean,English
 Hi,안녕~,Hi
-ContinueText,PRESS ENTER TO COTINUE,PRESS ENTER TO COTINUE
-Upgrade1,1- INCREASED RATE OF FIRE,1- 발사 속도 증가
-Upgrade2,2- INCREASED CLIP SIZE(NEXT RELOAD),1- 탄창 크기 증가
-Upgrade3,3- INCREASED MAXM HEALTH,1- 최대 체력 증가
-Upgrade4,4- INCREASED RUN SPEED,1- 이동 속도 증가
-Upgrade5,5- MORE AND BETTER HEALTH PICKUPS,1- 더 많은 체력 아이템
-Upgrade6,6- MORE AND BETTER AMMO PICUPS,1- 더 많은 총알 아이템
+Searing Attack,텍스트,"Your Attacks become stronger, apply \nBurning and have a chance to\ncreate fire trails that burn enemies."
+Meteor Shower,텍스트,"On cooldown, meteors fall from the skies, \ndamaging enemies and Burning \nthe ground."
+Breath of Fire,텍스트,"Every few Attack hits, you breathe fire \nthat damages and burns enemies \ninfront of you."
+Trail of Fire,텍스트,Your dash damages enemies leaves a \npath of fire.
+Fire Dragon,텍스트,"The red dragon fights alongside you, \nBurning enemies with its breath."

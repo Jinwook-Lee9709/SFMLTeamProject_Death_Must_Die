@@ -2,7 +2,7 @@
 #include "FallAttack.h"
 
 FallAttack::FallAttack(const std::string& name)
-	: AttackEntity(name)
+	: AttackEntity()
 {
 	fallAnimator.SetTarget(&fallSprite);
 	impactAnimator.SetTarget(&impactSprite);

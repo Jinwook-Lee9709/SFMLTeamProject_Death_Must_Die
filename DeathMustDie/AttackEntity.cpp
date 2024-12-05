@@ -3,9 +3,12 @@
 #include "MonsterPoolManager.h"
 #include "SideEffect.h"
 
-AttackEntity::AttackEntity(const std::string& name)
-	:GameObject(name)
+int AttackEntity::entityCount = 0;
+
+AttackEntity::AttackEntity()
+	:GameObject("AttackEntity" + std::to_string(entityCount))
 {
+	entityCount++;
 	monsters = dynamic_cast<MonsterPoolManager*>(SCENE_MGR.GetCurrentScene()->FindGo("monsterPoolMgr"));
 }
 

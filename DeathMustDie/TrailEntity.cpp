@@ -2,7 +2,7 @@
 #include "TrailEntity.h"
 
 TrailEntity::TrailEntity(const std::string& name)
-	:AttackEntity(name)
+	:AttackEntity()
 {
 }
 

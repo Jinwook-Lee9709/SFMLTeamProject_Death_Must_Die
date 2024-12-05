@@ -3,6 +3,7 @@
 
 class Player;
 class TileMap2;
+class Structure;
 
 class SceneDev1 : public Scene
 {
@@ -10,9 +11,10 @@ protected:
 	SpriteGo* sprite;
 	TextGo* text;
 
+	ObjectPool<Structure> struPool;
+	std::list<Structure*> struList;
+
 	Player* player;
-	std::vector<std::vector<TileMap2*>> tiles;
-	sf::Vector2i tilesCount = { 5, 5 };
 public:
 	SceneDev1();
 	~SceneDev1() = default;
@@ -23,5 +25,8 @@ public:
 
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
+
+	std::list<Structure*> GetObjList() const { return struList; }
+	void SetObjPos();
 };
 

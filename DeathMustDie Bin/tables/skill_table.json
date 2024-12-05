@@ -5,6 +5,7 @@
         "abilityType": 0,
         "spawnType": 3,
         "entityType": 6,
+        "abilityGrade" : 0,
         "attackColor": [255, 255, 255],
         "ChangeableValue":
         {
@@ -27,6 +28,7 @@
         "abilityType": 0,
         "spawnType": 3,
         "entityType": 6,
+        "abilityGrade" : 0,
         "attackColor": [255, 255, 0],
         "ChangeableValue":
         {
@@ -50,6 +52,7 @@
         "abilityType": 3,
         "spawnType": 1,
         "entityType": 2,
+        "abilityGrade" : 0,
         "projectileCount": 4,
         "coolTime": 2,
         "projectiles": 4, 
@@ -80,6 +83,7 @@
         "abilityType": 2,
         "spawnType": 3,
         "entityType": 3,
+        "abilityGrade" : 0,
         "attackCounter":
         {
             "maxCount": 1,
@@ -109,6 +113,7 @@
         "abilityType": 1,
         "spawnType": 2,
         "entityType": 4,
+        "abilityGrade" : 0,
         "duration" : 1.6,
         "interval" : 0.2,
         "ChangeableValue":
@@ -131,5 +136,67 @@
                 "debuffType" : 0
             }
         }
+    },
+
+
+    "Fire Dragon":
+    {
+        "triggerType": 4,
+        "abilityType": 5,
+        "spawnType": 2,
+        "entityType": 5,
+        "abilityGrade" : 1,
+        "ChangeableValue":
+        {
+            "damage": 1.0
+        },
+        "AttackEntity":
+        {
+            "AnimId": "dragon_fire",
+            "AnimSize" : 2.0,
+            "damage": 0,
+            "speed": 300,
+            "attackRange": 50,
+            "attackInterval": 2,
+            "duration": -1,
+            "SideEffect":
+            {
+                "effectType" : 0,
+                "debuffType" : 0
+            },
+            "abilityName" : "Dragon Fire"
+        }
+    },
+
+    "Dragon Fire":
+    {
+        "triggerType": 1,
+        "abilityType": 5,
+        "spawnType": 4,
+        "entityType": 3,
+        "abilityGrade" : -1,
+        "attackCounter":
+        {
+            "maxCount": 1,
+            "probability": 1.0
+        },
+        "ChangeableValue":
+        {
+            "damage": 1.0
+        },
+        "AttackEntity":
+        {
+            "AnimId": "breath_fire",
+            "AnimSize" : 0.5,
+            "damage": 0,
+            "rangeDegree": 60,
+            "radius": 431,
+            "SideEffect":
+            {
+                "effectType" : 0,
+                "debuffType" : 0
+            }
+        }
     }
+
 }

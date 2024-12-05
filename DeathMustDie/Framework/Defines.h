@@ -1,5 +1,7 @@
 #pragma once
 
+#define VAR_TO_STRING(var) #var
+
 enum class Languages
 {
 	Korean,
@@ -51,7 +53,23 @@ enum class AbilityGrade
 	Expert,
 	Master,
 	Legend,
+	Count
 };
+
+inline AbilityGrade& operator++(AbilityGrade& abilitiy) {
+	if (abilitiy == AbilityGrade::Legend) {
+		throw std::out_of_range("Cannot increment beyond the last enum value.");
+	}
+	abilitiy = (AbilityGrade)((int)(abilitiy) + 1);
+	return abilitiy;
+}
+inline AbilityGrade& operator--(AbilityGrade& abilitiy) {
+	if (abilitiy == AbilityGrade::Novice) {
+		throw std::out_of_range("Cannot decrement Before the first enum value.");
+	}
+	abilitiy = (AbilityGrade)((int)(abilitiy)-1);
+	return abilitiy;
+}
 
 enum class AbilityType
 {
@@ -68,8 +86,9 @@ enum class AbilitySpawnType
 {
 	BasicAttack,
 	OnRandomEnemy, 
-	OnCharacter,
-	CharacterToMouse, 
+	OnUser,
+	UserToMouse,
+	ClosestEnemy
 };
 
 enum class AbilityTriggerType
@@ -92,10 +111,18 @@ enum class AttackEntityType
 	BasicAttack,
 };
 
+enum class UpgradeType
+{
+	Earn,
+	LevelUp,
+	GradeUp
+};
+
 enum class DebuffType
 {
 	Burn
 };
+
 
 enum class MonsterTypes
 {

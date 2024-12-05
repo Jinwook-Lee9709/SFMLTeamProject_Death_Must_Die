@@ -13,6 +13,26 @@ void Utils::Init()
     generator.seed(rd());
 }
 
+std::wstring Utils::ReplaceEscapeSequences(const std::wstring& input) {
+    std::wstring output;
+    for (size_t i = 0; i < input.size(); ++i) {
+        if (input[i] == L'\\' && i + 1 < input.size()) {
+            if (input[i + 1] == L'n') {
+                output += L'\n'; // 개행 문자로 변환
+                ++i; // 'n'을 건너뜀
+            }
+            else {
+                output += input[i];
+            }
+        }
+        else {
+            output += input[i];
+        }
+    }
+    return output;
+}
+
+
 int Utils::RandomRange(int min, int max)
 {
     std::uniform_int_distribution<int> dist(min, max);
@@ -28,6 +48,26 @@ float Utils::RandomRange(float min, float max)
 float Utils::RandomValue()
 {
     return RandomRange(0.f, 1.f);
+}
+
+int Utils::RandomByWeight(const std::vector<float>& weights)
+{
+        float totalWeight = 0;
+        for (int weight : weights) {
+            totalWeight += weight;
+        }
+        float randomValue = RandomValue();
+        float cumulativeWeight = 0;
+
+        // 가중치 구간에 따라 선택
+        for (size_t i = 0; i < weights.size(); ++i) {
+            cumulativeWeight += weights[i];
+            if (randomValue < cumulativeWeight) {
+                return i;
+            }
+        }
+        return 0; 
+
 }
 
 bool Utils::RollTheDice(float probability)

@@ -131,6 +131,21 @@
         "ID": "dash_spr",
         "TEX_ID": "resource/texture/Sheet/player_knight/dash_spr_sheet.png"
     },
+    "BOON_APPEAR" :
+    {
+        "ID": "boon_appear",
+        "TEX_ID": "resource/texture/Sheet/skill/boon_appear.png"
+    },
+    "BOON_HOVER" :
+    {
+        "ID": "boon_hover",
+        "TEX_ID": "resource/texture/Sheet/skill/boon_hover.png"
+    },
+    "BOON_SELECTED" :
+    {
+        "ID": "boon_selected",
+        "TEX_ID": "resource/texture/Sheet/skill/boon_select.png"
+    },
     "SORCEROR_WALK" :
     {
         "ID": "sorceror_walk",

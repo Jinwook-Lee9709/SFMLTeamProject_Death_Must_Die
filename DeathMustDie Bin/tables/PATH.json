@@ -24,7 +24,8 @@
         "Dev1":{
             "Texture" : {
                "retreat" : "graphics/retreat_button.png",
-               "background" : "resource/texture/TerrainWilderness_Spr_01.png"
+               "background" : "resource/texture/TerrainWilderness_Spr_01.png",
+               "shadow" : "resource/texture/Sprite/Object/_S_ShadowTiny_Spr.png"
             
             
             },
@@ -61,14 +62,53 @@
         },
         "Game":{
             "Texture" : {
-                "background" : "resource/texture/TerrainWilderness_Spr_01.png"
+                "background" : "resource/texture/TerrainWilderness_Spr_01.png",
+                "rarityFrame": "resource/texture/Sprite/Panel_Spr_RarityFrame.png",
+                "shadow" : "resource/texture/Sprite/Object/_S_ShadowTiny_Spr.png"
              },
              "Font" :{
-                 "Sansation" : "fonts/Sansation.ttf"
+                 "Sansation" : "fonts/Sansation.ttf",
+                 "LinBiolinum_RB" : "resource/fonts/LinBiolinum_RB.otf"
              },
              "Sound" :{
                  
              }
+        },
+        "UI":{
+          "Texture" : {
+                "boonsButton" : "resource/texture/Sprite/playUi/BoonsButton_Spr.png",
+                "boonsButtonGlow" : "resource/texture/Sprite/playUi/BoonsButton_Spr_Glow.png",
+                "inventoryButton" : "resource/texture/Sprite/playUi/InventoryButton_Spr.png",
+                "inventoryButtonGlow" : "resource/texture/Sprite/playUi/InventoryButton_Spr_Glow.png",
+                "expFrame" : "resource/texture/Sprite/playUi/ExperienceFrame_Spr_01.png",
+                "expUnderFrame" : "resource/texture/Sprite/playUi/Experience_Spr_UnderGlass.png",
+                "exp" : "resource/texture/Sprite/playUi/Experience_Spr_Fill.png",
+                "portrait" : "resource/texture/Sprite/playUi/PortraitFrame_Spr_01.png",
+                "knight" : "resource/texture/Sprite/playUi/Knight_Spr_Portrait.png",
+                "level" : "resource/texture/Sprite/playUi/ExperienceLevelIndicator_Spr_01.png",
+                "hpFrame" : "resource/texture/Sprite/playUi/HealthFrame_Spr_02.png",
+                "hp" : "resource/texture/Sprite/playUi/HealthBar_Spr_01.png",
+                "hpTrace" : "resource/texture/Sprite/playUi/HealthBar_Spr_01_Trace.png",
+                "staminaFrame" : "resource/texture/Sprite/playUi/Stamina_Spr_Frame.png",
+                "stamina" : "resource/texture/Sprite/playUi/Stamina_Spr_Fill.png",
+                "staminaFrameEnd" : "resource/texture/Sprite/playUi/Stamina_Spr_End.png",
+                "timer" : "resource/texture/Sprite/playUi/Timer_Spr.png",
+                "miniMap" : "resource/texture/Sprite/playUi/Minimap_Frame_Spr.png",
+                "miniMapBack" : "resource/texture/Sprite/playUi/Minimap_Circle_Spr.png",
+                "markerP" : "resource/texture/Sprite/playUi/Minimap_Marker_Player_Spr.png",
+                "markerObj" : "resource/texture/Sprite/playUi/Minimap_Marker02_Spr.png"
+                
+             },
+             "Font" :{
+                 "Sansation" : "fonts/Sansation.ttf",
+                 "BluuNextBold" : "fonts/BluuNextBold.otf",
+                 "LiberationSans" : "fonts/LiberationSans.ttf",
+                 "PerfectDOSVGA437" : "fonts/PerfectDOSVGA437.ttf",
+                 "PtSerifRegular_Font" : "fonts/PtSerifRegular_Font.ttf"
+             },
+             "Sound" :{
+                 
+             }  
         }
   
     }

@@ -5,6 +5,7 @@
 #include "WedgeAttack.h"
 #include "TrailEntity.h"
 #include "BasicAttack.h"
+#include "SummonEntity.h"
 
 class AttackEntityPool
 {
@@ -34,6 +35,10 @@ private:
 			{
 				return new BasicAttack();
 			}
+			case AttackEntityType::Summon:
+			{
+				return new SummonEntity();
+			}
 		}
 	}
 public:
@@ -54,6 +59,7 @@ public:
 			{
 				std::cout << "AttacEntityPool: Json is NULL!!";
 			}
+			obj->SetActive(false);
 			unused.push_back(obj);
 		}
 	}

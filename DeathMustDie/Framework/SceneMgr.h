@@ -43,4 +43,4 @@ public:
 
 #define SCENE_MGR (SceneMgr::Instance())
 #define WORLD_MOUSE_POS (SCENE_MGR.GetCurrentScene()->ScreenToWorld(InputMgr::GetMousePosition()))
-
+#define UI_MOUSE_POS (SCENE_MGR.GetCurrentScene()->ScreenToUi(InputMgr::GetMousePosition()))

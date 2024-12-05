@@ -2,7 +2,7 @@
 #include "BasicAttack.h"
 
 BasicAttack::BasicAttack(const std::string& name)
-	:AttackEntity(name)
+	:AttackEntity()
 {
 }
 

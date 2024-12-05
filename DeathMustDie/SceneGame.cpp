@@ -1,15 +1,19 @@
 #include "stdafx.h"
 #include "SceneGame.h"
 #include "AbilityMgr.h"
-#include "AttackEntityPoolMgr.h"
-#include "MonsterSpawner.h"
-#include "CalculatorMgr.h"
-#include "Player.h"
-#include "TileMap.h"
-#include "MonsterSpawner.h"
-#include "ItemSpawner.h"
-#include "ItemPoolManager.h"
 #include "AniBoss.h"
+#include "AttackEntityPoolMgr.h"
+#include "CalculatorMgr.h"
+#include "GameMgr.h"
+#include "ItemPoolManager.h"
+#include "ItemSpawner.h"
+#include "MonsterSpawner.h"
+#include "Player.h"
+#include "StatusUi.h"
+#include "Structure.h"
+#include "TileMap.h"
+#include "TopUi.h"
+#include "UIAbilitySelect.h"
 
 SceneGame::SceneGame()
 	: Scene(SceneIds::Game)
@@ -19,6 +23,13 @@ SceneGame::SceneGame()
 void SceneGame::Init()
 {
 	sf::Vector2f size = FRAMEWORK.GetWindowSizeF();
+	AddGo(new StatusUi("UI"));
+	AddGo(new TopUi("TopUI"));
+	for (int i = 0; i < 5; i++)
+	{
+		SetObjPos();
+	}
+
 	worldView.setSize(size);
 	uiView.setSize(size);
 	player = AddGo(new Player("Player"));
@@ -38,15 +49,17 @@ void SceneGame::Enter()
 	RES_TABLE_MGR.LoadScene("Game");
 	RES_TABLE_MGR.LoadAnimation();
 
-	AddGo(new AttackEntityPoolMgr("AttackEntityPoolMgr"));
-	AddGo(new CalculatorMgr("CalculatorMgr"));
-	abilMgr = AddGo(new AbilityMgr("AbilityMgr"));
-	map = AddGo(new TileMap("map"));
-	MPMgr = AddGo(new MonsterPoolManager("monsterPoolMgr"));
-	itemMPMgr = AddGo(new ItemPoolManager("itemPoolMgr"));
-	skeletonSpawn = AddGo(new MonsterSpawner(MPMgr, mapBound, 50));
-	itemSpawn = AddGo(new ItemSpawner(itemMPMgr));
 
+	map = AddGo(new TileMap("map"));
+	AddGo(new AttackEntityPoolMgr("AttackEntityPoolMgr"));
+	abilMgr = AddGo(new AbilityMgr("AbilityMgr"));
+	AddGo(new CalculatorMgr("CalculatorMgr"));
+	MPMgr = AddGo(new MonsterPoolManager("monsterPoolMgr"));
+	monsterSpawn = AddGo(new MonsterSpawner(MPMgr, mapBound, 30));
+	AddGo(new UIAbilitySelect("UIAbilitySelect"));
+	itemMPMgr = AddGo(new ItemPoolManager("itemPoolMgr"));
+	itemSpawn = AddGo(new ItemSpawner(itemMPMgr));
+	AddGo(new GameMgr("GameMgr"));
 	ApplyAddGo();
 
 	Scene::Enter();
@@ -56,35 +69,19 @@ void SceneGame::Enter()
 
 void SceneGame::Exit()
 {
+	for (auto stru : struList)
+	{
+		RemoveGo(stru);
+		struPool.Return(stru);
+	}
+	struList.clear();
 	Scene::Exit();
 }
 
 void SceneGame::Update(float dt)
 {
-	if (InputMgr::GetKeyDown(sf::Keyboard::Num1))
-	{
-		abilMgr->AddAbility("Meteor Shower");
-	}
-	if (InputMgr::GetKeyDown(sf::Keyboard::Num2))
-	{
-		abilMgr->AddAbility("Breath of Fire");
-	}
-	if (InputMgr::GetKeyDown(sf::Keyboard::Num3))
-	{
-		abilMgr->AddAbility("Trail of Fire");
-	}
-	if (InputMgr::GetKeyDown(sf::Keyboard::Num4))
-	{
-		abilMgr->AddAbility("Base Attack");
-	}
-	if (InputMgr::GetKeyDown(sf::Keyboard::Num5))
-	{
-		abilMgr->AddAbility("Searing Attack");
-	}
-
 	worldView.setCenter(player->GetPosition());
 	Scene::Update(dt);
-
 	if (MPMgr)
 	{
 		MPMgr->CheckCollisions();
@@ -103,6 +100,18 @@ void SceneGame::Draw(sf::RenderWindow& window)
 
 }
 
+void SceneGame::SetObjPos()
+{
+	sf::Vector2f posRangeX = { -2000.f, 2000.f };
+	sf::Vector2f posRangeY = { -2000.f, 2000.f };
+	Structure* stru = struPool.Take();
 
+	float posX = Utils::RandomRange(posRangeX.x, posRangeX.y);
+	float posY = Utils::RandomRange(posRangeY.x, posRangeY.y);
+	stru->SetPosition({ posX, posY });
+
+	struList.push_back(stru);
+	AddGo(stru);
+}
 
 

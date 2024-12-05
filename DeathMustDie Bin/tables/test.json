@@ -1,0 +1,18 @@
+{
+    "grade": 1,      //AbilityGrade
+    "name": 1,       //String
+    "skillType": 1,  //AbilityType
+    "level": 1,      //int
+    "valueCount": 1,
+    "valueText":
+    {
+        "value1"
+        {
+            "valueName",
+            "value",
+        }
+    }
+
+
+
+}

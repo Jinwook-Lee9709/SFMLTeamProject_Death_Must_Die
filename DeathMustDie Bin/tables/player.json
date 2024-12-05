@@ -18,7 +18,7 @@
         "dashRechargeTime": 1.6
     },
     "defensive": {
-        "armor": 0,
+        "armor": 5,
         "damageReduction": 0.0,
         "evasion": 0,
         "life": 45,
