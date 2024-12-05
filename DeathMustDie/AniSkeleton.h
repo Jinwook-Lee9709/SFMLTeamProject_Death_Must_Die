@@ -40,6 +40,7 @@ public:
 protected:
 	sf::Sprite body;
 	Animator Anim;
+	sf::Sprite attackArea;
 	std::string textureId;
 	Status beforeStatus = Status::None;
 	Status currentStatus = Status::Move;
@@ -50,6 +51,12 @@ protected:
 	float speed = 70.f;
 	float attackDelay = 0.f;
 	float attackDuration = 3.f;
+
+	float opacitySpeed = 500.f;
+	int opacity = 70;
+
+	sf::Clock clock;
+	float animationDuration = 3.f;
 
 	bool isAttack = false;
 	bool isDead = false;

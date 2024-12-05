@@ -1,5 +1,6 @@
 #pragma once
 #include "Monster.h"
+#include <random>
 
 enum class BossStatus
 {
@@ -47,6 +48,7 @@ protected:
 	float speed = 70.f;
 	float attackDelay = 0.f;
 	float attackDuration = 3.f;
+	int hitCount = 0;
 
 	bool isAttack = false;
 	bool isDead = false;
@@ -54,6 +56,12 @@ protected:
 	Player* player;
 	BossInfo info;
 	Scene* scene;
+
+	sf::FloatRect mapBounds = { 0, 0, 1920, 1080 };
+
+	std::mt19937 rng; // ·£´ý »ý¼º±â
+	std::uniform_real_distribution<float> randomPosX;
+	std::uniform_real_distribution<float> randomPosY;
 public:
 	AniBoss(const std::string& name = "");
 	~AniBoss() = default;
@@ -90,5 +98,7 @@ public:
 	void Walk(float dt);
 	void CheckAttack(float dt);
 	void OnHit(float damage);
+
+	sf::Vector2f RandomTPPos();
 };
 

@@ -47,10 +47,12 @@ protected:
 
 	sf::Vector2f direction;
 	float speed = 70.f;
-	float hitTime = 2.f;
+	float hitTime = 0.f;
+	float hitDuration = 1.f;
 	float attackDelay = 0.f;
 	float attackDuration = 3.f;
 
+	bool isGetHit = false;
 	bool isAttack = false;
 	bool isDead = false;
 

@@ -72,6 +72,11 @@ void AniSkeleton::Reset()
 	hp = info.hp;
 	HPBar.setScale({ 1.0f, 1.0f });
 
+	attackArea.setTexture(TEXTURE_MGR.Get("resource/texture/Sprite/Warn_Melee_Slash_Spr.png"));
+	attackArea.setColor(sf::Color( 255, 0, 0, 70));
+	Utils::SetOrigin(attackArea, Origins::BC);
+	attackArea.setScale({ 0.5f, 0.5f });
+
 	Anim.Play(info.walkAnimId);
 	currentStatus = Status::Move;
 
@@ -86,6 +91,10 @@ void AniSkeleton::Reset()
 void AniSkeleton::Update(float dt)
 {
 	SetOrigin(Origins::BC);
+
+	sf::Vector2f playerPos = body.getPosition();
+
+	attackArea.setPosition(playerPos);
 
 	Anim.Update(dt);
 
@@ -120,6 +129,12 @@ void AniSkeleton::MoveUpdate(float dt)
 	sf::Vector2f pos = player->GetPosition();
 	sf::Vector2f playerPos = player->GetPosition() - position;
 
+	if (player != nullptr && Utils::Distance(position, player->GetPosition()) > 10)
+	{
+		direction = Utils::GetNormal(player->GetPosition() - position);
+		attackArea.setRotation(Utils::Angle(direction));
+	}
+
 	if (Utils::Magnitude(playerPos) < DISTANCE_TO_PLAYER && attackDelay >= attackDuration)
 	{
 		if (position.x > pos.x)
@@ -145,6 +160,14 @@ void AniSkeleton::AttackUpdate(float dt)
 	sf::Vector2f pos = player->GetPosition();
 	sf::Vector2f playerPos = player->GetPosition() - position;
 
+	float elapsedTime = clock.getElapsedTime().asSeconds();
+	if (elapsedTime < animationDuration) {
+		// 불투명도 계산 (70에서 150으로 선형 증가)
+		float progress = elapsedTime / animationDuration; // 0.0 ~ 1.0
+		int alpha = static_cast<int>(70 + progress * (150 - 70));
+		attackArea.setColor(sf::Color(255, 0, 0, alpha));
+	}
+
 	if (position.x > pos.x)
 	{
 		Anim.SetFlip(true);
@@ -160,7 +183,9 @@ void AniSkeleton::AttackUpdate(float dt)
 		Anim.Play(info.walkAnimId);
 		beforeStatus = currentStatus;
 		currentStatus = Status::Move;
+		isAttack = false;
 		attackDelay = 0.f;
+		opacity = 70;
 	}
 }
 
@@ -168,6 +193,8 @@ void AniSkeleton::GetHitUpdate(float dt)
 {
 	sf::Vector2f pos = player->GetPosition();
 	sf::Vector2f playerPos = player->GetPosition() - position;
+
+	isAttack = false;
 
 	if (position.x > pos.x)
 	{
@@ -219,9 +246,13 @@ void AniSkeleton::DeathUpdate(float dt)
 
 void AniSkeleton::Draw(sf::RenderWindow& window)
 {
+	if (isAttack)
+	{
+		window.draw(attackArea);
+	}
 	window.draw(body);
-	hitbox.Draw(window);
-	hitbox2.Draw(window);
+	/*hitbox.Draw(window);
+	hitbox2.Draw(window);*/
 	Monster::Draw(window);
 }
 
@@ -277,6 +308,7 @@ void AniSkeleton::Walk(float dt)
 		direction = playerPos - position;
 		Utils::Normalize(direction);
 
+		/*attackArea.setRotation(Utils::Angle(direction));*/
 		SetPosition(position + direction * speed * dt);
 	}
 

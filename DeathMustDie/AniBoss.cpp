@@ -84,6 +84,8 @@ void AniBoss::Update(float dt)
 
 	Anim.Update(dt);
 
+
+
 	switch (currentStatus)
 	{
 	case BossStatus::Move:
@@ -144,7 +146,7 @@ void AniBoss::AttackUpdate(float dt)
 {
 	if (!Anim.IsPlay())
 	{
-		
+
 	}
 }
 
@@ -152,6 +154,15 @@ void AniBoss::GetHitUpdate(float dt)
 {
 	sf::Vector2f pos = player->GetPosition();
 	sf::Vector2f playerPos = player->GetPosition() - position;
+
+	if (hp != 0 && hitCount == 3)
+	{
+		SetPosition(RandomTPPos());
+		hitCount = 0;
+		Anim.Play(info.walkAnimId);
+		beforeStatus = currentStatus;
+		currentStatus = BossStatus::Move;
+	}
 
 	if (position.x > pos.x)
 	{
@@ -261,7 +272,26 @@ void AniBoss::OnHit(float damage)
 	beforeStatus = currentStatus;
 	currentStatus = BossStatus::GetHit;
 
+	hitCount++;
 	hp -= damage;
 
 	HPBar.setScale({ hp / info.hp, 1.0f });
+}
+
+sf::Vector2f AniBoss::RandomTPPos()
+{
+	float x = 0;
+	float y = 0;
+	sf::Vector2f playerPos = player->GetPosition();
+
+	randomPosX = std::uniform_real_distribution<float>(playerPos.x - mapBounds.width * 0.5f, playerPos.x + mapBounds.width * 0.5f);
+	randomPosY = std::uniform_real_distribution<float>(playerPos.y - mapBounds.height * 0.5f, playerPos.y + mapBounds.height * 0.5f);
+
+	x = randomPosX(rng);
+	y = randomPosY(rng);
+
+	sf::Vector2f randomPos = { x, y };
+
+	return randomPos;
+	return sf::Vector2f();
 }

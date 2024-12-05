@@ -88,6 +88,11 @@ void AniSlime::Update(float dt)
 
 	Anim.Update(dt);
 
+	if(isGetHit)
+	{
+		hitTime += dt;
+	}
+
 	sf::Vector2f slimePos = body.getPosition();
 	attackArea.setPosition(slimePos);
 
@@ -100,6 +105,11 @@ void AniSlime::Update(float dt)
 	}case SlimeStatus::Attack:
 	{
 		AttackUpdate(dt);
+		break;
+	}
+	case SlimeStatus::GetHit:
+	{
+		GetHitUpdate(dt);
 		break;
 	}
 	case SlimeStatus::Death:
@@ -162,12 +172,12 @@ void AniSlime::AttackUpdate(float dt)
 
 void AniSlime::GetHitUpdate(float dt)
 {
-	hitTime += dt;
-	if (hitTime >= 2.f)
+	if (hitTime >= hitDuration)
 	{
 		Anim.Play(info.walkAnimId);
 		beforeStatus = currentStatus;
 		currentStatus = SlimeStatus::Move;
+		isGetHit = false;
 		hitTime = 0.f;
 	}
 
@@ -185,6 +195,8 @@ void AniSlime::DeathUpdate(float dt)
 {
 	sf::Vector2f pos = player->GetPosition();
 	sf::Vector2f playerPos = player->GetPosition() - position;
+
+	isAttack = false;
 
 	if (position.x > pos.x)
 	{
@@ -204,11 +216,12 @@ void AniSlime::DeathUpdate(float dt)
 
 void AniSlime::Draw(sf::RenderWindow& window)
 {
-	window.draw(body);
 	if (isAttack)
 	{
 		window.draw(attackArea);
 	}
+	window.draw(body);
+	Monster::Draw(window);
 }
 
 void AniSlime::SetInfo(const json& j)
@@ -253,6 +266,7 @@ void AniSlime::OnHit(float damage)
 	beforeStatus = currentStatus;
 	currentStatus = SlimeStatus::GetHit;
 
+	isGetHit = true;
 	hp -= damage;
 
 	HPBar.setScale({ hp / info.hp, 1.0f });

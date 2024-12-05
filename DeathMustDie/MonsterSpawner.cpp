@@ -4,82 +4,129 @@
 #include "Player.h"
 
 MonsterSpawner::MonsterSpawner(MonsterPoolManager* manager, const sf::FloatRect& bounds, int maxMonsters)
-    : GameObject("MonsterSpawner"), poolManager(manager), mapBounds(bounds), rng(std::random_device{}()), maxMonsters(maxMonsters)
+	: GameObject("MonsterSpawner"), poolManager(manager), mapBounds(bounds), rng(std::random_device{}()), maxMonsters(maxMonsters)
 {
-    xDist = std::uniform_real_distribution<float>(-100.f, mapBounds.width + 100.f);
-    yDist = std::uniform_real_distribution<float>(-100.f, mapBounds.height + 100.f);
+	xDist = std::uniform_real_distribution<float>(-100.f, mapBounds.width + 100.f);
+	yDist = std::uniform_real_distribution<float>(-100.f, mapBounds.height + 100.f);
 }
 
-sf::Vector2f MonsterSpawner::GenerateSpawnPosition() 
+sf::Vector2f MonsterSpawner::GenerateSpawnPosition()
 {
-    float x = 0;
-    float y = 0;
-    sf::Vector2f playerPos =  player->GetPosition();
-    xDist = std::uniform_real_distribution<float>(playerPos.x - mapBounds.width * 0.5f -100.f, playerPos.x + mapBounds.width + 100.f);
-    yDist = std::uniform_real_distribution<float>(playerPos.y - mapBounds.height * 0.5f -100.f, playerPos.y + mapBounds.height + 100.f);
-    
-    if (Utils::RandomValue() < 0.5f)
-    {
-        Utils::RandomValue() < 0.5f ? x = playerPos.x - mapBounds.width * 0.5f - 100.f : x = playerPos.x + mapBounds.width * 0.5f + 100.f;
-        y = yDist(rng);
-    }
-    else
-    {
-        Utils::RandomValue() < 0.5f ? y = playerPos.y - mapBounds.height * 0.5f - 100.f : y = playerPos.y + mapBounds.height * 0.5f + 100.f;
-        x = xDist(rng);
-    }
-    return { x, y };
+	float x = 0;
+	float y = 0;
+	sf::Vector2f playerPos = player->GetPosition();
+	xDist = std::uniform_real_distribution<float>(playerPos.x - mapBounds.width * 0.5f - 100.f, playerPos.x + mapBounds.width + 100.f);
+	yDist = std::uniform_real_distribution<float>(playerPos.y - mapBounds.height * 0.5f - 100.f, playerPos.y + mapBounds.height + 100.f);
+
+	if (Utils::RandomValue() < 0.5f)
+	{
+		Utils::RandomValue() < 0.5f ? x = playerPos.x - mapBounds.width * 0.5f - 100.f : x = playerPos.x + mapBounds.width * 0.5f + 100.f;
+		y = yDist(rng);
+	}
+	else
+	{
+		Utils::RandomValue() < 0.5f ? y = playerPos.y - mapBounds.height * 0.5f - 100.f : y = playerPos.y + mapBounds.height * 0.5f + 100.f;
+		x = xDist(rng);
+	}
+	return { x, y };
 }
 
-void MonsterSpawner::SpawnMonster(const std::string& monsterName) 
+sf::Vector2f MonsterSpawner::RandomBossPosition()
 {
-    if (currentMonsterCount >= maxMonsters) 
-    {
-        return; 
-    }
-    for (int i = 0; i < poolSize; i++)
-    {
-        Monster* monster = poolManager->GetMonster(monsterName);
-        if (monster)
-        {
-            monster->SetPosition(GenerateSpawnPosition());
-            monster->SetScale({ 3.f, 3.f });
-            currentMonsterCount++; 
-        }
-    }
+	float x = 0;
+	float y = 0;
+	sf::Vector2f playerPos = player->GetPosition();
+	
+	randomPosX = std::uniform_real_distribution<float>(playerPos.x - mapBounds.width * 0.5f, playerPos.x + mapBounds.width * 0.5f);
+	randomPosY = std::uniform_real_distribution<float>(playerPos.y - mapBounds.height * 0.5f, playerPos.y + mapBounds.height * 0.5f);
+
+	x = randomPosX(rng);
+	y = randomPosY(rng);
+
+	sf::Vector2f randomPos = { x, y };
+
+	return randomPos;
 
 }
 
-void MonsterSpawner::Init() 
+void MonsterSpawner::SpawnMonster(const std::string& monsterName, int poolsize)
 {
-    
+	poolSize = poolsize;
+
+	if (currentMonsterCount >= maxMonsters)
+	{
+		return;
+	}
+	for (int i = 0; i < poolSize; i++)
+	{
+		Monster* monster = poolManager->GetMonster(monsterName);
+		if (monster)
+		{
+			monster->SetPosition(GenerateSpawnPosition());
+			monster->SetScale({ 3.f, 3.f });
+			currentMonsterCount++;
+		}
+	}
+}
+
+void MonsterSpawner::BossSpawn(const std::string& bossName)
+{
+	if (bossCurrentMonsterCount >= bossMaxMonsters)
+	{
+		return;
+	}
+	for (int i = 0; i < 1; i++)
+	{
+		Monster* bossMonster = poolManager->GetMonster(bossName);
+		if (bossMonster)
+		{
+			bossMonster->SetPosition(RandomBossPosition());
+			bossMonster->SetScale({ 3.f, 3.f });
+			bossCurrentMonsterCount++;
+		}
+	}
+}
+
+void MonsterSpawner::Init()
+{
+
 }
 
 void MonsterSpawner::Reset()
 {
-    player = (Player*)SCENE_MGR.GetCurrentScene()->FindGo("Player");
-    EVENT_HANDLER.AddEvent("OnMonsterDie", [&]() { currentMonsterCount--; });
+	player = (Player*)SCENE_MGR.GetCurrentScene()->FindGo("Player");
+	EVENT_HANDLER.AddEvent("OnMonsterDie", [&]() { currentMonsterCount--; });
 }
 
-void MonsterSpawner::Update(float dt) 
+void MonsterSpawner::Update(float dt)
 {
-    spawnTimer += dt;
-    slimeSpawnTimer += dt;
-    if (spawnTimer >= spawnInterval) 
-    {
-        SpawnMonster("Skeleton"); 
-        spawnTimer = 0.0f; 
-    }
+	spawnTimer += dt;
+	slimeSpawnTimer += dt;
 
-    if (slimeSpawnTimer >= 30.0f)
-    {
-        isSlimeSpawn = true;
-        slimeSpawnTimer = 0.0f;
-    }
+	bossSpawnTimer += dt;
 
-    if (isSlimeSpawn && slimeSpawnTimer >= slimeSpawnInterval)
-    {
-        SpawnMonster("Slime");
-        spawnTimer = 0.0f;
-    }
+	if (spawnTimer >= spawnInterval)
+	{
+		SpawnMonster("Skeleton", 10);
+		spawnTimer = 0.0f;
+	}
+
+	if (slimeSpawnTimer >= 15.0f)
+	{
+		isSlimeSpawn = true;
+		slimeSpawnTimer = 0.0f;
+	}
+
+	if (isSlimeSpawn && slimeSpawnTimer >= slimeSpawnInterval)
+	{
+		SpawnMonster("Slime", 10);
+		spawnTimer = 0.0f;
+	}
+
+	if (bossSpawnTimer >= 30.f)
+	{
+		BossSpawn("Boss");
+		isBossSpawn = true;
+		bossSpawnTimer = 0.f;
+	}
 }

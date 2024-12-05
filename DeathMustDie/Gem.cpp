@@ -58,7 +58,7 @@ void Gem::SetInfo(const json& j)
 
 void Gem::Reset()
 {
-	body.setTexture(TEXTURE_MGR.Get("resource/texture/Sprite/gem.png"));
+	body.setTexture(TEXTURE_MGR.Get("resource/texture/Sprite/Shard_Sps_0.png"));
 	SetOrigin(Origins::MC);
 	active = true;
 }

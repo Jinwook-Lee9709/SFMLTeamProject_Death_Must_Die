@@ -99,8 +99,9 @@ void SceneDev3::Update(float dt)
 	const float spawnInterval = 5.0f; // 5초마다 스폰
 
 	spawnTimer += dt;
-	if (spawnTimer >= spawnInterval) {
-		monsterSpawn->SpawnMonster("Skeleton"); // "Skeleton" 몬스터 스폰
+	if (spawnTimer >= spawnInterval) 
+	{
+		monsterSpawn->SpawnMonster("Skeleton", 10); // "Skeleton" 몬스터 스폰
 		spawnTimer = 0.0f; // 타이머 초기화
 	}
 }

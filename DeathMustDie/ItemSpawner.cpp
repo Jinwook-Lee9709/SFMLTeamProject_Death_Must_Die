@@ -19,7 +19,7 @@ void ItemSpawner::SpawnItem(const std::string& itemName, const GameObject& monst
 	if (item)
 	{
 		item->SetPosition(monsterPos);
-		item->SetScale({ 1.5f, 1.5f });
+		item->SetScale({ 3.f, 3.f });
 	}
 }
 
