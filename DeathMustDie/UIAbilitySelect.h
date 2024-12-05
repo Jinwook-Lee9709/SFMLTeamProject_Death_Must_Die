@@ -5,7 +5,7 @@
 class UIAbilitySelect : public UIPopup
 {
 protected:
-	std::vector<AbilitySelectPanel> panels;
+	std::vector<AbilitySelectPanel*> panels;
 
 public:
 	UIAbilitySelect(const std::string& name = "");
@@ -25,4 +25,5 @@ public:
 	void Draw(sf::RenderWindow& window) override;
 
 	void SetPanelStatus(std::vector<std::pair<json, UpgradeType>>);
+	void EnableUI();
 };

@@ -39,6 +39,7 @@ void SceneDev3::Enter()
 	AddGo(new AttackEntityPoolMgr("AttackEntityPoolMgr"));
 	AddGo(new CalculatorMgr("CalculatorMgr"));
 	AddGo(new GameMgr("GameMgr"));
+	AddGo(new MonsterPoolManager("monsterPoolMgr"));
 	AddGo(new AbilityMgr("AbilityMgr"));
 	auto obj = AddGo(new UIAbilitySelect("UIAbilitySelect"));
 	obj->sortingLayer = SortingLayers::UI;

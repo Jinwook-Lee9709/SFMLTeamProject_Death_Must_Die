@@ -14,17 +14,20 @@ struct TextInfo
 	std::string font;
 };
 
-
+class Scene;
 
 class AbilitySelectPanel : public GameObject
 {
 public:
 	
 protected:
+	int panelNum;
+
 	Animator animator;
+	Animator hoverAnimator;
 	std::unordered_map<std::string, sf::Sprite*> sprites;
 	std::unordered_map<std::string, TextGo> texts;
-	std::list<std::pair<std::string, std::string>>  valueTexts;
+	std::list<std::pair<TextGo, TextGo>>  valueTexts;
 
 	int valueCharacterSize;
 	std::string fontId;
@@ -33,16 +36,22 @@ protected:
 	sf::RenderTexture* texBuf;
 	sf::Sprite canvas;
 	float opacity;
+	bool isHover = false;
+	bool selected = false;
 
-	//sf::Sprite Panel;
+	sf::Vector2f selectEffectPos;
+
+	Scene* currentScene;
+	//sf::Sprite panel;
 	//sf::Sprite rarityFrame;
 	//TextGo skillName;
 	//TextGo level;
 	//TextGo rarityText;
 	//TextGo skillType;
 	//TextGo instruct;
+	json setting;
 public:
-	AbilitySelectPanel(const std::string& name = "");
+	AbilitySelectPanel(const std::string& name = "", int num = 0);
 	~AbilitySelectPanel() = default;
 
 	void SetPosition(const sf::Vector2f& pos) override;
@@ -60,8 +69,11 @@ public:
 
 	void SetComponent();
 	void UpdateDisplay(const json& skillInfo, UpgradeType type);
+	void Display();
 	void CreateValueText(int count);
 	void SetValueText(const json& valueText);
+
+	void TurnOffPanel(int num);
 
 	std::string AbilityTypeToString(const AbilityType& type);
 	std::string GradeToString(const AbilityGrade& grade);

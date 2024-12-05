@@ -17,7 +17,7 @@ bool SkillLevelTable::Load()
 		for (int j = 0; j < (int)AbilityGrade::Count-1; ++j)
 		{
 			auto& vec = table[strings[0]];
-			vec.resize((int)Languages::Count-1);
+			vec.resize((int)AbilityGrade::Count-1);
 			vec[j] = stof(strings[j + 1]);
 		}
 	}

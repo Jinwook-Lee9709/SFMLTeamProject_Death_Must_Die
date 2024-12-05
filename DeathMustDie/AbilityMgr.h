@@ -34,13 +34,14 @@ public:
 	~AbilityMgr() = default;
 
 	int GetRemainAbilityCount() const;
+	int GetRemainRegularAbilityCount() const;
 	int GetRemainLegendaryAbilityCount() const;
 	int GetNotMaxLvlAbilCount() const;
 	int GetNotMaxGradeAbilCount() const;
 	std::string GetRandomRemainAbility(bool isLegendary);
-	const Ability& GetRandomEquipedAbility();
-	const Ability& GetRdNotMaxLvlAbil();
-	const Ability& GetRdNotMaxGradeAbil();
+	Ability GetRandomEquipedAbility();
+	Ability GetRdNotMaxLvlAbil();
+	Ability GetRdNotMaxGradeAbil();
 
 	void Reset() override;
 	void AddAbility(const std::string& skillId, const std::string& user = "Player");

@@ -32,6 +32,7 @@ public:
 	void SetOutline(int tickness, sf::Color color);
 	void SetFont(const std::string& font);
 	void SetFont(const sf::Font& font);
+	void SetOpacity(float opacity);
 
 	sf::FloatRect GetLocalBounds();
 	sf::FloatRect GetGlobalBounds();

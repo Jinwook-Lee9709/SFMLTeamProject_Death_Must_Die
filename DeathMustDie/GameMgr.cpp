@@ -2,7 +2,10 @@
 #include "GameMgr.h"
 #include "Ability.h"
 #include "AbilityMgr.h"
+#include "CalculatorMgr.h"
+#include "Player.h"
 #include "UIAbilitySelect.h"
+
 
 GameMgr::GameMgr(const std::string& name)
 	: GameObject(name)
@@ -19,12 +22,17 @@ void GameMgr::Release()
 void GameMgr::Reset()
 {
 	abilMgr = (AbilityMgr*)SCENE_MGR.GetCurrentScene()->FindGo("AbilityMgr");
-	abilSelectUI = (UIAbilitySelect*)SCENE_MGR.GetCurrentScene()->FindGo("UIAbilitySelect");
+	uiAbilSelect = (UIAbilitySelect*)SCENE_MGR.GetCurrentScene()->FindGo("UIAbilitySelect");
+	calc = (CalculatorMgr*)SCENE_MGR.GetCurrentScene()->FindGo("CalculatorMgr");
+	player = (Player*)SCENE_MGR.GetCurrentScene()->FindGo("Player");
 	currentStatus = Status::IDLE;
+
+	EVENT_HANDLER.AddEventInt("PanelClicked", std::bind(&GameMgr::AbilitySelected, this, std::placeholders::_1));
 }
 
 void GameMgr::Update(float dt)
 {
+
 	switch (currentStatus)
 	{
 		case Status::IDLE:
@@ -44,6 +52,16 @@ void GameMgr::UpdateIdle(float dt)
 {
 	if (InputMgr::GetKeyDown(sf::Keyboard::T))
 	{
+		beforeStatus = Status::IDLE;
+		currentStatus = Status::SELECT_SKILL;
+	}
+	if (InputMgr::GetKeyDown(sf::Keyboard::Y))
+	{
+		AbilitySelected(0);
+	}
+	if (InputMgr::GetKeyDown(sf::Keyboard::F))
+	{
+		uiAbilSelect->EnableUI();
 		beforeStatus = Status::IDLE;
 		currentStatus = Status::SELECT_SKILL;
 	}
@@ -74,21 +92,31 @@ json GameMgr::MakeAbilityInfo(const std::string& name, const AbilityGrade& grade
 	if (size != 0)
 	{
 		int i = 0;
+
+		Stat& stat = player->GetStat();
+		float min = calc->GetValue(skillInfo["abilityType"].get<AbilityType>(), stat.attack.attackDamageMin);
+		float max = calc->GetValue(skillInfo["abilityType"].get<AbilityType>(), stat.attack.attackDamageMax);
 		auto it = skillInfo["ChangeableValue"].begin();
 		json valueText;
 		while (it != skillInfo["ChangeableValue"].end())
 		{
+			float value;
+
 			valueText["value" + std::to_string(i)]["valueName"] = it.key();
 			if (grade != AbilityGrade::Legend)
 			{
-				float value = SKILL_LEVEL_TABLE->Get(name + "_" + it.key() + buf["level"].get<std::string>(), grade);
-				valueText["value" + std::to_string(i)]["value"] = value;
+				value = SKILL_LEVEL_TABLE->Get(name + "_" + it.key() + std::to_string(buf["level"].get<int>()), grade);
 			}
 			else
 			{
-				valueText["value" + std::to_string(i)]["value"] = it.value();
+				value = it.value();
 			}
+			int min_value = min * value;
+			int max_value = max * value;
+			valueText["value" + std::to_string(i)]["value"] = std::to_string(min_value)+"-"+std::to_string(max_value);
+			
 			it++;
+			i++;
 		}
 		buf["valueText"] = valueText;
 		buf["valueCount"] = i;
@@ -104,30 +132,35 @@ json GameMgr::MakeAbilityInfo(const Ability& abil, const UpgradeType& type)
 	buf["name"] = abil.GetName();
 	buf["abilityType"] = abil.GetType();
 	buf["level"] = abil.GetLevel();
+	Stat& stat = player->GetStat();
+	float min = calc->GetValue(skillInfo["abilityType"].get<AbilityType>(), stat.attack.attackDamageMin);
+	float max = calc->GetValue(skillInfo["abilityType"].get<AbilityType>(), stat.attack.attackDamageMax);
 	int size = skillInfo["ChangeableValue"].size();
 	if (size != 0)
 	{
 		int i = 0;
 		auto it = skillInfo["ChangeableValue"].begin();
+		json valueText;
 		while (it != skillInfo["ChangeableValue"].end())
 		{
-			json valueText;
+
 			valueText["value" + std::to_string(i)]["valueName"] = it.key();
 			float value;
 			if (type == UpgradeType::LevelUp)
 			{
-				value = SKILL_LEVEL_TABLE->Get(name + "_" + it.key() + std::to_string(buf["level"].get<int>() + 1), abil.GetGrade());
+				value = SKILL_LEVEL_TABLE->Get(buf["name"].get<std::string>() + "_" + it.key() + std::to_string(buf["level"].get<int>() + 1), abil.GetGrade());
 			}
 			else
 			{
-				value = SKILL_LEVEL_TABLE->Get(name + "_" + it.key() + buf["level"].get<std::string>(), abil.GetGrade());
+				value = SKILL_LEVEL_TABLE->Get(buf["name"].get<std::string>() + "_" + it.key() + std::to_string(buf["level"].get<int>()), abil.GetGrade());
 			}
-			
-			valueText["value" + std::to_string(i)]["value"] = value;
-			buf["valueText"].push_back(valueText);
+			int min_value = min * value;
+			int max_value = max * value;
+			valueText["value" + std::to_string(i)]["value"] = std::to_string(min_value) + "-" + std::to_string(max_value);
 			it++;
 			i++;
 		}
+		buf["valueText"] = valueText;
 		buf["valueCount"] = i;
 	}
 	buf["grade"] = abil.GetGrade();
@@ -148,20 +181,14 @@ void GameMgr::SelectAbility()
 		{
 			if (abilMgr->GetNotMaxLvlAbilCount() < 1 && abilMgr->GetNotMaxGradeAbilCount() < 1)
 			{
-				if (abilMgr->GetRemainLegendaryAbilityCount() != 0)
-				{
-					SelectNewAbility(abilityInfo);
-				}
+				SelectNewAbility(abilityInfo);
 			}
 			else
 			{
 				if (Utils::RollTheDice(0.7f))
 				{
-					if (abilMgr->GetRemainLegendaryAbilityCount() != 0)
-					{
-						SelectNewAbility(abilityInfo);
-						
-					}
+					SelectNewAbility(abilityInfo);
+
 				}
 				else //Upgrade Ability, Increase Level / Upgrade Grade by 80 / 20
 				{
@@ -178,8 +205,7 @@ void GameMgr::SelectAbility()
 							type = UpgradeType::GradeUp;
 							SelectGradeUpAbility(abilityInfo);
 						}
-					}
-					if (abilMgr->GetNotMaxLvlAbilCount() < 0)
+					}else if (abilMgr->GetNotMaxLvlAbilCount() < 0)
 					{
 						type = UpgradeType::GradeUp;
 						SelectGradeUpAbility(abilityInfo);
@@ -208,8 +234,7 @@ void GameMgr::SelectAbility()
 					type = UpgradeType::GradeUp;
 					SelectGradeUpAbility(abilityInfo);
 				}
-			}
-			if (abilMgr->GetNotMaxLvlAbilCount() < 0)
+			}else if (abilMgr->GetNotMaxLvlAbilCount() < 0)
 			{
 				type = UpgradeType::LevelUp;
 				SelectGradeUpAbility(abilityInfo);
@@ -221,7 +246,7 @@ void GameMgr::SelectAbility()
 			}
 		}
 		auto it = std::find(selectedList.begin(), selectedList.end(), abilityInfo["name"]);
-		if (it == selectedList.end())
+		if (it == selectedList.end() && !abilityInfo.empty() && !abilityInfo["name"].empty())
 		{
 			selectedSkill.push_back({ abilityInfo, type });
 			selectedList.push_back(abilityInfo["name"]);
@@ -232,12 +257,28 @@ void GameMgr::SelectAbility()
 			flag = false;
 		}
 	}
-	abilSelectUI->SetPanelStatus(selectedSkill);
+	uiAbilSelect->SetPanelStatus(selectedSkill);
 
 }
 
 void GameMgr::SelectNewAbility(json& j)
 {
+	if (abilMgr->GetRemainRegularAbilityCount() == 0)
+	{
+		std::string abil = abilMgr->GetRandomRemainAbility(true);
+		j = MakeAbilityInfo(abil, AbilityGrade::Legend);
+		return;
+	}
+	else if (abilMgr->GetRemainLegendaryAbilityCount() == 0)
+	{
+		std::string abil = abilMgr->GetRandomRemainAbility(false);
+		std::vector<float> probability = { NOVICE_PROBABILITY, ADEPT_PROBABILITY,
+		EXPERT_PROBABILITY , MASTER_PROBABILITY };
+		AbilityGrade result = (AbilityGrade)Utils::RandomByWeight(probability);
+		j = MakeAbilityInfo(abil, result);
+		return;
+	}
+
 	std::vector<float> probability = { 1 - LEGEND_PROBABILITY ,LEGEND_PROBABILITY };
 	int result = Utils::RandomByWeight(probability);
 	if (result == 0)
@@ -266,7 +307,7 @@ void GameMgr::SelectLevelUpAbility(json& j)
 
 void GameMgr::SelectGradeUpAbility(json& j)
 {
-	Ability abil = abilMgr->GetRdNotMaxLvlAbil();
+	Ability abil = abilMgr->GetRdNotMaxGradeAbil();
 	j = MakeAbilityInfo(abil, UpgradeType::GradeUp);
 }
 
@@ -278,10 +319,17 @@ void GameMgr::AbilitySelected(int num)
 	if (type == UpgradeType::Earn)
 	{
 		abilMgr->AddAbility(info["name"]);
-		if ((AbilityGrade)info["grade"] != AbilityGrade::Novice)
+		AbilityGrade grade = (AbilityGrade)info["grade"];
+		if (grade != AbilityGrade::Novice)
 		{
+			info["grade"] = --grade;
 			abilMgr->ChangeAbility(info, UpgradeType::GradeUp);
 		}
+	
+	}
+	else
+	{
+		abilMgr->ChangeAbility(info, type);
 	}
 
 }

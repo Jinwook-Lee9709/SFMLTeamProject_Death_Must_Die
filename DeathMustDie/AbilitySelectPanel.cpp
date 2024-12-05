@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "AbilitySelectPanel.h"
 
-AbilitySelectPanel::AbilitySelectPanel(const std::string& name)
-	: GameObject(name)
+AbilitySelectPanel::AbilitySelectPanel(const std::string& name, int num)
+	: GameObject(name), panelNum(num)
 {
 }
 
@@ -10,6 +10,10 @@ void AbilitySelectPanel::SetPosition(const sf::Vector2f& pos)
 {
 	position = pos;
 	canvas.setPosition(position);
+	if (sprites.find("selectEffect") != sprites.end())
+	{
+		sprites["selectEffect"]->setPosition(selectEffectPos + position);
+	}
 }
 
 void AbilitySelectPanel::SetRotation(float angle)
@@ -61,34 +65,94 @@ void AbilitySelectPanel::Release()
 
 void AbilitySelectPanel::Reset()
 {
+	EVENT_HANDLER.AddEventInt("PanelClicked", std::bind(&AbilitySelectPanel::TurnOffPanel, this, std::placeholders::_1));
 	texBuf = new sf::RenderTexture();
 	SetComponent();
 	sprites["rarityFrame"]->setTexture(GET_TEX("rarityFrame"));
+	this->active = false;
 }
 
 void AbilitySelectPanel::Update(float dt)
 {
-	if (InputMgr::GetKeyDown(sf::Keyboard::R))
+	if (active)
 	{
-		Release();
-		UI_SETTING_TABLE->Reload();
-		Reset();
+		if (InputMgr::GetKeyDown(sf::Keyboard::R))
+		{
+			Release();
+			UI_SETTING_TABLE->Reload();
+			Reset();
+			SetPosition(position);
+		}
+		if (canvas.getGlobalBounds().contains(UI_MOUSE_POS) && !isHover)
+		{
+			hoverAnimator.Play("boon_hover");
+			isHover = true;
+		}
+		else if (!canvas.getGlobalBounds().contains(UI_MOUSE_POS) && isHover)
+		{
+			hoverAnimator.Stop();
+			sprites["hoverEffect"]->setTextureRect({ 0, 0, 0, 0, });
+			isHover = false;
+		}
+		if (canvas.getGlobalBounds().contains(UI_MOUSE_POS) && InputMgr::GetMouseButtonDown(sf::Mouse::Left)
+		&& opacity == 255 && !selected)
+		{
+			EVENT_HANDLER.InvokeEvent("PanelClicked", panelNum);
+		}
+
+		if (opacity < 254 && !selected)
+		{
+			opacity += 255 * FRAMEWORK.GetRealDeltaTime();
+			if (opacity > 254)
+			{
+				opacity = 255;
+			}
+		}
+		if (selected && opacity > 0)
+		{
+			opacity -= 400 * FRAMEWORK.GetRealDeltaTime();
+			if (opacity < 0)
+			{
+				opacity = 0;
+				active = false;
+			}
+		}
+		animator.Update(FRAMEWORK.GetRealDeltaTime());
+		hoverAnimator.Update(FRAMEWORK.GetRealDeltaTime());
 	}
-	if (InputMgr::GetKeyDown(sf::Keyboard::F))
-	{
-		animator.Play("boon_appear");
-	}
-	animator.Update(dt);
 }
 
 void AbilitySelectPanel::Draw(sf::RenderWindow& window)
 {
-	texBuf->clear();
-	for (auto& pair : sprites) { texBuf->draw(*pair.second); }
-	for (auto& pair : texts) { texBuf->draw(pair.second.GetText()); }
-	texBuf->display();
-	canvas.setTexture(texBuf->getTexture(), true);
-	window.draw(canvas);
+	if (active)
+	{
+		texBuf->clear();
+		texBuf->draw(*sprites["panel"]);
+		for (auto& pair : sprites) { 
+			if (pair.first != "panel" && pair.first != "selectEffect")
+			{
+				sf::Color color = pair.second->getColor();
+				color.a = opacity;
+				pair.second->setColor(color);
+				texBuf->draw(*pair.second);
+			}
+		}
+		for (auto& pair : texts) { 
+			pair.second.SetOpacity(opacity);
+			texBuf->draw(pair.second.GetText()); 
+		}
+		for (auto& pair : valueTexts) {
+			pair.first.SetOpacity(opacity);
+			pair.second.SetOpacity(opacity);
+			texBuf->draw(pair.first.GetText());
+			texBuf->draw(pair.second.GetText());
+		}
+		texBuf->display();
+		canvas.setTexture(texBuf->getTexture(), true);
+		window.draw(canvas);
+		window.draw(*sprites["selectEffect"]);
+	}
+
 }
 
 void AbilitySelectPanel::SetComponent()
@@ -96,9 +160,9 @@ void AbilitySelectPanel::SetComponent()
 	sprites.clear();
 	texts.clear();
 
-	json j = UI_SETTING_TABLE->Get("SkillSelectPanel");
-	auto it = j["Sprites"].begin();
-	while (it != j["Sprites"].end())
+	setting = UI_SETTING_TABLE->Get("SkillSelectPanel");
+	auto it = setting["Sprites"].begin();
+	while (it != setting["Sprites"].end())
 	{
 		std::string name = it.key();
 		SpriteInfo info = it.value();
@@ -109,8 +173,9 @@ void AbilitySelectPanel::SetComponent()
 		sprites.insert({ name, sprite });
 		it++;
 	}
-	it = j["Texts"].begin();
-	while (it != j["Texts"].end())
+	selectEffectPos = sprites["selectEffect"]->getPosition();
+	it = setting["Texts"].begin();
+	while (it != setting["Texts"].end())
 	{
 		std::string name = it.key();
 		TextInfo info = it.value();
@@ -126,15 +191,16 @@ void AbilitySelectPanel::SetComponent()
 		texts.insert({ name, text });
 		it++;
 	}
-	valueCharacterSize = j["ValueTextSize"];
-	fontId = j["ValueTextFont"];
+	valueCharacterSize = setting["ValueTextSize"];
+	fontId = setting["ValueTextFont"];
 
 
 	sf::FloatRect panelRect = sprites["panel"]->getLocalBounds();
-	std::vector<float > texSize = j["RenderTextureSize"].get<std::vector<float>>();
+	std::vector<float > texSize = setting["RenderTextureSize"].get<std::vector<float>>();
 	texBuf->create(texSize[0], texSize[1]);
 
 	animator.SetTarget(sprites["panel"]);
+	hoverAnimator.SetTarget(sprites["hoverEffect"]);
 }
 
 void AbilitySelectPanel::UpdateDisplay(const json& skillInfo, UpgradeType type)
@@ -215,6 +281,15 @@ void AbilitySelectPanel::UpdateDisplay(const json& skillInfo, UpgradeType type)
 	}
 }
 
+void AbilitySelectPanel::Display()
+{
+	animator.Play("boon_appear");
+	hoverAnimator.SetTarget(sprites["hoverEffect"]);
+	opacity = 0;
+	selected = false;
+	this->active = true;
+}
+
 void AbilitySelectPanel::CreateValueText(int count)
 {
 	valueTexts.clear();
@@ -225,17 +300,42 @@ void AbilitySelectPanel::CreateValueText(int count)
 		value.SetCharacterSize(valueCharacterSize);
 		valueName.SetFont(GET_FONT(fontId));
 		value.SetFont(GET_FONT(fontId));
+		valueTexts.push_back({valueName, value});
 	}
 }
 
 void AbilitySelectPanel::SetValueText(const json& valueText)
 {
-	for (auto& pair : valueText)
+	sf::Vector2f firstPos = texts["instruct"].GetPosition() +
+		sf::Vector2f(0.f, texts["instruct"].GetLocalBounds().height)
+		+ sf::Vector2f(0.f, setting["InstructToValueMargin"].get<float>());
+	sf::Vector2f margin = { 0, setting["ValueTextMargin"].get<float>() };
+	auto it1 = valueTexts.begin();
+	auto it2 = valueText.begin();
+	while (it2 != valueText.end())
 	{
-		std::string valueName = pair["valueName"].get<std::string>();
-		std::string value = std::to_string(pair["value"].get<float>());
-
+		(*it1).first.SetStringByString((*it2)["valueName"].get<std::string>() + ": ");
+		(*it1).first.SetPosition(firstPos + margin);
+		(*it1).first.SetFillColor(sf::Color::White);
+		sf::Vector2f xMargin ={(*it1).first.GetLocalBounds().width, 0};
+		(*it1).second.SetStringByString((*it2)["value"].get<std::string>());
+		(*it1).second.SetPosition(firstPos + margin + xMargin);
+		(*it1).second.SetFillColor(sf::Color(54, 173, 50));
+		margin += margin;
+		it1++;
+		it2++;
 	}
+}
+
+void AbilitySelectPanel::TurnOffPanel(int num)
+{
+	this->selected = true;
+	if (num == panelNum)
+	{
+		hoverAnimator.SetTarget(sprites["selectEffect"]);
+		hoverAnimator.Play("boon_selected");
+	}
+	
 }
 
 std::string AbilitySelectPanel::AbilityTypeToString(const AbilityType& type)

@@ -15,6 +15,22 @@ int AbilityMgr::GetRemainAbilityCount() const
 	return remainAbility.size();
 }
 
+int AbilityMgr::GetRemainRegularAbilityCount() const
+{
+	int count = 0;
+	auto it = remainAbility.begin();
+	while (it != remainAbility.end())
+	{
+		json info = SKILL_TABLE->Get(*it);
+		if (info["abilityGrade"].get<int>() == 0)
+		{
+			count++;
+		}
+		it++;
+	}
+	return count;
+}
+
 int AbilityMgr::GetRemainLegendaryAbilityCount() const
 {
 	std::vector<std::string> buf;
@@ -95,7 +111,7 @@ std::string AbilityMgr::GetRandomRemainAbility(bool isLegendary)
 
 }
 
-const Ability& AbilityMgr::GetRandomEquipedAbility()
+Ability AbilityMgr::GetRandomEquipedAbility()
 {
 	int index = Utils::RandomRange(0, abilityList.size() - 1);
 	auto it = abilityList.begin();
@@ -103,7 +119,7 @@ const Ability& AbilityMgr::GetRandomEquipedAbility()
 	return **it;
 }
 
-const Ability& AbilityMgr::GetRdNotMaxLvlAbil()
+Ability AbilityMgr::GetRdNotMaxLvlAbil()
 {
 	std::vector<Ability> buf;
 	for (auto abil : abilityList)
@@ -120,7 +136,7 @@ const Ability& AbilityMgr::GetRdNotMaxLvlAbil()
 	
 }
 
-const Ability& AbilityMgr::GetRdNotMaxGradeAbil()
+Ability AbilityMgr::GetRdNotMaxGradeAbil()
 {
 	std::vector<Ability> buf;
 	for (auto abil : abilityList)
@@ -186,6 +202,7 @@ void AbilityMgr::AddAbility(const std::string& skillId, const std::string& user)
 						abilityList.erase(it);
 						break;
 					}
+					it++;
 				}
 				delete basicAttack;
 			}
@@ -223,42 +240,54 @@ void AbilityMgr::AddAbility(const std::string& skillId, const std::string& user)
 			earn.push_back(abil);
 		}
 	}
+
+	if (j["abilityGrade"].get<int>() == 1)
+	{
+		abil->SetGrade(AbilityGrade::Legend);
+	}
 }
 
 void AbilityMgr::ChangeAbility(const json& info, const UpgradeType& type)
 {
 	Ability* abil = FindAbilityByName(info["name"]);
+
 	if (type == UpgradeType::LevelUp)
 	{
 		json buf;
+		abil->SetLevel(info["level"].get<int>() + 1);
 		auto it = info["valueText"].begin();
 		while (it != info["valueText"].end())
 		{
-			buf[it.key()] = it.value();
+			float value = SKILL_LEVEL_TABLE->Get(name + "_" + it.key() + std::to_string(abil->GetLevel()), abil->GetGrade());
+			buf[it.key()] = value;
+			it++;
 		}
 		abil->ChangeInfo(buf);
-		abil->SetLevel(info["level"].get<int>());
+
 		
 	}
 	else
 	{
 		json buf;
+		abil->SetGrade((AbilityGrade)(info["grade"].get<int>() + 1));
 		auto it = info["valueText"].begin();
 		while (it != info["valueText"].end())
 		{
-			buf[it.key()] = it.value();
+			float value = SKILL_LEVEL_TABLE->Get(name + "_" + it.key() + std::to_string(abil->GetLevel()), abil->GetGrade());
+			buf[it.key()] = value;
+			it++;
 		}
 		abil->ChangeInfo(buf);
-		abil->SetGrade((AbilityGrade)info["grade"].get<int>());
+
 	}
 
 }
 
 void AbilityMgr::Release()
 {
-	EVENT_HANDLER.DeleteEvenet("OnAttack");
-	EVENT_HANDLER.DeleteEvenet("OnHit");
-	EVENT_HANDLER.DeleteEvenet("OnDash");
+	EVENT_HANDLER.DeleteEvent("OnAttack");
+	EVENT_HANDLER.DeleteEvent("OnHit");
+	EVENT_HANDLER.DeleteEvent("OnDash");
 }
 
 void AbilityMgr::Update(float dt)
@@ -348,6 +377,10 @@ void AbilityMgr::UpdateAll(float dt)
 
 Ability* AbilityMgr::FindAbilityByName(const std::string& name)
 {
+	if (basicAttack->GetName() == name)
+	{
+		return basicAttack;
+	}
 	for (auto pair : attack)
 	{
 		if (pair.second->GetName() == name)

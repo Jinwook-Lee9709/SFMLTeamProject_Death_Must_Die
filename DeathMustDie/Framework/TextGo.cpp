@@ -123,6 +123,13 @@ void TextGo::SetFont(const sf::Font& font)
 	text.setFont(font);
 }
 
+void TextGo::SetOpacity(float opacity)
+{
+	sf::Color color = text.getFillColor();
+	color.a = opacity;
+	text.setFillColor(color);
+}
+
 sf::FloatRect TextGo::GetLocalBounds()
 {
 	return text.getLocalBounds();

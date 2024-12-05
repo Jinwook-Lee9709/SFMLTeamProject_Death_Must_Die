@@ -49,10 +49,10 @@ void UIAbilitySelect::Reset()
 	sf::Vector2f initPos = { 300.f, 100.f };
 	for (int i = 0; i < 3; i++)
 	{
-		AbilitySelectPanel panel;
-		panel.Reset();
-		panel.SetPosition(initPos);
-		panel.SetScale({ 1.f, 1.f });
+		AbilitySelectPanel* panel = new AbilitySelectPanel("panel" + std::to_string(i), i);
+		panel->Reset();
+		panel->SetPosition(initPos);
+		panel->SetScale({ 1.f, 1.f });
 		initPos.x += 500.f;
 		panels.push_back(panel);
 	}
@@ -62,7 +62,7 @@ void UIAbilitySelect::Update(float dt)
 {
 	for (auto& panel : panels)
 	{
-		panel.Update(dt);
+		panel->Update(dt);
 	}
 }
 
@@ -70,7 +70,7 @@ void UIAbilitySelect::Draw(sf::RenderWindow& window)
 {
 	for (auto& panel : panels)
 	{
-		panel.Draw(window);
+		panel->Draw(window);
 	}
 }
 
@@ -80,12 +80,20 @@ void UIAbilitySelect::SetPanelStatus(std::vector<std::pair<json, UpgradeType>> a
 	auto it = panels.begin();
 	for (auto& pair : abilInfo)
 	{
-		it->UpdateDisplay(pair.first, pair.second);
+		(*it)->UpdateDisplay(pair.first, pair.second);
 		it++;
 		i++;
 	}
 	for (int j = i; j < panels.size(); j++)
 	{
-		panels[j].SetActive(false);
+		panels[j]->SetActive(false);
+	}
+}
+
+void UIAbilitySelect::EnableUI()
+{
+	for (auto& panel : panels)
+	{
+		panel->Display();
 	}
 }

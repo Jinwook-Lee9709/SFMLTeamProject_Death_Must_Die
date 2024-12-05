@@ -13,6 +13,18 @@
                     "scale" : [3.0, 3.0],
                     "origin" : 0
                 },
+                "hoverEffect":
+                {
+                    "position" : [0.0, 0.0],
+                    "scale" : [3.0, 3.0],
+                    "origin" : 0
+                },
+                "selectEffect":
+                {
+                    "position" : [-340.0, -50.0],
+                    "scale" : [3.0, 3.0],
+                    "origin" : 1
+                },
                 "rarityFrame":
                 {
                     "position" : [32.0, 115.0],
@@ -60,7 +72,9 @@
                 }
             },
             "RenderTextureSize" : [450, 852],
+            "InstructToValueMargin" : 0,
             "ValueTextSize" : 19,
-            "ValueTextFont" :"LinBiolinum_RB"
+            "ValueTextFont" :"LinBiolinum_RB",
+            "ValueTextMargin" : 25
         }
 }

@@ -3,7 +3,9 @@
 
 class Ability;
 class AbilityMgr;
+class CalculatorMgr;
 class UIAbilitySelect;
+class Player;
 
 
 class GameMgr : public GameObject
@@ -21,7 +23,10 @@ protected:
 	Status currentStatus;
 	
 	AbilityMgr* abilMgr;
-	UIAbilitySelect* abilSelectUI;
+	CalculatorMgr* calc;
+	UIAbilitySelect* uiAbilSelect;
+
+	Player* player;
 
 	std::vector<std::pair<json, UpgradeType>> selectedSkill;
 public:
