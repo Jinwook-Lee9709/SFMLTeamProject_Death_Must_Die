@@ -144,7 +144,8 @@
     "BOON_SELECTED" :
     {
         "ID": "boon_selected",
-        "TEX_ID": "resource/texture/Sheet/skill/boon_select.png",
+        "TEX_ID": "resource/texture/Sheet/skill/boon_select.png"
+    },
     "SORCEROR_WALK" :
     {
         "ID": "sorceror_walk",

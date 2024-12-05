@@ -17,6 +17,7 @@ protected:
 public:
 	SortingLayers sortingLayer = SortingLayers::Default;
 	int sortingOrder = 0;
+	int sortingY = 0;
 
 	GameObject(const std::string& name = "");
 	virtual ~GameObject();
@@ -87,6 +88,8 @@ struct DrawOrderComparer
 	{
 		if (a->sortingLayer != b->sortingLayer)
 			return a->sortingLayer > b->sortingLayer;
-		return a->sortingOrder > b->sortingOrder;
+		else if (a->sortingOrder != b->sortingOrder)
+			return a->sortingOrder > b->sortingOrder;
+		return a->sortingY > b->sortingY;
 	}
 };

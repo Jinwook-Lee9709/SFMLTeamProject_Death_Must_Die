@@ -88,6 +88,12 @@ void SpriteGo::ChangeTexture(const std::string& texId)
 
 }
 
+void SpriteGo::SetTextureRect(const sf::IntRect& rect)
+{
+	sprite.setTextureRect(rect);
+	
+}
+
 sf::Vector2f SpriteGo::GetSize()
 {
 	return (sf::Vector2f)sprite.getTexture()->getSize();

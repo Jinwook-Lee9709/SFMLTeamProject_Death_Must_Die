@@ -31,6 +31,9 @@ public:
 	void SetFillColor(const sf::Color& color);
 	void ChangeTexture(const std::string& texId);
 
+	void SetTextureRect(const sf::IntRect& rect);
+	sf::IntRect GetTextureRect() const { return sprite.getTextureRect(); };
+
 	virtual sf::Vector2f GetSize();
 };
 

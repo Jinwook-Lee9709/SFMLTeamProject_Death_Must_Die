@@ -50,7 +50,6 @@ void SceneGame::Enter()
 	auto obj = AddGo(new UIAbilitySelect("UIAbilitySelect"));
 	obj->sortingLayer = SortingLayers::UI;
 	itemMPMgr = AddGo(new ItemPoolManager("itemPoolMgr"));
-	skeletonSpawn = AddGo(new MonsterSpawner(MPMgr, mapBound, 30));
 	itemSpawn = AddGo(new ItemSpawner(itemMPMgr));
 
 	ApplyAddGo();

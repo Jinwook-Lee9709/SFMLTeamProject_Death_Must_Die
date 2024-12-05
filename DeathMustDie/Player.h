@@ -90,6 +90,7 @@ struct Stat
 };
 
 class MonsterPoolManager;
+class StatusUi;
 
 class Player : public GameObject
 {
@@ -117,11 +118,13 @@ protected:
 	sf::Sprite body4;
 	Animator animator4;
 
+	SpriteGo shadow;
+
 	bool flip;
 	bool dashFlip;
 	sf::Vector2f direction;
 
-	std::queue<Status> temp;
+	std::queue<Status> dashQueue;
 
 	std::string clipId = "knight_idle";
 	std::string clipId2 = "knight_soward1";
@@ -142,8 +145,23 @@ protected:
 	sf::Vector2f dashPos;
 	sf::Vector2f dashDirection;
 
-	Stat stat;
+	sf::RectangleShape backDashBar;
+	std::vector<sf::RectangleShape> dashBlock;
+
+	sf::RectangleShape backHpBar;
+	sf::RectangleShape hpBar;
+	sf::RectangleShape damageBar;
+	float hp;
+	bool isDamage;
+	float damageBarTime;
+
+	int level;
+	float exp;
+
+	Stat baseStat;
+	Stat curStat;
 	Scene* scene;
+	StatusUi* ui;
 public:
 	Player(const std::string& name = "");
 	~Player() = default;
@@ -161,16 +179,26 @@ public:
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
 
+	void SetDashAndHp();
+	void UpdateDashCount();
+
 	void SetStatus(Status cur);
 	void Move(float dt);
-
 	void Attack(float dt);
 	void Dash(float dt);
+
+	int GetDashCharge() const { return dashCharge; }
 
 	void SaveStat();
 	void LoadStat();
 	Stat& GetStat();
+	Stat& GetCurStat();
+	SpriteGo& GetShadow();
 
 	void ChangeAttackColor(sf::Color color);
+
+	void Damage(float damage);
+	void SetHp(float hp, float damage = 0);
+	void SetLevel(float exp);
 };
 

@@ -20,7 +20,7 @@ private:
 	AbilityMgr* abilMgr;
 	MonsterPoolManager* MPMgr;
 	ItemPoolManager* itemMPMgr;
-	MonsterSpawner* skeletonSpawn;
+	MonsterSpawner* monsterSpawn;
 	ItemSpawner* itemSpawn;
 
 	sf::FloatRect mapBound = { 0, 0, 1920, 1080 };

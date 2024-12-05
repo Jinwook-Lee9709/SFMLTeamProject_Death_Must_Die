@@ -10,8 +10,11 @@ public:
 		SkillSetting,
 		SkillLevel,
 		Item,
+		Exp,
 		Count
 	};
+
+
 
 protected:
 	Types type;

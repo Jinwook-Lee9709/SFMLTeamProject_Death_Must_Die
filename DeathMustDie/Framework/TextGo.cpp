@@ -130,6 +130,11 @@ void TextGo::SetOpacity(float opacity)
 	text.setFillColor(color);
 }
 
+void TextGo::SetLetterSpacing(float spacingFactor)
+{
+	text.setLetterSpacing(spacingFactor);
+}
+
 sf::FloatRect TextGo::GetLocalBounds()
 {
 	return text.getLocalBounds();

@@ -34,6 +34,8 @@ public:
 	void SetFont(const sf::Font& font);
 	void SetOpacity(float opacity);
 
+	void SetLetterSpacing(float spacingFactor);
+	
 	sf::FloatRect GetLocalBounds();
 	sf::FloatRect GetGlobalBounds();
 

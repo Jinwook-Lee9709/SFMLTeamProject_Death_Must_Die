@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Player.h"
 #include "MonsterPoolManager.h"
+#include "StatusUi.h"
 
 Player::Player(const std::string& name)
 	: GameObject(name)
@@ -10,11 +11,20 @@ Player::Player(const std::string& name)
 void Player::SetPosition(const sf::Vector2f& pos)
 {
 	position = pos;
+	sortingY = position.y;
 	body.setPosition(position);
 	body2.setPosition(position);
 	body3.setPosition(position + attackPos);
 	body4.setPosition({ position.x, position.y});
 	hitbox.rect.setPosition({position.x, position.y + 15.f});
+	backHpBar.setPosition({ position.x,  position.y -body.getGlobalBounds().height * 0.5f + 20.f});
+	hpBar.setPosition({ backHpBar.getGlobalBounds().left + 1.f, backHpBar.getGlobalBounds().top + 2.f });
+	backDashBar.setPosition({ backHpBar.getPosition().x, backHpBar.getPosition().y - 10.f });
+	for (int i = 0; i < curStat.dash.dashCharge; i++)
+		dashBlock[i].setPosition({backDashBar.getGlobalBounds().left + 3.f + 7.f * i, backDashBar.getGlobalBounds().top + 2.f});
+	damageBar.setPosition(hpBar.getGlobalBounds().left + hpBar.getGlobalBounds().width, hpBar.getGlobalBounds().top);
+
+	shadow.SetPosition({position.x, position.y + body.getGlobalBounds().height * 0.5f - 10.f});
 }
 
 void Player::SetRotation(float angle)
@@ -30,7 +40,9 @@ void Player::SetScale(const sf::Vector2f& s)
 	body2.setScale(body2.getScale().x * scale.x, body2.getScale().y * scale.y);
 	body3.setScale(body3.getScale().x * scale.x, body3.getScale().y * scale.y);
 	body4.setScale(body4.getScale().x * scale.x, body4.getScale().y * scale.y);
+	shadow.SetScale({ shadow.GetScale().x * scale.x, shadow.GetScale().y * scale.y });
 	hitbox.rect.setScale(hitbox.rect.getScale().x * scale.x, hitbox.rect.getScale().y * scale.y);
+	
 }
 
 void Player::SetOrigin(Origins preset)
@@ -44,6 +56,7 @@ void Player::SetOrigin(Origins preset)
 		body3.setOrigin(body3.getLocalBounds().width * 0.5f, body3.getLocalBounds().height - 50.f);
 		body4.setOrigin(body4.getLocalBounds().width * 0.5f + 3.f, body4.getLocalBounds().height - 5.f);
 		Utils::SetOrigin(hitbox.rect, Origins::MC);
+		shadow.SetOrigin(Origins::BC);
 		//Utils::SetOrigin(body2, originPreset);
 	}
 }
@@ -57,7 +70,10 @@ void Player::SetOrigin(const sf::Vector2f& newOrigin)
 
 void Player::Init()
 {
-	SaveStat();
+	sortingLayer = SortingLayers::Foreground;
+	sortingOrder = 1;
+
+	LoadStat();
 	animator.SetTarget(&body);
 	animator2.SetTarget(&body2);
 	animator3.SetTarget(&body3);
@@ -70,7 +86,9 @@ void Player::Release()
 
 void Player::Reset()
 {
+	
 	RES_TABLE_MGR.LoadAnimation();
+	RES_TABLE_MGR.LoadScene("Dev1");
 	animator.Play(clipId);
 	animator2.Play(clipId2);
 	animator2.Stop();
@@ -84,11 +102,20 @@ void Player::Reset()
 	body4.setScale(0.8f, 0.8f);
 	body4.setRotation(-90);
 	hitbox.UpdateTr(body, { 0,0,19.f,47.f });
+	shadow = SpriteGo("shadow");
+	shadow.Reset();
+	shadow.SetFillColor(sf::Color::Black);
+
 	SetOrigin(Origins::MC);
 	
 	//Utils::SetOrigin(body4, Origins::BC);
-	dashCharge = stat.dash.dashCharge;
+	
 	scene = SCENE_MGR.GetCurrentScene();
+	ui = dynamic_cast<StatusUi*>(scene->FindGo("UI"));
+	SetDashAndHp();
+	level = 1;
+	exp = 0;
+	ui->UpdateExp(exp, level);
 }
 
 void Player::Update(float dt)
@@ -97,19 +124,37 @@ void Player::Update(float dt)
 	animator2.Update(dt);
 	animator3.Update(dt);
 	animator4.Update(dt);
+	shadow.GetHitBox().UpdateTr(shadow.GetSprite(), shadow.GetLocalBounds());
 	Move(dt);
 	Attack(dt);
 	Dash(dt);
+	UpdateDashCount();
 	
+	if (InputMgr::GetKeyDown(sf::Keyboard::K))
+		Damage(10.f);
+	if (InputMgr::GetKeyDown(sf::Keyboard::L))
+		SetLevel(5.f);
 	
-	if (direction.x < 0 && !isAttack)
+	if (isDamage)
+	{
+		damageBarTime += dt;
+		if (damageBarTime > 0.1f)
+		{
+			ui->UpdateTrace();
+			damageBar.setSize({ 0.f,0.f });
+			damageBarTime = 0;
+			isDamage = false;
+		}
+	}
+
+	if (direction.x < 0 && (!isAttack || isDash))
 	{
 		flip = true;
 		dashFlip = true;
 		animator.SetFlip(true);
 		animator2.SetFlip(true);
 	}
-	else if (direction.x > 0 && !isAttack)
+	else if (direction.x > 0 && (!isAttack || isDash))
 	{
 		flip = false;
 		dashFlip = false;
@@ -137,8 +182,58 @@ void Player::Draw(sf::RenderWindow& window)
 	{
 		window.draw(body4);
 	}
-	window.draw(body);
+	
 	hitbox.Draw(window);
+	shadow.Draw(window);
+	window.draw(body);
+	window.draw(backHpBar);
+	window.draw(hpBar);
+	window.draw(damageBar);
+	window.draw(backDashBar);
+	for (auto& dashes : dashBlock)
+		window.draw(dashes);
+}
+
+void Player::SetDashAndHp()
+{
+	dashCharge = baseStat.dash.dashCharge;
+	hp = baseStat.defensive.life;
+	hp = baseStat.defensive.life;
+
+	backHpBar.setSize({ 70.f, 7.f});
+	backHpBar.setFillColor(sf::Color::Black);
+	Utils::SetOrigin(backHpBar, Origins::MC);
+	backHpBar.setPosition({ position.x, position.y - 50.f});
+
+	hpBar.setSize({ 68.f, 3.f });
+	hpBar.setFillColor(sf::Color(156,3,0));
+	hpBar.setPosition({ backHpBar.getGlobalBounds().left, body.getGlobalBounds().top - 2.f});
+
+	backDashBar.setSize({ 4.f + 7.f * dashCharge, 7.f });
+	backDashBar.setFillColor(sf::Color::Black);
+	Utils::SetOrigin(backDashBar, Origins::MC);
+	backDashBar.setPosition({ backHpBar.getPosition().x, backHpBar.getPosition().y - 6.f});
+
+	for (int i = 0; i < dashCharge; i++)
+	{
+		dashBlock.push_back(sf::RectangleShape({ 5.f,3.f }));
+		dashBlock[i].setFillColor(sf::Color(249, 206, 107));
+		dashBlock[i].setPosition({ backDashBar.getGlobalBounds().left + 3.f * i, backDashBar.getGlobalBounds().top - 2.f });
+	}
+	
+}
+
+void Player::UpdateDashCount()
+{
+	int count = curStat.dash.dashCharge;
+	for (int i = 0; i < count; i++)
+	{
+		dashBlock[i].setSize({ 0.f,0.f });
+	}
+	for (int i = 0; i < dashCharge; i++)
+	{
+		dashBlock[i].setSize({ 5.f,3.f });
+	}
 }
 
 void Player::SetStatus(Status cur)
@@ -191,9 +286,8 @@ void Player::Move(float dt)
 			direction = { 0, direction.y };
 		if ((InputMgr::GetKey(sf::Keyboard::W) && InputMgr::GetKey(sf::Keyboard::S)))
 			direction = { direction.x, 0 };
-		SetPosition(position + direction * (float)stat.defensive.moveSpeed * dt);
+		SetPosition(position + direction * (float)baseStat.defensive.moveSpeed * dt);
 	}
-	
 	if (!isAttack && !isDash)
 	{
 		direction.x != 0.f || direction.y != 0.f ? SetStatus(Status::WALK) : SetStatus(Status::IDLE);
@@ -205,12 +299,13 @@ void Player::Attack(float dt)
 	attackTerm += dt;
 	sf::Vector2f mousePos  = scene->ScreenToWorld(InputMgr::GetMousePosition());
 	float directionX;
-
-	if (temp.empty())
+	
+	
+	if (dashQueue.empty())
 	{
-		temp.push(Status::ATTACK);
-		temp.push(Status::ATTACK2);
-		temp.push(Status::ATTACK);
+		dashQueue.push(Status::ATTACK);
+		dashQueue.push(Status::ATTACK2);
+		dashQueue.push(Status::ATTACK);
 	}
 	if (InputMgr::GetMouseButton(sf::Mouse::Left) && !isDash)
 	{
@@ -224,16 +319,15 @@ void Player::Attack(float dt)
 			flip = false;
 		}
 		sf::Vector2f look = Utils::GetNormal(mousePos - body3.getPosition());
-		if (attackTerm > stat.attack.attackTime)
+		if (attackTerm > baseStat.attack.attackTime)
 		{
 			
-			SetStatus(temp.front());
+			SetStatus(dashQueue.front());
 
 			animator.Play(clipId, flip);
-
-			if(temp.front() == Status::ATTACK2 && !flip)
+			if(dashQueue.front() == Status::ATTACK2 && !flip)
 				animator3.Play(clipId3, true);
-			else if (temp.front() == Status::ATTACK2 && flip)
+			else if (dashQueue.front() == Status::ATTACK2 && flip)
 				animator3.Play(clipId3, false);
 			else
 				animator3.Play(clipId3, flip);
@@ -245,13 +339,13 @@ void Player::Attack(float dt)
 			body3.setPosition(position + attackPos);
 			attackTerm = 0.f;
 			EVENT_HANDLER.InvokeEvent("OnAttack");
-			temp.pop();
+			dashQueue.pop();
 		}
 	}
 	if (InputMgr::GetMouseButtonUp(sf::Mouse::Left))
 	{
- 		while (!temp.empty())
-			temp.pop();
+ 		while (!dashQueue.empty())
+			dashQueue.pop();
 	}
 	if (animator.IsEnd())
 		isAttack = false;
@@ -262,18 +356,18 @@ void Player::Attack(float dt)
 
 void Player::Dash(float dt)
 {
-	dashCharge = 100;
-	dashChargeTime += dt;
-	if (dashChargeTime > stat.dash.dashRechargeTime && dashCharge < stat.dash.dashCharge)
+	if (dashCharge < curStat.dash.dashCharge)
+		dashChargeTime += dt;
+	if (dashChargeTime > curStat.dash.dashRechargeTime)
 	{
 		dashCharge++;
 		dashChargeTime = 0;
+		
 	}       
 	if ((direction.x == 0.f && direction.y == 0.f && !isDash))
 		return;
 	if (InputMgr::GetKeyDown(sf::Keyboard::Space))
 	{
-		std::cout << direction.x << " " << direction.y << std::endl;
 		if (dashCharge == 0)
 			return;
 		isDash = true;
@@ -290,7 +384,6 @@ void Player::Dash(float dt)
 		
 		dashPos = position + dashDirection * 600.f * 0.4f;
 		EVENT_HANDLER.InvokeEvent("OnDash");
-		std::cout << dashCharge << std::endl;
 	}
 
 	if (animator2.IsPlay() && isDash)
@@ -298,18 +391,15 @@ void Player::Dash(float dt)
 		sf::Vector2f newPos = position;
 		newPos = Utils::Lerp(newPos, dashPos, dt * 6, true);
 		SetPosition(newPos);
-	}
-	if (!animator2.IsPlay())
+	}else
 	{
 		isDash = false;
 	}
-	
-	
 }
 
 void Player::SaveStat()
 {
-	json j = stat;
+	json j = baseStat;
 	std::ofstream f("tables/player.json");
 	f << j.dump(4) << std::endl;
 	f.close();
@@ -319,21 +409,63 @@ void Player::LoadStat()
 {
 	std::ifstream f("tables/player.json");
 	json j = json::parse(f);
-	stat.attack = j["attack"];
-	stat.blessingSlot = j["blessingSlot"];
-	stat.dash = j["dash"];
-	stat.defensive = j["defensive"];
-	stat.godBlessing = j["godBlessing"];
-	stat.offensive = j["offensive"];
-	stat.utility = j["utility"];
+	baseStat.attack = j["attack"];
+	baseStat.blessingSlot = j["blessingSlot"];
+	baseStat.dash = j["dash"];
+	baseStat.defensive = j["defensive"];
+	baseStat.godBlessing = j["godBlessing"];
+	baseStat.offensive = j["offensive"];
+	baseStat.utility = j["utility"];
+
+	curStat = baseStat;
 }
 
 Stat& Player::GetStat()
 {
-	return this->stat;
+	return this->baseStat;
+}
+
+Stat& Player::GetCurStat()
+{
+	return this->curStat;
+}
+
+SpriteGo& Player::GetShadow()
+{
+	return this->shadow;
 }
 
 void Player::ChangeAttackColor(sf::Color color)
 {
 	body3.setColor(color);
+}
+
+void Player::Damage(float damage)
+{
+	
+	float value = Utils::Clamp(damage - curStat.defensive.armor, 0, hp) / curStat.defensive.life;
+	isDamage = true;
+	hp = Utils::Clamp(hp - (damage - curStat.defensive.armor), 0, curStat.defensive.life);
+
+	SetHp(hp, value);
+	ui->UpdateHp(hp, value);
+}
+
+void Player::SetHp(float hp, float damage)
+{
+	sf::Vector2f maxSize = { 68.f, 3.f };
+	damageBar.setSize({ maxSize.x * damage, maxSize.y });
+	hpBar.setSize({ maxSize.x * hp / curStat.defensive.life, maxSize.y });
+	damageBar.setPosition(hpBar.getGlobalBounds().left + hpBar.getGlobalBounds().width, hpBar.getGlobalBounds().top);
+}
+
+void Player::SetLevel(float exp)
+{
+	this->exp += exp;
+	if (this->exp >= EXP_TABLE->Get(level + 1).curExp)
+	{
+		level++;
+		this->exp = 0;
+	}
+	ui->UpdateExp(this->exp, level);
 }
