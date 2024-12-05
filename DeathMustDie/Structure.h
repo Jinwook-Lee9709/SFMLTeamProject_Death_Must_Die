@@ -13,6 +13,10 @@ protected:
 	Kinds kind;
 
 	sf::Sprite body;
+	sf::FloatRect collision;
+	sf::RectangleShape temp;
+
+	bool isUsed;
 
 public:
 	Structure(const std::string& name = "");
@@ -29,5 +33,6 @@ public:
 	void Release() override;
 	void Reset() override;
 	void Update(float dt) override;
+	void FixedUpdate(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
 };

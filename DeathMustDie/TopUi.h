@@ -1,9 +1,14 @@
 #pragma once
 
+class SceneDev1;
+class Structure;
+class Player;
+
 class TopUi : public GameObject
 {
 protected:
 	sf::Vector2f winSize = FRAMEWORK.GetWindowSizeF();
+	SceneDev1* scene;
 
 	SpriteGo timer;
 	TextGo time;
@@ -15,7 +20,8 @@ protected:
 	SpriteGo markerPlayer;
 	std::vector<SpriteGo> markerObj;
 
-
+	std::list<Structure*> objList;
+	Player* player;
 public:
 	TopUi(const std::string& name = "");
 	~TopUi() = default;
@@ -36,5 +42,6 @@ public:
 	void SetTimer();
 	void SetTime(float min, float sec);
 	void SetMiniMap();
+	void SetObjPos();
 };
 

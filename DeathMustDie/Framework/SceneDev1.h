@@ -3,12 +3,16 @@
 
 class Player;
 class TileMap2;
+class Structure;
 
 class SceneDev1 : public Scene
 {
 protected:
 	SpriteGo* sprite;
 	TextGo* text;
+
+	ObjectPool<Structure> struPool;
+	std::list<Structure*> struList;
 
 	Player* player;
 public:
@@ -21,5 +25,8 @@ public:
 
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
+
+	std::list<Structure*> GetObjList() const { return struList; }
+	void SetObjPos();
 };
 

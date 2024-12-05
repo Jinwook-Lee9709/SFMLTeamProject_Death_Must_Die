@@ -117,6 +117,8 @@ protected:
 	sf::Sprite body4;
 	Animator animator4;
 
+	SpriteGo shadow;
+
 	bool flip;
 	bool dashFlip;
 	sf::Vector2f direction;
@@ -190,6 +192,7 @@ public:
 	void LoadStat();
 	Stat& GetStat();
 	Stat& GetCurStat();
+	SpriteGo& GetShadow();
 
 	void ChangeAttackColor(sf::Color color);
 

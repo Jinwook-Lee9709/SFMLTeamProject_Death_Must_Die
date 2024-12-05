@@ -10,6 +10,7 @@ Player::Player(const std::string& name)
 void Player::SetPosition(const sf::Vector2f& pos)
 {
 	position = pos;
+	sortingY = position.y;
 	body.setPosition(position);
 	body2.setPosition(position);
 	body3.setPosition(position + attackPos);
@@ -21,6 +22,8 @@ void Player::SetPosition(const sf::Vector2f& pos)
 	for (int i = 0; i < curStat.dash.dashCharge; i++)
 		dashBlock[i].setPosition({backDashBar.getGlobalBounds().left + 3.f + 7.f * i, backDashBar.getGlobalBounds().top + 2.f});
 	damageBar.setPosition(hpBar.getGlobalBounds().left + hpBar.getGlobalBounds().width, hpBar.getGlobalBounds().top);
+
+	shadow.SetPosition({position.x, position.y + body.getGlobalBounds().height * 0.5f - 10.f});
 }
 
 void Player::SetRotation(float angle)
@@ -36,6 +39,7 @@ void Player::SetScale(const sf::Vector2f& s)
 	body2.setScale(body2.getScale().x * scale.x, body2.getScale().y * scale.y);
 	body3.setScale(body3.getScale().x * scale.x, body3.getScale().y * scale.y);
 	body4.setScale(body4.getScale().x * scale.x, body4.getScale().y * scale.y);
+	shadow.SetScale({ shadow.GetScale().x * scale.x, shadow.GetScale().y * scale.y });
 	hitbox.rect.setScale(hitbox.rect.getScale().x * scale.x, hitbox.rect.getScale().y * scale.y);
 	
 }
@@ -51,6 +55,7 @@ void Player::SetOrigin(Origins preset)
 		body3.setOrigin(body3.getLocalBounds().width * 0.5f, body3.getLocalBounds().height - 50.f);
 		body4.setOrigin(body4.getLocalBounds().width * 0.5f + 3.f, body4.getLocalBounds().height - 5.f);
 		Utils::SetOrigin(hitbox.rect, Origins::MC);
+		shadow.SetOrigin(Origins::BC);
 		//Utils::SetOrigin(body2, originPreset);
 	}
 }
@@ -64,6 +69,9 @@ void Player::SetOrigin(const sf::Vector2f& newOrigin)
 
 void Player::Init()
 {
+	sortingLayer = SortingLayers::Foreground;
+	sortingOrder = 1;
+
 	LoadStat();
 	animator.SetTarget(&body);
 	animator2.SetTarget(&body2);
@@ -77,7 +85,9 @@ void Player::Release()
 
 void Player::Reset()
 {
+	
 	RES_TABLE_MGR.LoadAnimation();
+	RES_TABLE_MGR.LoadScene("Dev1");
 	animator.Play(clipId);
 	animator2.Play(clipId2);
 	animator2.Stop();
@@ -91,6 +101,10 @@ void Player::Reset()
 	body4.setScale(0.8f, 0.8f);
 	body4.setRotation(-90);
 	hitbox.UpdateTr(body, { 0,0,19.f,47.f });
+	shadow = SpriteGo("shadow");
+	shadow.Reset();
+	shadow.SetFillColor(sf::Color::Black);
+
 	SetOrigin(Origins::MC);
 	
 	//Utils::SetOrigin(body4, Origins::BC);
@@ -109,6 +123,7 @@ void Player::Update(float dt)
 	animator2.Update(dt);
 	animator3.Update(dt);
 	animator4.Update(dt);
+	shadow.GetHitBox().UpdateTr(shadow.GetSprite(), shadow.GetLocalBounds());
 	Move(dt);
 	Attack(dt);
 	Dash(dt);
@@ -168,6 +183,7 @@ void Player::Draw(sf::RenderWindow& window)
 	}
 	
 	hitbox.Draw(window);
+	shadow.Draw(window);
 	window.draw(body);
 	window.draw(backHpBar);
 	window.draw(hpBar);
@@ -411,6 +427,11 @@ Stat& Player::GetStat()
 Stat& Player::GetCurStat()
 {
 	return this->curStat;
+}
+
+SpriteGo& Player::GetShadow()
+{
+	return this->shadow;
 }
 
 void Player::ChangeAttackColor(sf::Color color)

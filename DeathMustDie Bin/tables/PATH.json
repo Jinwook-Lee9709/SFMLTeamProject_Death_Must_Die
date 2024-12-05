@@ -24,7 +24,8 @@
         "Dev1":{
             "Texture" : {
                "retreat" : "graphics/retreat_button.png",
-               "background" : "resource/texture/TerrainWilderness_Spr_01.png"
+               "background" : "resource/texture/TerrainWilderness_Spr_01.png",
+               "shadow" : "resource/texture/Sprite/Object/_S_ShadowTiny_Spr.png"
             
             
             },

@@ -1,5 +1,8 @@
 #include "stdafx.h"
 #include "TopUi.h"
+#include "SceneDev1.h"
+#include "Structure.h"
+#include "Player.h"
 
 TopUi::TopUi(const std::string& name)
 	: GameObject(name)
@@ -40,6 +43,7 @@ void TopUi::Init()
 	RES_TABLE_MGR.LoadScene("UI");
 	sortingLayer = SortingLayers::UI;
 	sortingOrder = 1;
+	
 }
 
 void TopUi::Release()
@@ -48,6 +52,10 @@ void TopUi::Release()
 
 void TopUi::Reset()
 {
+	scene = dynamic_cast<SceneDev1*>(SCENE_MGR.GetCurrentScene());
+	player = dynamic_cast<Player*>(scene->FindGo("Player"));
+	objList = scene->GetObjList();
+
 	SetTimer();
 	SetMiniMap();
 }
@@ -61,6 +69,7 @@ void TopUi::Update(float dt)
 		sec = 0;
 	}
 	SetTime(minute, sec);
+	SetObjPos();
 }
 
 void TopUi::Draw(sf::RenderWindow& window)
@@ -71,11 +80,12 @@ void TopUi::Draw(sf::RenderWindow& window)
 	
 	miniMapBack.Draw(window);
 	miniMap.Draw(window);
-	markerPlayer.Draw(window);
+	
 	for (auto obj : markerObj)
 	{
 		obj.Draw(window);
 	}
+	markerPlayer.Draw(window);
 }
 
 void TopUi::SetTimer()
@@ -118,7 +128,7 @@ void TopUi::SetMiniMap()
 	miniMapBack.Reset();
 	markerPlayer = SpriteGo("markerP");
 	markerPlayer.Reset();
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < objList.size(); i++)
 	{
 		markerObj.push_back(SpriteGo("markerObj"));
 		markerObj[i].Reset();
@@ -137,11 +147,29 @@ void TopUi::SetMiniMap()
 	for (auto& obj : markerObj)
 	{
 		obj.SetOrigin(Origins::MC);
-		obj.SetPosition({markerPlayer.GetPosition().x + 50.f, markerPlayer.GetPosition().y + 50.f });
 		obj.SetScale({ 3.f, 3.f });
 	}
 
 	miniMap.SetScale({ 3.f,3.f });
 	miniMapBack.SetScale({ 3.f,3.f });
 	markerPlayer.SetScale({ 3.f, 3.f });
+}
+
+void TopUi::SetObjPos()
+{
+	
+	int i = 0;
+	for (auto& obj : objList)
+	{
+		sf::Vector2f mag = obj->GetPosition() - player->GetPosition();
+		if (Utils::Magnitude(mag / 10.f) < 90)
+		{
+			markerObj[i].SetActive(true);
+			markerObj[i].SetPosition(markerPlayer.GetPosition() + mag / 10.f);
+			markerObj[i].SetOrigin(Origins::MC);
+		}
+		else
+			markerObj[i].SetActive(false);
+		i++;
+	}
 }
