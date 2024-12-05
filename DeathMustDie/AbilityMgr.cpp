@@ -188,7 +188,7 @@ void AbilityMgr::AddAbility(const std::string& skillId, const std::string& user)
 		IncreaseType type = (IncreaseType)j["increaseType"].get<int>();
 		float amount = it.value();
 
-		earn.insert({ skillId, {type , amount, 1, AbilityGrade::Novice} });
+		passive.insert({ skillId, {type , amount, 1, AbilityGrade::Novice} });
 		ApplyPassive(skillId, type, amount);
 		return;
 	}
@@ -245,6 +245,12 @@ void AbilityMgr::AddAbility(const std::string& skillId, const std::string& user)
 			autoCast.push_back({ time, abil });
 			break;
 		}
+		case AbilityTriggerType::Earn:
+		{
+			abil->UseAbility();
+			earn.push_back(abil);
+			break;
+		}
 
 	}
 
@@ -297,21 +303,21 @@ void AbilityMgr::ChangeAbility(const json& info, const UpgradeType& type)
 	{
 		if (type == UpgradeType::LevelUp)
 		{
-			earn[info["name"]].level++;
+			passive[info["name"]].level++;
 			auto it = info["valueText"].begin();
 			while (it != info["valueText"].end())
 			{
-				float value = SKILL_LEVEL_TABLE->Get(info["name"].get<std::string>() + "_" + it.value()["valueName"].get<std::string>() + std::to_string(earn[info["name"]].level), earn[info["name"]].grade);
+				float value = SKILL_LEVEL_TABLE->Get(info["name"].get<std::string>() + "_" + it.value()["valueName"].get<std::string>() + std::to_string(passive[info["name"]].level), passive[info["name"]].grade);
 				it++;
 			}
 		}
 		else
 		{
-			++earn[info["name"]].grade;
+			++passive[info["name"]].grade;
 			auto it = info["valueText"].begin();
 			while (it != info["valueText"].end())
 			{
-				float value = SKILL_LEVEL_TABLE->Get(info["name"].get<std::string>() + "_" + it.value()["valueName"].get<std::string>() + std::to_string(earn[info["name"]].level), earn[info["name"]].grade);
+				float value = SKILL_LEVEL_TABLE->Get(info["name"].get<std::string>() + "_" + it.value()["valueName"].get<std::string>() + std::to_string(passive[info["name"]].level), passive[info["name"]].grade);
 				it++;
 			}
 		}
@@ -407,9 +413,13 @@ void AbilityMgr::UpdateAll(float dt)
 	{
 		abil.second->Update(dt);
 	}
+	for (auto& abil : earn)
+	{
+		abil->Update(dt);
+	}
 }
 
-void AbilityMgr::ApplyPassive(const std::string& name, IncreaseType type, int amount)
+void AbilityMgr::ApplyPassive(const std::string& name, IncreaseType type, float amount)
 {
 	switch (type)
 	{
@@ -447,6 +457,13 @@ Ability* AbilityMgr::FindAbilityByName(const std::string& name)
 		if (pair.second->GetName() == name)
 		{
 			return pair.second;
+		}
+	}
+	for (auto abil : earn)
+	{
+		if (abil->GetName() == name)
+		{
+			return abil;
 		}
 	}
 

@@ -30,7 +30,8 @@ private:
 	std::vector<std::pair<AttackCounter, Ability*>> attack;
 	std::vector<Ability*> dash;
 	std::vector<std::pair<CoolTime, Ability*>> autoCast;
-	std::unordered_map<std::string, Passive> earn;
+	std::vector<Ability*> earn;
+	std::unordered_map<std::string, Passive> passive;
 
 	std::vector<Ability*> abilityList;
 	//RemainAbilityList
@@ -62,7 +63,7 @@ public:
 	void UpdateAutoCast(float dt);
 	void UpdateAll(float dt);
 
-	void ApplyPassive(const std::string& name, IncreaseType type, int amount);
+	void ApplyPassive(const std::string& name, IncreaseType type, float amount);
 
 
 	Ability* FindAbilityByName(const std::string& name);
