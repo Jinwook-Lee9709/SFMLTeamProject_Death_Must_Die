@@ -76,29 +76,6 @@ void Ability::SetFunc()
 void Ability::CreateEntityPool()
 {
 	entityPool->CreatePool(name, info["entityType"], info["AttackEntity"], userName);
-	/*switch ((AttackEntityType)info["entityType"].get<int>())
-	{
-	case AttackEntityType::Fall:
-	{
-		entityPool->CreatePool(name, info["entityType"], info["AttackEntity"], userName);
-		break;
-	}
-	case AttackEntityType::Wedge:
-	{
-		entityPool->CreatePool(name, info["entityType"], info["AttackEntity"], userName);
-		break;
-	}
-	case AttackEntityType::Trail:
-	{
-		entityPool->CreatePool(name, info["entityType"], info["AttackEntity"], userName);
-		break;
-	}
-	case AttackEntityType::BasicAttack:
-	{
-		entityPool->CreatePool(name, info["entityType"], info["AttackEntity"], userName);
-		break;
-	}
-	}*/
 }
 
 void Ability::SetInstantiateFunc()
@@ -154,7 +131,25 @@ void Ability::SetSpawnFunc()
 	case AbilitySpawnType::OnRandomEnemy:
 	{
 		spawnFunc = [&](AttackEntity* entity) {
-			sf::Vector2f pos = WORLD_MOUSE_POS + sf::Vector2f(Utils::RandomRange(0, 200), Utils::RandomRange(0, 200));
+			auto& monsters = ((MonsterPoolManager*)SCENE_MGR.GetCurrentScene()->FindGo("monsterPoolMgr"))->GetMonsterList();
+			if (monsters.empty())
+				return;
+			sf::Vector2f pos = user->GetPosition();
+			std::vector<Monster*> buf;
+
+			for (auto& pair : monsters)
+			{
+				for (auto& monster : pair.second)
+				{
+					buf.push_back(monster);
+				}
+			}
+			std::vector<int> target;
+			for (int i = 0; i < buf.size(); i++)
+			{
+				int num = Utils::RandomRange(0, buf.size()-1);
+				pos = buf[num]->GetPosition();
+			}
 			entity->SetPosition(pos);
 			entity->Activate();
 			};
@@ -230,6 +225,7 @@ void Ability::ChangeInfo(const json& j)
 {
 	json originalJson = info;
 	for (auto it = j.begin(); it != j.end(); ++it) {
+		std::cout << it.key() << std::endl;
 		if (originalJson["ChangeableValue"].contains(it.key()))
 		{
 			originalJson["ChangeableValue"][it.key()] = it.value();

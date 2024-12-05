@@ -19,6 +19,12 @@
                     "scale" : [3.0, 3.0],
                     "origin" : 0
                 },
+                "icon":
+                {
+                    "position" : [146.0, 20.0],
+                    "scale" : [3.45, 3.45],
+                    "origin" : 0
+                },
                 "selectEffect":
                 {
                     "position" : [-340.0, -50.0],

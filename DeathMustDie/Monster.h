@@ -13,6 +13,7 @@ protected:
 	float tickTimer;         // 틱 타이머
 
 	bool isDebuff = false;
+	bool isDeath = false;
 
 	sf::CircleShape collisionCircle; // 원형 충돌체
 	float collisionRadius;
@@ -24,9 +25,11 @@ public:
 	Monster(const std::string& name = "");
 	~Monster() = default;
 
+	bool IsDeath() { return isDeath; }
+
 	virtual void SetInfo(const json& j) {}
 	virtual void OnHit(float damage) {}
-	virtual void OnDebuffed(DebuffType type, float dt) {} // 디버프 처리
+	virtual void OnDebuffed(DebuffType type) {} // 디버프 처리
 
 	void SetCollisionRadius(float radius);
 	sf::CircleShape GetCollisionCircle() const;

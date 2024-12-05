@@ -73,15 +73,18 @@ void TrailEntity::FixedUpdate(float dt)
 			sf::FloatRect rect = (*it)->GetHitBox().rect.getGlobalBounds();
 			if (hitbox.rect.getGlobalBounds().intersects(rect))
 			{
-				std::cout << "Hit!" << std::endl;
-				(*it)->OnHit(info.damage);
-				excludedTargets.insert({ (*it), 0 });
-				monsterBuf.push_back(*it);
+				if (!(*it)->IsDeath())
+				{
+					(*it)->OnHit(info.damage);
+					excludedTargets.insert({ (*it), 0 });
+					monsterBuf.push_back(*it);
+				}
+			
 			}
 			it++;
 		}
 	}
-	sideEffect->TriggerEffect(monsterBuf, dt);
+	sideEffect->TriggerEffect(monsterBuf);
 }
 
 void TrailEntity::Draw(sf::RenderWindow& window)

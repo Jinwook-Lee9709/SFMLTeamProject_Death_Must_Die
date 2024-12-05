@@ -71,6 +71,7 @@ void AniBoss::Reset()
 	currentStatus = BossStatus::Move;
 
 	isDebuff = false;
+	isDeath = false;
 
 	tickTimer = 0.f;
 	tickInterval = 1.f;
@@ -212,6 +213,7 @@ void AniBoss::DeathUpdate(float dt)
 	if (!Anim.IsPlay())
 	{
 		isDead = true;
+		isDeath = true;
 		Monster::OnDeath();
 	}
 }
@@ -230,7 +232,7 @@ void AniBoss::SetInfo(const json& j)
 	Anim.Play(info.walkAnimId);
 }
 
-void AniBoss::OnDebuffed(DebuffType types, float dt)
+void AniBoss::OnDebuffed(DebuffType types)
 {
 
 }

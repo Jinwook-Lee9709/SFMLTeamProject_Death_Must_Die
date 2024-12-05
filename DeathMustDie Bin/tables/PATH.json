@@ -64,7 +64,16 @@
             "Texture" : {
                 "background" : "resource/texture/TerrainWilderness_Spr_01.png",
                 "rarityFrame": "resource/texture/Sprite/Panel_Spr_RarityFrame.png",
-                "shadow" : "resource/texture/Sprite/Object/_S_ShadowTiny_Spr.png"
+                "shadow" : "resource/texture/Sprite/Object/_S_ShadowTiny_Spr.png",
+                "Searing Attack_icon" : "resource/texture/icon/Searing Attack_icon.png",
+                "Breath of Fire_icon" : "resource/texture/icon/Breath of Fire_icon.png",
+                "Trail of Fire_icon" : "resource/texture/icon/Trail of Fire_icon.png",
+                "Meteor Shower_icon" : "resource/texture/icon/Meteor Shower_icon.png",
+                "Fire Dragon_icon" : "resource/texture/icon/Fire Dragon_icon.png",
+                "Vehemence_icon" : "resource/texture/icon/Vehemence_icon.png"
+
+
+
              },
              "Font" :{
                  "Sansation" : "fonts/Sansation.ttf",

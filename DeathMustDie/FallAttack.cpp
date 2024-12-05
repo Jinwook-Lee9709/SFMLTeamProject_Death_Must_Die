@@ -76,16 +76,18 @@ void FallAttack::FixedUpdate(float dt)
 				sf::Vector2f ellipseRadius = { info.ellipseWidth, info.ellipseHeight };
 				if (Utils::CheckCollision(position, ellipseRadius, rect))
 				{
-					std::cout << "Hit!" << std::endl;
-					(*it)->OnHit(info.damage);
-					excludedTargets.insert((*it));
-					monsterBuf.push_back(*it);
+					if (!(*it)->IsDeath())
+					{
+						(*it)->OnHit(info.damage);
+						excludedTargets.insert((*it));
+						monsterBuf.push_back(*it);
+					}
 				}
 				it++;
 			}
 		}
 	}
-	sideEffect->TriggerEffect(monsterBuf, dt);
+	sideEffect->TriggerEffect(monsterBuf);
 }
 
 void FallAttack::Draw(sf::RenderWindow& window)

@@ -93,7 +93,7 @@ public:
 
 	void SetInfo(const json& j) override;
 
-	void OnDebuffed(DebuffType types, float dt) override;
+	void OnDebuffed(DebuffType types) override;
 
 	void Walk(float dt);
 	void CheckAttack(float dt);

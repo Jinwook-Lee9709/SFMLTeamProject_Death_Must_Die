@@ -45,16 +45,17 @@ void BasicAttack::FixedUpdate(float dt)
 			float margin = Utils::Magnitude(look);
 			if (Utils::CheckCollision(position, rotation, info.rangeDegree, info.radius + margin, rect))
 			{
-				(*it)->OnHit(info.damage);
-				(*it)->OnDebuffed(DebuffType::Burn, dt);
-				std::cout << "Hit!" << std::endl;
-				monsterBuf.push_back(*it);
+				if (!(*it)->IsDeath())
+				{
+					(*it)->OnHit(info.damage);
+					monsterBuf.push_back(*it);
+				}
 			}
 			it++;
 		}
 	
 	}
-	sideEffect->TriggerEffect(monsterBuf, dt);
+	sideEffect->TriggerEffect(monsterBuf);
 	if (!monsterBuf.empty())
 	{
 		EVENT_HANDLER.InvokeEvent("OnHit");

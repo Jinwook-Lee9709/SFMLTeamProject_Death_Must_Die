@@ -1,8 +1,6 @@
 #pragma once
 class GameObject;
 
-class GameObject;
-
 class EventHandler: public Singleton<EventHandler>
 {
 	friend Singleton<EventHandler>;

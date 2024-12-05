@@ -42,14 +42,17 @@ public:
 	void UpdateSelectSkill(float dt);
 	void Draw(sf::RenderWindow& window) override;
 
+	void OnLevelUp();
+
 	json MakeAbilityInfo(const std::string& name, const AbilityGrade& grade);
 	json MakeAbilityInfo(const Ability& abil, const UpgradeType& type);
 	void SelectAbility();
 	void SelectNewAbility(json& j);
 	void SelectLevelUpAbility(json& j);
 	void SelectGradeUpAbility(json& j);
-	
+
 	void AbilitySelected(int num);
+	void IncreaseEXP();
 };
 
 #define NOVICE_PROBABILITY 0.4
@@ -60,3 +63,5 @@ public:
 
 #define LEVELUP_PROBABILITY 0.8
 #define GRADEUP_PROBABILITY 0.8
+
+#define GEM_EXP 5

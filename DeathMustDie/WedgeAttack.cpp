@@ -60,15 +60,18 @@ void WedgeAttack::FixedUpdate(float dt)
 			sf::FloatRect rect= (*it)->GetHitBox().rect.getGlobalBounds();
 			if (Utils::CheckCollision(position, rotation, info.rangeDegree, info.radius, rect))
 			{
-				(*it)->OnHit(info.damage);
-				std::cout << "Hit!" << std::endl;
-				excludedTargets.insert((*it));
-				monsterBuf.push_back(*it);
+				if (!(*it)->IsDeath())
+				{
+					(*it)->OnHit(info.damage);
+					excludedTargets.insert((*it));
+					monsterBuf.push_back(*it);
+				}
+
 			}
 			it++;
 		}
 	}
-	sideEffect->TriggerEffect(monsterBuf, dt);
+	sideEffect->TriggerEffect(monsterBuf);
 }
 
 void WedgeAttack::Draw(sf::RenderWindow& window)

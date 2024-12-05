@@ -39,3 +39,23 @@ Breath of Fire_damage7,4.7,5.8,8.2,11.7
 Breath of Fire_damage8,5.3,6.6,9.2,13.2
 Breath of Fire_damage9,5.9,7.4,10.3,14.7
 Breath of Fire_damage10,6.5,8.1,11.4,16.2
+Vehemence_castDamage1,1.11,1.13,1.16,1.22
+Vehemence_castDamage2,1.22,1.26,1.33,1.44
+Vehemence_castDamage3,1.33,1.39,1.5,1.66
+Vehemence_castDamage4,1.44,1.52,1.67,1.88
+Vehemence_castDamage5,1.55,1.65,1.84,2.1
+Vehemence_castDamage6,1.66,1.78,2.01,2.32
+Vehemence_castDamage7,1.77,1.91,2.18,2.54
+Vehemence_castDamage8,1.88,2.04,2.35,2.76
+Vehemence_castDamage9,1.99,2.17,2.52,2.98
+Vehemence_castDamage10,2.1,2.3,2.69,3.2
+Intensity_powerDamage1,1.11,1.13,1.16,1.22
+Intensity_powerDamage2,1.22,1.26,1.33,1.44
+Intensity_powerDamage3,1.33,1.39,1.5,1.66
+Intensity_powerDamage4,1.44,1.52,1.67,1.88
+Intensity_powerDamage5,1.55,1.65,1.84,2.1
+Intensity_powerDamage6,1.66,1.78,2.01,2.32
+Intensity_powerDamage7,1.77,1.91,2.18,2.54
+Intensity_powerDamage8,1.88,2.04,2.35,2.76
+Intensity_powerDamage9,1.99,2.17,2.52,2.98
+Intensity_powerDamage10,2.1,2.3,2.69,3.2

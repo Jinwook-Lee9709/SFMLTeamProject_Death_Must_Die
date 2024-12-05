@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Gem.h"
 #include "AniSkeleton.h"
+#include "Player.h"
 
 Gem::Gem(const std::string& name)
 	:Item(name)
@@ -61,11 +62,30 @@ void Gem::Reset()
 	body.setTexture(TEXTURE_MGR.Get("resource/texture/Sprite/Shard_Sps_0.png"));
 	SetOrigin(Origins::MC);
 	active = true;
+	if (player == nullptr)
+		player = (Player*)SCENE_MGR.GetCurrentScene()->FindGo("Player");
+
+	isTracking = false;
 }
 
 void Gem::Update(float dt)
 {
-
+	sf::Vector2f playerPos = player->GetPosition();
+	if (Utils::Magnitude(playerPos - position) < GEM_RANGE && isTracking == false)
+	{
+		isTracking = true;
+	}
+	if (isTracking)
+	{
+		sf::Vector2f newPos = position;
+		newPos += Utils::GetNormal(playerPos - position) * SPEED * dt;
+		SetPosition(newPos);
+	}
+	if (Utils::Magnitude(playerPos - position) < GEM_EARN_RANGE)
+	{
+		EVENT_HANDLER.InvokeEvent("GemEarned");
+		this->active = false;
+	}
 }
 
 void Gem::FixedUpdate(float dt)

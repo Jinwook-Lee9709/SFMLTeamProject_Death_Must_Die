@@ -25,6 +25,7 @@ protected:
 
 	Animator animator;
 	Animator hoverAnimator;
+	Animator effectAnimator;
 	std::unordered_map<std::string, sf::Sprite*> sprites;
 	std::unordered_map<std::string, TextGo> texts;
 	std::list<std::pair<TextGo, TextGo>>  valueTexts;

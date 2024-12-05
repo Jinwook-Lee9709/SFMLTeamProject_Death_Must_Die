@@ -197,6 +197,16 @@
                 "debuffType" : 0
             }
         }
+    },
+    "Vehemence":
+    {
+        "abilityType" : 6,
+        "abilityGrade" : 0,
+        "increaseType" : 0,
+        "ChangeableValue":
+        {
+            "castDamage": 1.1
+        }
     }
 
 }

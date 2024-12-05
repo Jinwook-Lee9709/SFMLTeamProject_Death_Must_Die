@@ -17,6 +17,9 @@ void GameMgr::Init()
 
 void GameMgr::Release()
 {
+	EVENT_HANDLER.DeleteEvent("PanelClicked");
+	EVENT_HANDLER.DeleteEvent("GemEarned");
+	EVENT_HANDLER.DeleteEvent("LevelUp");
 }
 
 void GameMgr::Reset()
@@ -28,6 +31,8 @@ void GameMgr::Reset()
 	currentStatus = Status::IDLE;
 
 	EVENT_HANDLER.AddEventInt("PanelClicked", std::bind(&GameMgr::AbilitySelected, this, std::placeholders::_1));
+	EVENT_HANDLER.AddEvent("GemEarned", std::bind(&GameMgr::IncreaseEXP, this));
+	EVENT_HANDLER.AddEvent("LevelUp", std::bind(&GameMgr::OnLevelUp,this));
 }
 
 void GameMgr::Update(float dt)
@@ -79,6 +84,14 @@ void GameMgr::UpdateSelectSkill(float dt)
 
 void GameMgr::Draw(sf::RenderWindow& window)
 {
+}
+
+void GameMgr::OnLevelUp()
+{
+	FRAMEWORK.SetTimeScale(0);
+	uiAbilSelect->EnableUI();
+	beforeStatus = Status::IDLE;
+	currentStatus = Status::SELECT_SKILL;
 }
 
 json GameMgr::MakeAbilityInfo(const std::string& name, const AbilityGrade& grade)
@@ -278,7 +291,6 @@ void GameMgr::SelectNewAbility(json& j)
 		j = MakeAbilityInfo(abil, result);
 		return;
 	}
-
 	std::vector<float> probability = { 1 - LEGEND_PROBABILITY ,LEGEND_PROBABILITY };
 	int result = Utils::RandomByWeight(probability);
 	if (result == 0)
@@ -331,5 +343,13 @@ void GameMgr::AbilitySelected(int num)
 	{
 		abilMgr->ChangeAbility(info, type);
 	}
+	beforeStatus = Status::SELECT_SKILL;
+	currentStatus = Status::IDLE;
+	FRAMEWORK.SetTimeScale(1.0f);
 
+}
+
+void GameMgr::IncreaseEXP()
+{
+	player->SetLevel(GEM_EXP);
 }

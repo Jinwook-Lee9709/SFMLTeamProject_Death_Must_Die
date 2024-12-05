@@ -2,6 +2,7 @@
 #include "Ability.h"
 #include "AbilityMgr.h"
 #include "AttackEntityPoolMgr.h"
+#include "CalculatorMgr.h"
 #include "EventHandler.h"
 #include "Player.h"
 
@@ -181,6 +182,16 @@ void AbilityMgr::AddAbility(const std::string& skillId, const std::string& user)
 	json j = SKILL_TABLE->Get(skillId);
 	auto it = std::find(remainAbility.begin(), remainAbility.end(), skillId);
 	remainAbility.erase(it);
+	if ((AbilityType)j["abilityType"].get<int>() == AbilityType::Passive)
+	{
+		auto it = j["ChangeableValue"].begin();
+		IncreaseType type = (IncreaseType)j["increaseType"].get<int>();
+		float amount = it.value();
+
+		earn.insert({ skillId, {type , amount, 1, AbilityGrade::Novice} });
+		ApplyPassive(skillId, type, amount);
+		return;
+	}
 
 	Ability* abil = new Ability(j, entityPool, user, skillId);
 	if (skillId != "Base Attack")
@@ -234,11 +245,7 @@ void AbilityMgr::AddAbility(const std::string& skillId, const std::string& user)
 			autoCast.push_back({ time, abil });
 			break;
 		}
-		case AbilityTriggerType::Earn:
-		{
-			abil->UseAbility();
-			earn.push_back(abil);
-		}
+
 	}
 
 	if (j["abilityGrade"].get<int>() == 1)
@@ -249,37 +256,68 @@ void AbilityMgr::AddAbility(const std::string& skillId, const std::string& user)
 
 void AbilityMgr::ChangeAbility(const json& info, const UpgradeType& type)
 {
-	Ability* abil = FindAbilityByName(info["name"]);
-
-	if (type == UpgradeType::LevelUp)
+	if (info["abilityType"].get<AbilityType>() != AbilityType::Passive)
 	{
-		json buf;
-		abil->SetLevel(info["level"].get<int>() + 1);
-		auto it = info["valueText"].begin();
-		while (it != info["valueText"].end())
-		{
-			float value = SKILL_LEVEL_TABLE->Get(info["name"].get<std::string>() + "_" + it.key() + std::to_string(abil->GetLevel()), abil->GetGrade());
-			buf[it.key()] = value;
-			it++;
-		}
-		abil->ChangeInfo(buf);
+		Ability* abil = FindAbilityByName(info["name"]);
 
-		
+		if (type == UpgradeType::LevelUp)
+		{
+			json buf;
+			abil->SetLevel(info["level"].get<int>() + 1);
+			auto it = info["valueText"].begin();
+			while (it != info["valueText"].end())
+			{
+				float value = SKILL_LEVEL_TABLE->Get(info["name"].get<std::string>() + "_" + it.value()["valueName"].get<std::string>() + std::to_string(abil->GetLevel()), abil->GetGrade());
+				buf[it.value()["valueName"].get<std::string>()] = value;
+				it++;
+				std::cout << buf;
+			}
+			abil->ChangeInfo(buf);
+
+
+		}
+		else
+		{
+			json buf;
+			abil->SetGrade((AbilityGrade)(info["grade"].get<int>() + 1));
+			auto it = info["valueText"].begin();
+			while (it != info["valueText"].end())
+			{
+				float value = SKILL_LEVEL_TABLE->Get(info["name"].get<std::string>() + "_" + it.value()["valueName"].get<std::string>() + std::to_string(abil->GetLevel()), abil->GetGrade());
+				buf[it.value()["valueName"].get<std::string>()] = value;
+
+				it++;
+				std::cout << buf;
+			}
+			abil->ChangeInfo(buf);
+
+		}
 	}
 	else
 	{
-		json buf;
-		abil->SetGrade((AbilityGrade)(info["grade"].get<int>() + 1));
-		auto it = info["valueText"].begin();
-		while (it != info["valueText"].end())
+		if (type == UpgradeType::LevelUp)
 		{
-			float value = SKILL_LEVEL_TABLE->Get(info["name"].get<std::string>() + "_" + it.value()["valueName"].get<std::string>() + std::to_string(abil->GetLevel()), abil->GetGrade());
-			buf[it.key()] = value;
-			it++;
+			earn[info["name"]].level++;
+			auto it = info["valueText"].begin();
+			while (it != info["valueText"].end())
+			{
+				float value = SKILL_LEVEL_TABLE->Get(info["name"].get<std::string>() + "_" + it.value()["valueName"].get<std::string>() + std::to_string(earn[info["name"]].level), earn[info["name"]].grade);
+				it++;
+			}
 		}
-		abil->ChangeInfo(buf);
-
+		else
+		{
+			++earn[info["name"]].grade;
+			auto it = info["valueText"].begin();
+			while (it != info["valueText"].end())
+			{
+				float value = SKILL_LEVEL_TABLE->Get(info["name"].get<std::string>() + "_" + it.value()["valueName"].get<std::string>() + std::to_string(earn[info["name"]].level), earn[info["name"]].grade);
+				it++;
+			}
+		}
+		
 	}
+	
 
 }
 
@@ -369,9 +407,18 @@ void AbilityMgr::UpdateAll(float dt)
 	{
 		abil.second->Update(dt);
 	}
-	for (auto& abil : earn)
+}
+
+void AbilityMgr::ApplyPassive(const std::string& name, IncreaseType type, int amount)
+{
+	switch (type)
 	{
-		abil->Update(dt);
+		case IncreaseType::CastDamage:
+		{
+			CalculatorMgr* calc = (CalculatorMgr*)SCENE_MGR.GetCurrentScene()->FindGo("CalculatorMgr");
+			Effect effect(EffectType::Skill, amount, (float)-1, name);
+			calc->AddEffect(ValueType::Cast, effect);
+		}
 	}
 }
 
@@ -400,13 +447,6 @@ Ability* AbilityMgr::FindAbilityByName(const std::string& name)
 		if (pair.second->GetName() == name)
 		{
 			return pair.second;
-		}
-	}
-	for (auto abil : earn)
-	{
-		if (abil->GetName() == name)
-		{
-			return abil;
 		}
 	}
 

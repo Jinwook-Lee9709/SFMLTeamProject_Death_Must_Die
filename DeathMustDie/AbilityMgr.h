@@ -17,12 +17,20 @@ class AbilityMgr : public GameObject
 		float coolTime;
 	};
 
+	struct Passive
+	{
+		IncreaseType type;
+		float amount;
+		int level;
+		AbilityGrade grade;
+	};
+
 private:
 	Ability* basicAttack;
 	std::vector<std::pair<AttackCounter, Ability*>> attack;
 	std::vector<Ability*> dash;
 	std::vector<std::pair<CoolTime, Ability*>> autoCast;
-	std::vector<Ability*> earn;
+	std::unordered_map<std::string, Passive> earn;
 
 	std::vector<Ability*> abilityList;
 	//RemainAbilityList
@@ -53,6 +61,9 @@ public:
 	void UpdateDash();
 	void UpdateAutoCast(float dt);
 	void UpdateAll(float dt);
+
+	void ApplyPassive(const std::string& name, IncreaseType type, int amount);
+
 
 	Ability* FindAbilityByName(const std::string& name);
 private:

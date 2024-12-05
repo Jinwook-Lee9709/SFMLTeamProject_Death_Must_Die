@@ -81,6 +81,7 @@ void AniSkeleton::Reset()
 	currentStatus = Status::Move;
 
 	isDebuff = false;
+	isDeath = false;
 
 	tickTimer = 0.f;
 	tickInterval = 1.f;
@@ -218,6 +219,7 @@ void AniSkeleton::GetHitUpdate(float dt)
 		Anim.Play(info.deathAnimId);
 		HPBar.setScale({ 0.f, 0.f });
 		beforeStatus = currentStatus;
+		isDeath = true;
 		currentStatus = Status::Death;
 	}
 }
@@ -263,40 +265,42 @@ void AniSkeleton::SetInfo(const json& j)
 	Anim.Play(info.walkAnimId);
 }
 
-void AniSkeleton::OnDebuffed(DebuffType types, float dt)
+void AniSkeleton::OnDebuffed(DebuffType types)
 {
-	tickTimer += dt;
-	tickDuration -= dt;
-
-	if (tickDuration <= 0)
-	{
-		isDebuff = false;
-		tickTimer = 0.f;
-		return; // 디버프 종료
-	}
-
-	switch (types)
-	{
-	case DebuffType::Burn:
-
-		if (tickTimer >= tickInterval)
-		{
-			tickTimer -= tickInterval;
-			hp -= tickDamage;
-			HPBar.setScale({ std::max(hp / info.hp, 0.f), 1.0f });
-			beforeStatus = currentStatus;
-			currentStatus = Status::GetHit;
-			/*if (hp <= 0)
-			{
-				hp = 0;
-				beforeStatus = currentStatus;
-				currentStatus = Status::Death;
-				HPBar.setScale({ 0.f, 0.f });
-			}*/
-		}
+	isDebuff = true;
 
 
-	}
+	//tickTimer += dt;
+	//tickDuration -= dt;
+	//if (tickDuration <= 0)
+	//{
+	//	isDebuff = false;
+	//	tickTimer = 0.f;
+	//	return; // 디버프 종료
+	//}
+
+	//switch (types)
+	//{
+	//case DebuffType::Burn:
+
+	//	if (tickTimer >= tickInterval)
+	//	{
+	//		tickTimer -= tickInterval;
+	//		hp -= tickDamage;
+	//		HPBar.setScale({ std::max(hp / info.hp, 0.f), 1.0f });
+	//		beforeStatus = currentStatus;
+	//		currentStatus = Status::GetHit;
+	//		/*if (hp <= 0)
+	//		{
+	//			hp = 0;
+	//			beforeStatus = currentStatus;
+	//			currentStatus = Status::Death;
+	//			HPBar.setScale({ 0.f, 0.f });
+	//		}*/
+	//	}
+
+
+	//}
 }
 
 void AniSkeleton::Walk(float dt)

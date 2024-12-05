@@ -75,6 +75,7 @@ void AniSlime::Reset()
 	currentStatus = SlimeStatus::Move;
 
 	isDebuff = false;
+	isDeath = false;
 
 	tickTimer = 0.f;
 	tickInterval = 1.f;
@@ -187,6 +188,7 @@ void AniSlime::GetHitUpdate(float dt)
 		HPBar.setScale({ 0.f, 0.f });
 		Anim.Play(info.deathAnimId);
 		beforeStatus = currentStatus;
+		isDeath = true;
 		currentStatus = SlimeStatus::Death;
 	}
 }

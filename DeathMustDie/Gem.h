@@ -1,6 +1,8 @@
 #pragma once
 #include "Item.h"
 
+class Player;
+
 class Gem : public Item
 {
 public:
@@ -17,6 +19,10 @@ protected:
 	json j;
 
 	GemInfo info;
+
+	Player* player;
+
+	bool isTracking;
 	
 public:
 	Gem(const std::string& name = "");
@@ -39,4 +45,7 @@ public:
 	void Draw(sf::RenderWindow& window) override;
 
 };
+#define GEM_EARN_RANGE (40.f)
+#define GEM_RANGE 250.f
+#define SPEED 700.f
 

@@ -466,6 +466,7 @@ void Player::SetLevel(float exp)
 	{
 		level++;
 		this->exp = 0;
+		EVENT_HANDLER.InvokeEvent("LevelUp");
 	}
 	ui->UpdateExp(this->exp, level);
 }

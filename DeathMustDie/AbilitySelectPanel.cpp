@@ -119,6 +119,7 @@ void AbilitySelectPanel::Update(float dt)
 		}
 		animator.Update(FRAMEWORK.GetRealDeltaTime());
 		hoverAnimator.Update(FRAMEWORK.GetRealDeltaTime());
+		effectAnimator.Update(FRAMEWORK.GetRealDeltaTime());
 	}
 }
 
@@ -126,7 +127,7 @@ void AbilitySelectPanel::Draw(sf::RenderWindow& window)
 {
 	if (active)
 	{
-		texBuf->clear();
+		texBuf->clear(sf::Color::Transparent);
 		texBuf->draw(*sprites["panel"]);
 		for (auto& pair : sprites) { 
 			if (pair.first != "panel" && pair.first != "selectEffect")
@@ -201,11 +202,13 @@ void AbilitySelectPanel::SetComponent()
 
 	animator.SetTarget(sprites["panel"]);
 	hoverAnimator.SetTarget(sprites["hoverEffect"]);
+	effectAnimator.SetTarget(sprites["selectEffect"]);
 }
 
 void AbilitySelectPanel::UpdateDisplay(const json& skillInfo, UpgradeType type)
 {
 	AbilityGrade grade = skillInfo["grade"].get<AbilityGrade>();
+	sprites["icon"]->setTexture(GET_TEX(skillInfo["name"].get<std::string>() + "_icon"));
 	texts["skillName"].SetStringByString(skillInfo["name"].get<std::string>());
 	texts["abilityType"].SetStringByString(AbilityTypeToString(skillInfo["abilityType"].get<AbilityType>()));
 	texts["abilityType"].SetFillColor(sf::Color(120, 120, 120));
@@ -229,11 +232,9 @@ void AbilitySelectPanel::UpdateDisplay(const json& skillInfo, UpgradeType type)
 		}
 		case UpgradeType::GradeUp:
 		{
-			int level = skillInfo["level"].get<int>();
-			std::string str = "LV." + std::to_string(level) + " -> " + "LV." + std::to_string(level + 1);
+			AbilityGrade nextGrade = (AbilityGrade)((int)grade + 1);
+			std::string str = GradeToString(grade) + " -> " + GradeToString(nextGrade);
 			texts["level"].SetStringByString(str);
-			AbilityGrade nextGrade = ++grade;
-			str = GradeToString(grade) + " -> " + GradeToString(nextGrade);
 			texts["rarityText"].SetStringByString(GradeToString(grade));
 			break;
 		}
@@ -284,7 +285,6 @@ void AbilitySelectPanel::UpdateDisplay(const json& skillInfo, UpgradeType type)
 void AbilitySelectPanel::Display()
 {
 	animator.Play("boon_appear");
-	hoverAnimator.SetTarget(sprites["hoverEffect"]);
 	opacity = 0;
 	selected = false;
 	this->active = true;
@@ -332,8 +332,7 @@ void AbilitySelectPanel::TurnOffPanel(int num)
 	this->selected = true;
 	if (num == panelNum)
 	{
-		hoverAnimator.SetTarget(sprites["selectEffect"]);
-		hoverAnimator.Play("boon_selected");
+		effectAnimator.Play("boon_selected");
 	}
 	
 }

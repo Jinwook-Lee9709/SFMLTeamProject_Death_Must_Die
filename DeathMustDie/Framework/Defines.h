@@ -118,6 +118,11 @@ enum class UpgradeType
 	GradeUp
 };
 
+enum class IncreaseType
+{
+	CastDamage,
+};
+
 enum class DebuffType
 {
 	Burn

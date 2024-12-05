@@ -16,6 +16,7 @@ struct Effect
 	Effect(EffectType type, float multiplier, float duration, std::string source)
 		:type(type), multiplier(multiplier), duration(duration), source(source)
 	{}
+
 };
 
 class Calculator
