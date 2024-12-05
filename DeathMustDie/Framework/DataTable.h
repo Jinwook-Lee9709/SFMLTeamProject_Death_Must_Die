@@ -9,6 +9,7 @@ public:
 		Monster,
 		SkillSetting,
 		SkillLevel,
+		Item,
 		Count
 	};
 

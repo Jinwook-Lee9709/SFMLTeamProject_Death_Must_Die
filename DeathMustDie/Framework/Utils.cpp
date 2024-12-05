@@ -325,6 +325,11 @@ bool Utils::CheckCollision(const sf::Vector2f& ellipseCenter, const sf::Vector2f
         (dy * dy) / (ellipseRadius.y * ellipseRadius.y) <= 1.0f;
 }
 
+bool Utils::CheckCollision(const HitBox& boxA, const HitBox& boxB)
+{
+    return CheckCollision(boxA.rect, boxB.rect);
+}
+
 std::vector<sf::Vector2f> Utils::GetShapePoints(const sf::Sprite& shape)
 {
     sf::FloatRect localBounds = shape.getLocalBounds();

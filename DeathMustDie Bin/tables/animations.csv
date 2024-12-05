@@ -12,7 +12,7 @@ skeleton_attack,"10",0,4,15,43,48
 skeleton_death,"10",0,5,18,47,41
 skeleton_gethit,"10",0,3,7,41,43
 slime_walk,"10",1,3,8,48,27
-slime_attack,"10",0,3,5,49,43
+slime_attack,"5",0,3,5,49,43
 slime_death,"10",0,4,11,63,54
 knight_idle,"13",1,5,13,78,65
 knight_walk,"10",1,4,10,78,65
@@ -27,3 +27,7 @@ dash_spr,"28",0,3,7,35,85
 boon_appear,"10",0,4,13,150,284
 boon_hover,"10",0,4,11,150,284
 boon_selected,"10",0,2,5,378,319
+sorceror_walk,"10",1,3,8,72,86
+sorceror_gethit,"10",0,3,5,72,86
+sorceror_channel,"10",0,4,16,72,86
+sorceror_death,"10",0,6,33,114,123

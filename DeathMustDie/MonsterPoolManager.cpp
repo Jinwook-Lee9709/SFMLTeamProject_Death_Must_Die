@@ -18,6 +18,8 @@ void MonsterPoolManager::Release()
 void MonsterPoolManager::Reset()
 {
 	CreatePool(MonsterTypes::Skeleton, MONSTER_TABLE->Get("Skeleton"), "Skeleton");
+	CreatePool(MonsterTypes::Slime, MONSTER_TABLE->Get("Slime"), "Slime");
+	CreatePool(MonsterTypes::Boss, MONSTER_TABLE->Get("Boss"), "Boss");
 }
 
 void MonsterPoolManager::Update(float dt)
@@ -82,6 +84,22 @@ void MonsterPoolManager::CreatePool(MonsterTypes type, json j, std::string name)
 	poolContainer.insert({ name, obj });
 }
 
+std::vector<Monster*> MonsterPoolManager::GetAllActiveMonsters()
+{
+	std::vector<Monster*> activeMonsters;
+	for (auto& pair : monsters)
+	{
+		for (auto& monster : pair.second)
+		{
+			if (monster->IsActive())
+			{
+				activeMonsters.push_back(monster);
+			}
+		}
+	}
+	return activeMonsters;
+}
+
 int MonsterPoolManager::GetMonsterCount()
 {
 	int count = 0;
@@ -114,4 +132,21 @@ Monster* MonsterPoolManager::GetMonster(std::string name)
 	}
 
 	return monster;
+
+}
+void MonsterPoolManager::CheckCollisions()
+{
+	auto activeMonsters = GetAllActiveMonsters();
+
+	for (size_t i = 0; i < activeMonsters.size(); ++i) 
+	{
+		for (size_t j = i + 1; j < activeMonsters.size(); ++j) 
+		{
+			if (activeMonsters[i]->CheckCollision(*activeMonsters[j])) 
+			{
+				activeMonsters[i]->OnCollision(activeMonsters[j]);
+				activeMonsters[j]->OnCollision(activeMonsters[i]);
+			}
+		}
+	}
 }

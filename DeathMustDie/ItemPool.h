@@ -1,36 +1,28 @@
 #pragma once
-#include "stdafx.h"
-#include "Monster.h"
-#include "AniSkeleton.h"
-#include "AniSlime.h"
-#include "AniBoss.h"
+#include "Item.h"
+#include "Gem.h"
 
-class MonsterPool
-{private:
-	Monster* CreateObject(MonsterTypes type)
+class ItemPool
+{
+private:
+	Item* CreateObject(ItemTypes type)
 	{
 		switch (type)
 		{
-		case MonsterTypes::Skeleton:
-			return new AniSkeleton();
-			break;
-		case MonsterTypes::Slime:
-			return new AniSlime();
-			break;
-		case MonsterTypes::Boss:
-			return new AniBoss();
+		case ItemTypes::Gem:
+			return new Gem();
 			break;
 		}
 	}
 
 private:
-	std::list<Monster*> unused;
-	std::list<Monster*> used;
+	std::list<Item*> unused;
+	std::list<Item*> used;
 
 	json j;
-	MonsterTypes type;
+	ItemTypes type;
 public:
-	MonsterPool(MonsterTypes type, json j, int initSize = 10)
+	ItemPool(ItemTypes type, json j, int initSize = 10)
 	{
 		for (int i = 0; i < initSize; ++i)
 		{
@@ -47,7 +39,7 @@ public:
 		}
 	}
 
-	~MonsterPool()
+	~ItemPool()
 	{
 		for (auto obj : unused)
 		{
@@ -59,7 +51,7 @@ public:
 		}
 	}
 
-	Monster* Take()
+	Item* Take()
 	{
 		if (unused.empty())
 		{
@@ -84,7 +76,7 @@ public:
 		return obj;
 	}
 
-	void Return(Monster* obj)
+	void Return(Item* obj)
 	{
 		auto find = std::find(used.begin(), used.end(), obj);
 		if (find == used.end())
@@ -97,3 +89,4 @@ public:
 		unused.push_back(obj);
 	}
 };
+

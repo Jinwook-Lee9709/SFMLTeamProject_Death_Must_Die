@@ -13,6 +13,7 @@ void AniSkeleton::SetPosition(const sf::Vector2f& pos)
 	position = pos;
 	body.setPosition(position);
 	hitbox.rect.setPosition(position);
+	hitbox2.rect.setPosition({ position.x, position.y - 30.f });
 	HPBar.setPosition({ position.x - HPBar.getSize().x * 0.5f, position.y - 140 });
 	HPBarFrame.setPosition({ position.x - HPBar.getSize().x * 0.5f, position.y - 140 });
 }
@@ -58,8 +59,11 @@ void AniSkeleton::Reset()
 {
 	hitbox.rect.setSize({ 40, 120 });
 	hitbox.rect.setPosition({ position });
+	hitbox2.rect.setSize({ 20, 60 });
+	hitbox2.rect.setPosition(position);
 	Utils::SetOrigin(hitbox.rect, Origins::BC);
-	HPBar.setPosition({ position.x - HPBar.getSize().x * 0.5f, position.y - 140});
+	Utils::SetOrigin(hitbox2.rect, Origins::BC);
+	HPBar.setPosition({ position.x - HPBar.getSize().x * 0.5f, position.y - 140 });
 	HPBarFrame.setPosition({ position.x - HPBar.getSize().x * 0.5f, position.y - 140 });
 	if (player == nullptr)
 	{
@@ -68,13 +72,29 @@ void AniSkeleton::Reset()
 	hp = info.hp;
 	HPBar.setScale({ 1.0f, 1.0f });
 
+	attackArea.setTexture(TEXTURE_MGR.Get("resource/texture/Sprite/Warn_Melee_Slash_Spr.png"));
+	attackArea.setColor(sf::Color( 255, 0, 0, 70));
+	Utils::SetOrigin(attackArea, Origins::BC);
+	attackArea.setScale({ 0.5f, 0.5f });
+
 	Anim.Play(info.walkAnimId);
 	currentStatus = Status::Move;
+
+	isDebuff = false;
+
+	tickTimer = 0.f;
+	tickInterval = 1.f;
+	tickDuration = 6.f;
+	tickDamage = 10.f;
 }
 
 void AniSkeleton::Update(float dt)
 {
 	SetOrigin(Origins::BC);
+
+	sf::Vector2f playerPos = body.getPosition();
+
+	attackArea.setPosition(playerPos);
 
 	Anim.Update(dt);
 
@@ -109,7 +129,13 @@ void AniSkeleton::MoveUpdate(float dt)
 	sf::Vector2f pos = player->GetPosition();
 	sf::Vector2f playerPos = player->GetPosition() - position;
 
-	if (Utils::Magnitude(playerPos) < DISTANCE_TO_PLAYER)
+	if (player != nullptr && Utils::Distance(position, player->GetPosition()) > 10)
+	{
+		direction = Utils::GetNormal(player->GetPosition() - position);
+		attackArea.setRotation(Utils::Angle(direction));
+	}
+
+	if (Utils::Magnitude(playerPos) < DISTANCE_TO_PLAYER && attackDelay >= attackDuration)
 	{
 		if (position.x > pos.x)
 		{
@@ -127,29 +153,58 @@ void AniSkeleton::MoveUpdate(float dt)
 		currentStatus = Status::Attack;
 		return;
 	}
-
-	if (InputMgr::GetKeyDown(sf::Keyboard::P))
-	{
-		hp -= 15.f;
-		Anim.Play(info.getHitAnimId);
-		beforeStatus = currentStatus;
-		currentStatus = Status::GetHit;
-	}
 }
 
 void AniSkeleton::AttackUpdate(float dt)
 {
+	sf::Vector2f pos = player->GetPosition();
+	sf::Vector2f playerPos = player->GetPosition() - position;
+
+	float elapsedTime = clock.getElapsedTime().asSeconds();
+	if (elapsedTime < animationDuration) {
+		// 불투명도 계산 (70에서 150으로 선형 증가)
+		float progress = elapsedTime / animationDuration; // 0.0 ~ 1.0
+		int alpha = static_cast<int>(70 + progress * (150 - 70));
+		attackArea.setColor(sf::Color(255, 0, 0, alpha));
+	}
+
+	if (position.x > pos.x)
+	{
+		Anim.SetFlip(true);
+	}
+	else
+	{
+		Anim.SetFlip(false);
+	}
+
+
 	if (!Anim.IsPlay())
 	{
 		Anim.Play(info.walkAnimId);
 		beforeStatus = currentStatus;
 		currentStatus = Status::Move;
+		isAttack = false;
 		attackDelay = 0.f;
+		opacity = 70;
 	}
 }
 
 void AniSkeleton::GetHitUpdate(float dt)
 {
+	sf::Vector2f pos = player->GetPosition();
+	sf::Vector2f playerPos = player->GetPosition() - position;
+
+	isAttack = false;
+
+	if (position.x > pos.x)
+	{
+		Anim.SetFlip(true);
+	}
+	else
+	{
+		Anim.SetFlip(false);
+	}
+
 	if (!Anim.IsPlay())
 	{
 		Anim.Play(info.walkAnimId);
@@ -161,6 +216,7 @@ void AniSkeleton::GetHitUpdate(float dt)
 	{
 		hp = 0.f;
 		Anim.Play(info.deathAnimId);
+		HPBar.setScale({ 0.f, 0.f });
 		beforeStatus = currentStatus;
 		currentStatus = Status::Death;
 	}
@@ -168,6 +224,19 @@ void AniSkeleton::GetHitUpdate(float dt)
 
 void AniSkeleton::DeathUpdate(float dt)
 {
+
+	sf::Vector2f pos = player->GetPosition();
+	sf::Vector2f playerPos = player->GetPosition() - position;
+
+	if (position.x > pos.x)
+	{
+		Anim.SetFlip(true);
+	}
+	else
+	{
+		Anim.SetFlip(false);
+	}
+
 	if (!Anim.IsPlay())
 	{
 		isDead = true;
@@ -177,8 +246,13 @@ void AniSkeleton::DeathUpdate(float dt)
 
 void AniSkeleton::Draw(sf::RenderWindow& window)
 {
+	if (isAttack)
+	{
+		window.draw(attackArea);
+	}
 	window.draw(body);
-	hitbox.Draw(window);
+	/*hitbox.Draw(window);
+	hitbox2.Draw(window);*/
 	Monster::Draw(window);
 }
 
@@ -189,16 +263,53 @@ void AniSkeleton::SetInfo(const json& j)
 	Anim.Play(info.walkAnimId);
 }
 
+void AniSkeleton::OnDebuffed(DebuffType types, float dt)
+{
+	tickTimer += dt;
+	tickDuration -= dt;
+
+	if (tickDuration <= 0)
+	{
+		isDebuff = false;
+		tickTimer = 0.f;
+		return; // 디버프 종료
+	}
+
+	switch (types)
+	{
+	case DebuffType::Burn:
+
+		if (tickTimer >= tickInterval)
+		{
+			tickTimer -= tickInterval;
+			hp -= tickDamage;
+			HPBar.setScale({ std::max(hp / info.hp, 0.f), 1.0f });
+			beforeStatus = currentStatus;
+			currentStatus = Status::GetHit;
+			/*if (hp <= 0)
+			{
+				hp = 0;
+				beforeStatus = currentStatus;
+				currentStatus = Status::Death;
+				HPBar.setScale({ 0.f, 0.f });
+			}*/
+		}
+
+
+	}
+}
+
 void AniSkeleton::Walk(float dt)
 {
 	sf::Vector2f playerPos = player->GetPosition();
 
 	if (Utils::Magnitude(playerPos - position) > DISTANCE_TO_PLAYER)
 	{
-	direction = playerPos - position;
-	Utils::Normalize(direction);
+		direction = playerPos - position;
+		Utils::Normalize(direction);
 
-	SetPosition(position + direction * speed * dt);
+		/*attackArea.setRotation(Utils::Angle(direction));*/
+		SetPosition(position + direction * speed * dt);
 	}
 
 	if (position.x > playerPos.x)
@@ -229,20 +340,12 @@ void AniSkeleton::OnHit(float damage)
 	if (currentStatus == Status::Death)
 		return;
 
-	hp -= damage;
 	Anim.Play(info.getHitAnimId);
-	if (!Anim.IsPlay())
-	{
-		Anim.SetEnd();
-	}
-	else if (Anim.IsEnd())
-	{
 
-	}
-	if (hp <= 0)
-	{
-		hp = 0;
-		currentStatus = Status::Death;
-	}
+	beforeStatus = currentStatus;
+	currentStatus = Status::GetHit;
+
+	hp -= damage;
+
 	HPBar.setScale({ hp / info.hp, 1.0f });
 }

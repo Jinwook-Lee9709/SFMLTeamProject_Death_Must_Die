@@ -6,8 +6,11 @@ enum class SlimeStatus
 	None = -1,
 	Move,
 	Attack,
+	GetHit,
 	Death,
 };
+
+class Player;
 
 class AniSlime : public Monster
 {
@@ -33,17 +36,27 @@ public:
 
 protected:
 	sf::Sprite body;
+	sf::Sprite attackArea;
 	Animator Anim;
 	std::string textureId;
 
 	SlimeStatus beforeStatus = SlimeStatus::None;
 	SlimeStatus currentStatus = SlimeStatus::Move;
 
+	HitBox hitbox2;
+
 	sf::Vector2f direction;
 	float speed = 70.f;
+	float hitTime = 0.f;
+	float hitDuration = 1.f;
+	float attackDelay = 0.f;
+	float attackDuration = 3.f;
 
+	bool isGetHit = false;
 	bool isAttack = false;
+	bool isDead = false;
 
+	Player* player;
 	SlimeInfo info;
 public:
 	AniSlime(const std::string& name = "");
@@ -63,6 +76,7 @@ public:
 	void Update(float dt) override;
 	void MoveUpdate(float dt);
 	void AttackUpdate(float dt);
+	void GetHitUpdate(float dt);
 	void DeathUpdate(float dt);
 	void Draw(sf::RenderWindow& window) override;
 
@@ -70,5 +84,6 @@ public:
 
 	void Walk(float dt);
 	void OnAttack();
+	void OnHit(float damage);
 };
 

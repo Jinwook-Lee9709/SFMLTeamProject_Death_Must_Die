@@ -23,6 +23,17 @@ void EventHandler::AddEventGo(const std::string& id, std::function<void(const Ga
 	}
 }
 
+void EventHandler::DeleteEvenet(const std::string& id)
+{
+	auto it = eventsGo.find(id);
+	if (it == eventsGo.end()) {
+		eventsGo.emplace(id, std::vector<std::function<void(const GameObject&)>>{action});
+	}
+	else {
+		it->second.push_back(action);
+	}
+}
+
 void EventHandler::AddEventInt(const std::string& id, std::function<void(const int&)> action)
 {
 	auto it = eventsInt.find(id);

@@ -6,6 +6,7 @@
 #include "UISettingTable.h"
 #include "SkillLevelTable.h"
 
+#include "ItemTable.h"
 DataTableMgr::~DataTableMgr()
 {
 	Release();
@@ -20,6 +21,8 @@ void DataTableMgr::Init()
 	tables.insert({ DataTable::Types::Monster, new MonsterTable() });
 	tables.insert({ DataTable::Types::SkillSetting, new UISettingTable() });
 	tables.insert({ DataTable::Types::SkillLevel, new SkillLevelTable() });
+	tables.insert({ DataTable::Types::Item, new ItemTable() });
+
 	for (auto t : tables)
 	{
 		t.second->Load();

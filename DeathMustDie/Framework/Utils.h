@@ -1,4 +1,5 @@
 #pragma once
+#include "HitBox.h"
 
 class Utils
 {
@@ -61,6 +62,7 @@ public:
 	static bool CheckCollision(const sf::RectangleShape& shapeA, const sf::RectangleShape& shapeB);
 	static bool CheckCollision(const sf::Vector2f& wedgeCenter, float degree, float degreeRange, float radius, const sf::FloatRect& rect);
 	static bool CheckCollision(const sf::Vector2f& elipseCenter, const sf::Vector2f& ellipseRadius, const sf::FloatRect& rect);
+	static bool CheckCollision(const HitBox& shapeA, const HitBox& shapeB);
 	static std::vector<sf::Vector2f> GetShapePoints(const sf::Sprite& shape);
 	static std::vector<sf::Vector2f> GetShapePoints(const sf::RectangleShape& shape);
 	static std::vector<sf::Vector2f> GetRectanglePointsFromBounds(const sf::FloatRect& localBounds);

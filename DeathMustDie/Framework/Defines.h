@@ -129,5 +129,13 @@ enum class MonsterTypes
 	None = -1,
 	Skeleton,
 	Slime,
+	Boss,
 	Count,
+};
+
+enum class ItemTypes
+{
+	None = -1,
+	Gem,
+	Heart,
 };

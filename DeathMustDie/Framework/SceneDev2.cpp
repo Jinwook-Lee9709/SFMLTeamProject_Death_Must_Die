@@ -122,7 +122,7 @@ void SceneDev2::SpawnSkeleton(float dt)
 
 	spawnTimer += dt;
 	if (spawnTimer >= spawnInterval) {
-		monsterSpawn->SpawnMonster("Skeleton"); // "Skeleton" 몬스터 스폰
+		monsterSpawn->SpawnMonster("Skeleton", 10); // "Skeleton" 몬스터 스폰
 		spawnTimer = 0.0f; // 타이머 초기화
 	}
 }

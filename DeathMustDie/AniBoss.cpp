@@ -1,36 +1,35 @@
 #include "stdafx.h"
-#include "AniSlime.h"
+#include "AniBoss.h"
 #include "Player.h"
 
-AniSlime::AniSlime(const std::string& name)
-	: Monster(name)
+AniBoss::AniBoss(const std::string& name)
+	:Monster(name)
 {
 	Anim.SetTarget(&body);
-
 }
 
-void AniSlime::SetPosition(const sf::Vector2f& pos)
+void AniBoss::SetPosition(const sf::Vector2f& pos)
 {
 	position = pos;
 	body.setPosition(position);
 	hitbox.rect.setPosition(position);
-	HPBar.setPosition({ position.x, position.y - 140 });
-	HPBarFrame.setPosition({ position.x, position.y - 140 });
+	HPBar.setPosition({ position.x - HPBar.getSize().x * 0.5f, position.y - 140 });
+	HPBarFrame.setPosition({ position.x - HPBar.getSize().x * 0.5f, position.y - 140 });
 }
 
-void AniSlime::SetRotation(float angle)
+void AniBoss::SetRotation(float angle)
 {
 	rotation = angle;
 	body.setRotation(rotation);
 }
 
-void AniSlime::SetScale(const sf::Vector2f& s)
+void AniBoss::SetScale(const sf::Vector2f& s)
 {
 	scale = s;
 	body.setScale(scale);
 }
 
-void AniSlime::SetOrigin(Origins preset)
+void AniBoss::SetOrigin(Origins preset)
 {
 	originPreset = preset;
 	if (originPreset != Origins::Custom)
@@ -39,25 +38,26 @@ void AniSlime::SetOrigin(Origins preset)
 	}
 }
 
-void AniSlime::SetOrigin(const sf::Vector2f& newOrigin)
+void AniBoss::SetOrigin(const sf::Vector2f& newOrigin)
 {
 	originPreset = Origins::Custom;
 	origin = newOrigin;
 	body.setOrigin(origin);
 }
 
-void AniSlime::Release()
+void AniBoss::Init()
 {
 }
 
-void AniSlime::Reset()
+void AniBoss::Release()
+{
+}
+
+void AniBoss::Reset()
 {
 	hitbox.rect.setSize({ 40, 120 });
 	hitbox.rect.setPosition({ position });
-	hitbox2.rect.setSize({ 20, 60 });
-	hitbox2.rect.setPosition(position);
 	Utils::SetOrigin(hitbox.rect, Origins::BC);
-	Utils::SetOrigin(hitbox2.rect, Origins::BC);
 	HPBar.setPosition({ position.x - HPBar.getSize().x * 0.5f, position.y - 140 });
 	HPBarFrame.setPosition({ position.x - HPBar.getSize().x * 0.5f, position.y - 140 });
 	if (player == nullptr)
@@ -67,12 +67,8 @@ void AniSlime::Reset()
 	hp = info.hp;
 	HPBar.setScale({ 1.0f, 1.0f });
 
-	attackArea.setTexture(TEXTURE_MGR.Get("resource/texture/Sprite/Warn_PointCast_Outline_Spr.png"));
-	attackArea.setColor(sf::Color::Red);
-	Utils::SetOrigin(attackArea, Origins::MC);
-
 	Anim.Play(info.walkAnimId);
-	currentStatus = SlimeStatus::Move;
+	currentStatus = BossStatus::Move;
 
 	isDebuff = false;
 
@@ -82,37 +78,36 @@ void AniSlime::Reset()
 	tickDamage = 10.f;
 }
 
-void AniSlime::Update(float dt)
+void AniBoss::Update(float dt)
 {
 	SetOrigin(Origins::BC);
 
 	Anim.Update(dt);
 
-	if(isGetHit)
-	{
-		hitTime += dt;
-	}
 
-	sf::Vector2f slimePos = body.getPosition();
-	attackArea.setPosition(slimePos);
 
 	switch (currentStatus)
 	{
-	case SlimeStatus::Move:
+	case BossStatus::Move:
 	{
 		MoveUpdate(dt);
 		break;
-	}case SlimeStatus::Attack:
+	}case BossStatus::Attack:
 	{
 		AttackUpdate(dt);
 		break;
 	}
-	case SlimeStatus::GetHit:
+	case BossStatus::GetHit:
 	{
 		GetHitUpdate(dt);
 		break;
 	}
-	case SlimeStatus::Death:
+	case BossStatus::Channel:
+	{
+		ChannelUpdate(dt);
+		break;
+	}
+	case BossStatus::Death:
 	{
 		DeathUpdate(dt);
 		break;
@@ -120,14 +115,14 @@ void AniSlime::Update(float dt)
 	}
 }
 
-void AniSlime::MoveUpdate(float dt)
+void AniBoss::MoveUpdate(float dt)
 {
 	Walk(dt);
 	attackDelay += dt;
 	sf::Vector2f pos = player->GetPosition();
 	sf::Vector2f playerPos = player->GetPosition() - position;
 
-	if (Utils::Magnitude(playerPos) < DISTANCE_TO_PLAYER && attackDelay >= attackDuration)
+	if (Utils::Magnitude(playerPos) < DISTANCE_TO_PLAYER)
 	{
 		if (position.x > pos.x)
 		{
@@ -139,18 +134,35 @@ void AniSlime::MoveUpdate(float dt)
 		}
 
 		isAttack = true;
-		Anim.Play(info.attackAnimId);
 		attackDelay = 0.f;
+		Anim.Play(info.channelAnimId);
 		beforeStatus = currentStatus;
-		currentStatus = SlimeStatus::Attack;
+		currentStatus = BossStatus::Channel;
 		return;
 	}
 }
 
-void AniSlime::AttackUpdate(float dt)
+void AniBoss::AttackUpdate(float dt)
+{
+	if (!Anim.IsPlay())
+	{
+
+	}
+}
+
+void AniBoss::GetHitUpdate(float dt)
 {
 	sf::Vector2f pos = player->GetPosition();
 	sf::Vector2f playerPos = player->GetPosition() - position;
+
+	if (hp != 0 && hitCount == 3)
+	{
+		SetPosition(RandomTPPos());
+		hitCount = 0;
+		Anim.Play(info.walkAnimId);
+		beforeStatus = currentStatus;
+		currentStatus = BossStatus::Move;
+	}
 
 	if (position.x > pos.x)
 	{
@@ -163,40 +175,30 @@ void AniSlime::AttackUpdate(float dt)
 
 	if (!Anim.IsPlay())
 	{
-		isAttack = false;
 		Anim.Play(info.walkAnimId);
 		beforeStatus = currentStatus;
-		currentStatus = SlimeStatus::Move;
-	}
-}
-
-void AniSlime::GetHitUpdate(float dt)
-{
-	if (hitTime >= hitDuration)
-	{
-		Anim.Play(info.walkAnimId);
-		beforeStatus = currentStatus;
-		currentStatus = SlimeStatus::Move;
-		isGetHit = false;
-		hitTime = 0.f;
+		currentStatus = BossStatus::Move;
 	}
 
-	if (hp <= 0)
+	if (hp < 0)
 	{
-		hp = 0;
-		HPBar.setScale({ 0.f, 0.f });
+		hp = 0.f;
 		Anim.Play(info.deathAnimId);
+		HPBar.setScale({ 0.f, 0.f });
 		beforeStatus = currentStatus;
-		currentStatus = SlimeStatus::Death;
+		currentStatus = BossStatus::Death;
 	}
 }
 
-void AniSlime::DeathUpdate(float dt)
+void AniBoss::ChannelUpdate(float dt)
+{
+
+}
+
+void AniBoss::DeathUpdate(float dt)
 {
 	sf::Vector2f pos = player->GetPosition();
 	sf::Vector2f playerPos = player->GetPosition() - position;
-
-	isAttack = false;
 
 	if (position.x > pos.x)
 	{
@@ -214,24 +216,26 @@ void AniSlime::DeathUpdate(float dt)
 	}
 }
 
-void AniSlime::Draw(sf::RenderWindow& window)
+void AniBoss::Draw(sf::RenderWindow& window)
 {
-	if (isAttack)
-	{
-		window.draw(attackArea);
-	}
 	window.draw(body);
+	hitbox.Draw(window);
 	Monster::Draw(window);
 }
 
-void AniSlime::SetInfo(const json& j)
+void AniBoss::SetInfo(const json& j)
 {
 	info = j;
 	hp = info.hp;
 	Anim.Play(info.walkAnimId);
 }
 
-void AniSlime::Walk(float dt)
+void AniBoss::OnDebuffed(DebuffType types, float dt)
+{
+
+}
+
+void AniBoss::Walk(float dt)
 {
 	sf::Vector2f playerPos = player->GetPosition();
 
@@ -253,21 +257,41 @@ void AniSlime::Walk(float dt)
 	}
 }
 
-void AniSlime::OnAttack()
+void AniBoss::CheckAttack(float dt)
 {
 
 }
 
-void AniSlime::OnHit(float damage)
+void AniBoss::OnHit(float damage)
 {
-	if (currentStatus == SlimeStatus::Death)
+	if (currentStatus == BossStatus::Death)
 		return;
 
-	beforeStatus = currentStatus;
-	currentStatus = SlimeStatus::GetHit;
+	Anim.Play(info.getHitAnimId);
 
-	isGetHit = true;
+	beforeStatus = currentStatus;
+	currentStatus = BossStatus::GetHit;
+
+	hitCount++;
 	hp -= damage;
 
 	HPBar.setScale({ hp / info.hp, 1.0f });
+}
+
+sf::Vector2f AniBoss::RandomTPPos()
+{
+	float x = 0;
+	float y = 0;
+	sf::Vector2f playerPos = player->GetPosition();
+
+	randomPosX = std::uniform_real_distribution<float>(playerPos.x - mapBounds.width * 0.5f, playerPos.x + mapBounds.width * 0.5f);
+	randomPosY = std::uniform_real_distribution<float>(playerPos.y - mapBounds.height * 0.5f, playerPos.y + mapBounds.height * 0.5f);
+
+	x = randomPosX(rng);
+	y = randomPosY(rng);
+
+	sf::Vector2f randomPos = { x, y };
+
+	return randomPos;
+	return sf::Vector2f();
 }

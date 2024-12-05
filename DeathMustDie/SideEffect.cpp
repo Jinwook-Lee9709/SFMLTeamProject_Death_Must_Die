@@ -7,11 +7,11 @@ void SE_Debuff::SetInfo(const json& j)
 	this->info = j;
 }
 
-void SE_Debuff::TriggerEffect(const std::vector<Monster*>& monsters)
+void SE_Debuff::TriggerEffect(const std::vector<Monster*>& monsters, float dt)
 {
 	DebuffType type = info["debuffType"].get<DebuffType>();
 	for (auto& monster : monsters)
 	{
-		monster->OnDebuffed(DebuffType::Burn);
+		monster->OnDebuffed(DebuffType::Burn, dt);
 	}
 }

@@ -68,7 +68,7 @@ void WedgeAttack::FixedUpdate(float dt)
 			it++;
 		}
 	}
-	sideEffect->TriggerEffect(monsterBuf);
+	sideEffect->TriggerEffect(monsterBuf, dt);
 }
 
 void WedgeAttack::Draw(sf::RenderWindow& window)

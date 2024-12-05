@@ -2,12 +2,16 @@
 #include "SceneGame.h"
 #include "AbilityMgr.h"
 #include "AttackEntityPoolMgr.h"
+#include "MonsterSpawner.h"
 #include "CalculatorMgr.h"
 #include "Player.h"
 #include "TileMap.h"
 #include "MonsterSpawner.h"
 #include "UIAbilitySelect.h"
 #include "GameMgr.h"
+#include "ItemSpawner.h"
+#include "ItemPoolManager.h"
+#include "AniBoss.h"
 
 SceneGame::SceneGame()
 	: Scene(SceneIds::Game)
@@ -45,6 +49,10 @@ void SceneGame::Enter()
 	monsterSpawn = AddGo(new MonsterSpawner(MPMgr, mapBound, 30));
 	auto obj = AddGo(new UIAbilitySelect("UIAbilitySelect"));
 	obj->sortingLayer = SortingLayers::UI;
+	itemMPMgr = AddGo(new ItemPoolManager("itemPoolMgr"));
+	skeletonSpawn = AddGo(new MonsterSpawner(MPMgr, mapBound, 30));
+	itemSpawn = AddGo(new ItemSpawner(itemMPMgr));
+
 	ApplyAddGo();
 
 	Scene::Enter();
@@ -87,6 +95,10 @@ void SceneGame::Update(float dt)
 	worldView.setCenter(player->GetPosition());
 	Scene::Update(dt);
 
+	if (MPMgr)
+	{
+		MPMgr->CheckCollisions();
+	}
 }
 
 void SceneGame::FixedUpdate(float dt)

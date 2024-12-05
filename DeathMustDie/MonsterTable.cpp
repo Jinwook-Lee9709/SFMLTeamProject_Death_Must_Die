@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "MonsterTable.h"
 
-
 bool MonsterTable::Load()
 {
 	Release();
@@ -16,7 +15,6 @@ bool MonsterTable::Load()
 
 	return true;
 }
-
 
 void MonsterTable::Release()
 {
