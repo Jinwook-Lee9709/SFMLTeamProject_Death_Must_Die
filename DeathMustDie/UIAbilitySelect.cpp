@@ -4,6 +4,7 @@
 UIAbilitySelect::UIAbilitySelect(const std::string& name)
 	: UIPopup(name)
 {
+	sortingLayer = SortingLayers::UI;
 }
 
 void UIAbilitySelect::SetPosition(const sf::Vector2f& pos)

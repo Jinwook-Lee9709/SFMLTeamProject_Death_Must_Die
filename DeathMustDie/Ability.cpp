@@ -191,8 +191,8 @@ void Ability::SetSpawnFunc()
 				return;
 			sf::Vector2f pos = user->GetPosition();
 
-			float distance = Utils::Magnitude(monsters.begin()->second.front()->GetPosition() - pos);
-			Monster* closestMonster = monsters.begin()->second.front();
+			float distance = 10000;
+			Monster* closestMonster = nullptr;
 			for (auto& pair : monsters)
 			{
 				for (auto& monster : pair.second)

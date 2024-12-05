@@ -173,8 +173,8 @@ void SummonEntity::FindTarget()
 	auto& monsters = ((MonsterPoolManager*)SCENE_MGR.GetCurrentScene()->FindGo("monsterPoolMgr"))->GetMonsterList();
 	if (monsters.empty())
 		return;
-	float distance = Utils::Magnitude(monsters.begin()->second.front()->GetPosition() - position);
-	target = monsters.begin()->second.front();
+	float distance = 10000;
+	target = nullptr;
 	for (auto& pair : monsters)
 	{
 		for (auto& monster : pair.second)

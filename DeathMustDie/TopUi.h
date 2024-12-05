@@ -1,6 +1,7 @@
 #pragma once
 
 class SceneDev1;
+class SceneGame;
 class Structure;
 class Player;
 
@@ -8,7 +9,7 @@ class TopUi : public GameObject
 {
 protected:
 	sf::Vector2f winSize = FRAMEWORK.GetWindowSizeF();
-	SceneDev1* scene;
+	SceneGame* scene;
 
 	SpriteGo timer;
 	TextGo time;

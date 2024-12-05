@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "TopUi.h"
 #include "SceneDev1.h"
+#include "SceneGame.h"
 #include "Structure.h"
 #include "Player.h"
 
@@ -52,8 +53,8 @@ void TopUi::Release()
 
 void TopUi::Reset()
 {
-	scene = dynamic_cast<SceneDev1*>(SCENE_MGR.GetCurrentScene());
-	player = dynamic_cast<Player*>(scene->FindGo("Player"));
+	scene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
+	player = dynamic_cast<Player*>(SCENE_MGR.GetCurrentScene()->FindGo("Player"));
 	objList = scene->GetObjList();
 
 	SetTimer();

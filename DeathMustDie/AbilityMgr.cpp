@@ -258,7 +258,7 @@ void AbilityMgr::ChangeAbility(const json& info, const UpgradeType& type)
 		auto it = info["valueText"].begin();
 		while (it != info["valueText"].end())
 		{
-			float value = SKILL_LEVEL_TABLE->Get(name + "_" + it.key() + std::to_string(abil->GetLevel()), abil->GetGrade());
+			float value = SKILL_LEVEL_TABLE->Get(info["name"].get<std::string>() + "_" + it.key() + std::to_string(abil->GetLevel()), abil->GetGrade());
 			buf[it.key()] = value;
 			it++;
 		}
@@ -273,7 +273,7 @@ void AbilityMgr::ChangeAbility(const json& info, const UpgradeType& type)
 		auto it = info["valueText"].begin();
 		while (it != info["valueText"].end())
 		{
-			float value = SKILL_LEVEL_TABLE->Get(name + "_" + it.key() + std::to_string(abil->GetLevel()), abil->GetGrade());
+			float value = SKILL_LEVEL_TABLE->Get(info["name"].get<std::string>() + "_" + it.value()["valueName"].get<std::string>() + std::to_string(abil->GetLevel()), abil->GetGrade());
 			buf[it.key()] = value;
 			it++;
 		}

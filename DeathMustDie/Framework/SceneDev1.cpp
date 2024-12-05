@@ -14,13 +14,12 @@ void SceneDev1::Init()
 {
 	player = AddGo(new Player("Player"));
 	
-
 	AddGo(new StatusUi("UI"));
 	AddGo(new TopUi("TopUI"));
-	for (int i = 0; i < 5; i++)
+	/*for (int i = 0; i < 5; i++)
 	{
 		SetObjPos();
-	}
+	}*/
 	
 ;	Scene::Init();
 	sf::Vector2f size = FRAMEWORK.GetWindowSizeF();

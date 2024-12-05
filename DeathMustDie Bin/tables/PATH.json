@@ -63,7 +63,8 @@
         "Game":{
             "Texture" : {
                 "background" : "resource/texture/TerrainWilderness_Spr_01.png",
-                "rarityFrame": "resource/texture/Sprite/Panel_Spr_RarityFrame.png"
+                "rarityFrame": "resource/texture/Sprite/Panel_Spr_RarityFrame.png",
+                "shadow" : "resource/texture/Sprite/Object/_S_ShadowTiny_Spr.png"
              },
              "Font" :{
                  "Sansation" : "fonts/Sansation.ttf",
