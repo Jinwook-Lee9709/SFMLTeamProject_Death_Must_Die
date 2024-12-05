@@ -52,6 +52,9 @@ protected:
 	float attackDelay = 0.f;
 	float attackDuration = 3.f;
 
+	int opacity = 70;
+	float opacitySpeed = 500.f;
+
 	bool isGetHit = false;
 	bool isAttack = false;
 	bool isDead = false;

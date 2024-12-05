@@ -52,6 +52,7 @@ protected:
 
 	bool isAttack = false;
 	bool isDead = false;
+	bool isFire = false;
 
 	Player* player;
 	BossInfo info;
@@ -79,6 +80,7 @@ public:
 
 	bool GetIsAttack() { return isAttack; }
 	bool GetIsDead() { return isDead; }
+	bool GetIsSummon() { return isSummon; }
 
 	void Init() override;
 	void Release() override;

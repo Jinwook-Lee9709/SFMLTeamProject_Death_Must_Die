@@ -13,6 +13,7 @@ protected:
 	float tickTimer;         // 틱 타이머
 
 	bool isDebuff = false;
+	bool isSummon = false;
 
 	sf::CircleShape collisionCircle; // 원형 충돌체
 	float collisionRadius;
@@ -28,6 +29,13 @@ public:
 	virtual void OnHit(float damage) {}
 	virtual void OnDebuffed(DebuffType type, float dt) {} // 디버프 처리
 
+	bool GetIsSummon() { return isSummon; }
+	bool SetIsSummon(bool summon)
+	{
+		isSummon = summon;
+		return isSummon;
+	}
+
 	void SetCollisionRadius(float radius);
 	sf::CircleShape GetCollisionCircle() const;
 
@@ -37,6 +45,7 @@ public:
 	void Draw(sf::RenderWindow& window) override;
 
 	void OnDeath();
+	void OnSummon();
 };
 
 #define DISTANCE_TO_PLAYER (60.f)

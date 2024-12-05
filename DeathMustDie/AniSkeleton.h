@@ -48,6 +48,7 @@ protected:
 	Player* player;
 
 	sf::Vector2f direction;
+	sf::Vector2f look;
 	float speed = 70.f;
 	float attackDelay = 0.f;
 	float attackDuration = 3.f;

@@ -2,6 +2,8 @@
 #include "MonsterSpawner.h"
 #include "Utils.h"
 #include "Player.h"
+#include "Monster.h"
+#include "MonsterPoolManager.h"
 
 MonsterSpawner::MonsterSpawner(MonsterPoolManager* manager, const sf::FloatRect& bounds, int maxMonsters)
 	: GameObject("MonsterSpawner"), poolManager(manager), mapBounds(bounds), rng(std::random_device{}()), maxMonsters(maxMonsters)
@@ -87,6 +89,31 @@ void MonsterSpawner::BossSpawn(const std::string& bossName)
 	}
 }
 
+void MonsterSpawner::SummonMonster(const std::string& monsterName, const GameObject& monster)
+{
+	poolSize = 30;
+
+	if (summonCurrentMonsterCount >= summonMaxMonsters)
+	{
+		return;
+	}
+	for (int i = 0; i < poolSize; i++)
+	{
+		Monster* summonMonster = poolManager->GetMonster(monsterName);
+		if (summonMonster)
+		{
+			summonMonster->SetPosition(RandomBossPosition());
+			summonMonster->SetScale({ 3.f, 3.f });
+			summonCurrentMonsterCount++;
+		}
+	}
+}
+
+void MonsterSpawner::SummonMonsterTrigger(const GameObject& monster)
+{
+	SummonMonster("Skeleton", monster);
+}
+
 void MonsterSpawner::Init()
 {
 
@@ -96,6 +123,9 @@ void MonsterSpawner::Reset()
 {
 	player = (Player*)SCENE_MGR.GetCurrentScene()->FindGo("Player");
 	EVENT_HANDLER.AddEvent("OnMonsterDie", [&]() { currentMonsterCount--; });
+	std::function<void(const GameObject&)> func = std::bind(&MonsterSpawner::SummonMonsterTrigger, this, std::placeholders::_1);
+
+	EVENT_HANDLER.AddEventGo("SummonSkeleton", func);
 }
 
 void MonsterSpawner::Update(float dt)
@@ -105,28 +135,34 @@ void MonsterSpawner::Update(float dt)
 
 	bossSpawnTimer += dt;
 
-	if (spawnTimer >= spawnInterval)
+	/*if (spawnTimer >= spawnInterval)
 	{
 		SpawnMonster("Skeleton", 10);
 		spawnTimer = 0.0f;
-	}
+	}*/
 
-	if (slimeSpawnTimer >= 15.0f)
+	/*if (slimeSpawnTimer >= 15.0f)
 	{
 		isSlimeSpawn = true;
 		slimeSpawnTimer = 0.0f;
-	}
+	}*/
 
-	if (isSlimeSpawn && slimeSpawnTimer >= slimeSpawnInterval)
+	/*if (isSlimeSpawn && slimeSpawnTimer >= slimeSpawnInterval)
 	{
 		SpawnMonster("Slime", 10);
 		spawnTimer = 0.0f;
-	}
+	}*/
 
 	if (bossSpawnTimer >= 30.f)
 	{
 		BossSpawn("Boss");
 		isBossSpawn = true;
+		bossSpawnTimer = 0.f;
+	}
+
+	if (InputMgr::GetKeyDown(sf::Keyboard::L))
+	{
+		BossSpawn("Boss");
 		bossSpawnTimer = 0.f;
 	}
 }

@@ -67,9 +67,10 @@ void AniSlime::Reset()
 	hp = info.hp;
 	HPBar.setScale({ 1.0f, 1.0f });
 
-	attackArea.setTexture(TEXTURE_MGR.Get("resource/texture/Sprite/Warn_PointCast_Outline_Spr.png"));
-	attackArea.setColor(sf::Color::Red);
+	attackArea.setTexture(TEXTURE_MGR.Get("resource/texture/Sprite/Warn_PointCast_Spr.png"));
+	attackArea.setColor(sf::Color(255, 0, 0, 70));
 	Utils::SetOrigin(attackArea, Origins::MC);
+	attackArea.setScale({ 1.5f, 1.5f });
 
 	Anim.Play(info.walkAnimId);
 	currentStatus = SlimeStatus::Move;
@@ -124,6 +125,7 @@ void AniSlime::MoveUpdate(float dt)
 {
 	Walk(dt);
 	attackDelay += dt;
+	opacity = 70.f;
 	sf::Vector2f pos = player->GetPosition();
 	sf::Vector2f playerPos = player->GetPosition() - position;
 
@@ -151,6 +153,10 @@ void AniSlime::AttackUpdate(float dt)
 {
 	sf::Vector2f pos = player->GetPosition();
 	sf::Vector2f playerPos = player->GetPosition() - position;
+
+	opacity += opacitySpeed * dt;
+
+	attackArea.setColor(sf::Color(255, 0, 0, opacity));
 
 	if (position.x > pos.x)
 	{

@@ -44,7 +44,7 @@ void SceneGame::Enter()
 	map = AddGo(new TileMap("map"));
 	MPMgr = AddGo(new MonsterPoolManager("monsterPoolMgr"));
 	itemMPMgr = AddGo(new ItemPoolManager("itemPoolMgr"));
-	skeletonSpawn = AddGo(new MonsterSpawner(MPMgr, mapBound, 30));
+	skeletonSpawn = AddGo(new MonsterSpawner(MPMgr, mapBound, 50));
 	itemSpawn = AddGo(new ItemSpawner(itemMPMgr));
 
 	ApplyAddGo();

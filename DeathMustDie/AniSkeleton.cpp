@@ -75,7 +75,7 @@ void AniSkeleton::Reset()
 	attackArea.setTexture(TEXTURE_MGR.Get("resource/texture/Sprite/Warn_Melee_Slash_Spr.png"));
 	attackArea.setColor(sf::Color( 255, 0, 0, 70));
 	Utils::SetOrigin(attackArea, Origins::BC);
-	attackArea.setScale({ 0.5f, 0.5f });
+	attackArea.setScale({ 0.8f, 0.8f });
 
 	Anim.Play(info.walkAnimId);
 	currentStatus = Status::Move;
@@ -126,14 +126,19 @@ void AniSkeleton::MoveUpdate(float dt)
 {
 	Walk(dt);
 	attackDelay += dt;
+	opacity = 70;
 	sf::Vector2f pos = player->GetPosition();
 	sf::Vector2f playerPos = player->GetPosition() - position;
 
-	if (player != nullptr && Utils::Distance(position, player->GetPosition()) > 10)
+	look = Utils::GetNormal(pos - position);
+
+	attackArea.setRotation(Utils::Angle(look));
+
+	/*if (player != nullptr && Utils::Distance(position, player->GetPosition()) > 10)
 	{
 		direction = Utils::GetNormal(player->GetPosition() - position);
 		attackArea.setRotation(Utils::Angle(direction));
-	}
+	}*/
 
 	if (Utils::Magnitude(playerPos) < DISTANCE_TO_PLAYER && attackDelay >= attackDuration)
 	{
@@ -160,13 +165,9 @@ void AniSkeleton::AttackUpdate(float dt)
 	sf::Vector2f pos = player->GetPosition();
 	sf::Vector2f playerPos = player->GetPosition() - position;
 
-	float elapsedTime = clock.getElapsedTime().asSeconds();
-	if (elapsedTime < animationDuration) {
-		// 불투명도 계산 (70에서 150으로 선형 증가)
-		float progress = elapsedTime / animationDuration; // 0.0 ~ 1.0
-		int alpha = static_cast<int>(70 + progress * (150 - 70));
-		attackArea.setColor(sf::Color(255, 0, 0, alpha));
-	}
+	opacity += opacitySpeed * dt;
+
+	attackArea.setColor(sf::Color(255, 0, 0, opacity));
 
 	if (position.x > pos.x)
 	{
