@@ -1,8 +1,29 @@
 {
-   "SkillSelect":
-   {
-        
-   },
+    "Title":
+    {
+        "ButtonPlay":
+        {
+            "position" : [490.0, 520.0],
+            "scale" : [1.0, 1.0],
+            "origin" : 4,
+            "characterSize" : 120,
+            "stringId" : "playButton",
+            "font": "PtSerifRegular_Font"
+        },
+        "ButtonExit":
+        {
+            "position" : [490.0, 680.0],
+            "scale" : [1.0, 1.0],
+            "origin" : 4,
+            "characterSize" : 100,
+            "stringId" : "exitButton",
+            "font": "PtSerifRegular_Font"
+        }
+    },
+    "SkillSelect":
+    {
+            
+    },
     "SkillSelectPanel":
         {
             "Sprites":

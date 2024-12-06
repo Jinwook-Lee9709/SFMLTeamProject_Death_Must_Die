@@ -12,6 +12,7 @@ AniSlime::AniSlime(const std::string& name)
 void AniSlime::SetPosition(const sf::Vector2f& pos)
 {
 	position = pos;
+	sortingY = position.y;
 	body.setPosition(position);
 	hitbox.rect.setPosition(position);
 	HPBar.setPosition({ position.x, position.y - 140 });
@@ -81,6 +82,9 @@ void AniSlime::Reset()
 	tickInterval = 1.f;
 	tickDuration = 6.f;
 	tickDamage = 10.f;
+
+	sortingLayer = SortingLayers::Foreground;
+	sortingOrder = 1;
 }
 
 void AniSlime::Update(float dt)
@@ -272,4 +276,5 @@ void AniSlime::OnHit(float damage)
 	hp -= damage;
 
 	HPBar.setScale({ hp / info.hp, 1.0f });
+	Monster::OnHit(damage);
 }

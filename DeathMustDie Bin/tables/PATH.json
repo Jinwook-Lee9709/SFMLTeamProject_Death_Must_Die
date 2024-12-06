@@ -70,9 +70,8 @@
                 "Trail of Fire_icon" : "resource/texture/icon/Trail of Fire_icon.png",
                 "Meteor Shower_icon" : "resource/texture/icon/Meteor Shower_icon.png",
                 "Fire Dragon_icon" : "resource/texture/icon/Fire Dragon_icon.png",
-                "Vehemence_icon" : "resource/texture/icon/Vehemence_icon.png"
-
-
+                "Vehemence_icon" : "resource/texture/icon/Vehemence_icon.png",
+                "tilteBackground":"resource/texture/Sprite/tilteBackground.png"
 
              },
              "Font" :{
@@ -82,6 +81,17 @@
              "Sound" :{
                  
              }
+        },
+        "Title":{
+            "Texture" : {
+                "tilteBackground":"resource/texture/Sprite/tilteBackground.png"
+            },
+            "Font" :{
+                "PtSerifRegular_Font" : "fonts/PtSerifRegular_Font.ttf"
+            },
+            "Sound" :{
+                
+            }
         },
         "UI":{
           "Texture" : {

@@ -278,6 +278,7 @@ void AniBoss::OnHit(float damage)
 	hp -= damage;
 
 	HPBar.setScale({ hp / info.hp, 1.0f });
+	Monster::OnHit(damage);
 }
 
 sf::Vector2f AniBoss::RandomTPPos()

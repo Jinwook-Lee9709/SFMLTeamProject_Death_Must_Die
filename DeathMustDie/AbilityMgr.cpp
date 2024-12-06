@@ -293,7 +293,6 @@ void AbilityMgr::ChangeAbility(const json& info, const UpgradeType& type)
 				buf[it.value()["valueName"].get<std::string>()] = value;
 
 				it++;
-				std::cout << buf;
 			}
 			abil->ChangeInfo(buf);
 

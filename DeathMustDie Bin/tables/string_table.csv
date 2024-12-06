@@ -1,5 +1,7 @@
 ID,Korean,English
 Hi,안녕~,Hi
+playButton,텍스트,"Play"
+exitButton,텍스트,"Exit"
 Searing Attack,텍스트,"Your Attacks become stronger, apply \nBurning and have a chance to\ncreate fire trails that burn enemies."
 Meteor Shower,텍스트,"On cooldown, meteors fall from the skies, \ndamaging enemies and Burning \nthe ground."
 Breath of Fire,텍스트,"Every few Attack hits, you breathe fire \nthat damages and burns enemies \ninfront of you."

@@ -1,25 +1,16 @@
 #pragma once
 #include "GameObject.h"
 
-class DamageText : public GameObject
+class Button : public GameObject
 {
 protected:
 	TextGo text;
-
-	sf::Vector2f posForAnim;
-
-	std::queue<int> playQueue;
-
-	float duration = 1;
-	float timer;
-	bool isPlay;
-
-	float opacity;
 public:
-	DamageText(const std::string& name = "");
-	~DamageText() = default;
+	Button(const std::string& name = "");
+	~Button() = default;
 
 	void SetPosition(const sf::Vector2f& pos) override;
+	void SetRotation(float angle) override;
 	void SetScale(const sf::Vector2f& scale) override;
 
 	void SetOrigin(Origins preset) override;
@@ -31,11 +22,8 @@ public:
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
 
-	void AddAnimation(int type);
-
-	void PlayAnimation(int type);
-
-	void SetDuration(float duration) { this->duration = duration; }
-	void SetText(int type);
+	void SetFont(std::string fontId);
+	void SetString(std::string stringId);
+	void SetCharacterSize(int size);
 };
 

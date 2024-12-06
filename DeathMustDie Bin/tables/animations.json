@@ -165,5 +165,10 @@
     {
         "ID": "sorceror_death",
         "TEX_ID": "resource/texture/Sheet/boss/Sorceror_Death_Sheet.png"
+    },
+    "LEVEL_UP":
+    {
+        "ID": "levelup_effect",
+        "TEX_ID": "resource/texture/Sheet/levelup_effect.png"
     }
 }

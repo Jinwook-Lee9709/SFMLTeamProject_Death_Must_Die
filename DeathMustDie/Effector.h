@@ -12,6 +12,7 @@ protected:
 	float timer;
 	float duration;
 	bool isPlaying;
+	bool isRealtime = false;
 public:
 	Effector(const std::string& name = "");
 	~Effector() = default;
@@ -31,6 +32,8 @@ public:
 	void SetDuration(float duration);
 	void AddAnimation(std::string animId);
 	void PlayAnimation(std::string animId);
+
+	void SetToRealDeltaTime(bool isRealtime);
 
 	bool IsPlay() { return isPlaying; }
 };

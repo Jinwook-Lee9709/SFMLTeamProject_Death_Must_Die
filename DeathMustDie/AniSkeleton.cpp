@@ -11,6 +11,7 @@ AniSkeleton::AniSkeleton(const std::string& name)
 void AniSkeleton::SetPosition(const sf::Vector2f& pos)
 {
 	position = pos;
+	sortingY = position.y;
 	body.setPosition(position);
 	hitbox.rect.setPosition(position);
 	hitbox2.rect.setPosition({ position.x, position.y - 30.f });
@@ -87,6 +88,9 @@ void AniSkeleton::Reset()
 	tickInterval = 1.f;
 	tickDuration = 6.f;
 	tickDamage = 10.f;
+
+	sortingLayer = SortingLayers::Foreground;
+	sortingOrder = 1;
 }
 
 void AniSkeleton::Update(float dt)
@@ -132,8 +136,8 @@ void AniSkeleton::MoveUpdate(float dt)
 
 	if (player != nullptr && Utils::Distance(position, player->GetPosition()) > 10)
 	{
-		direction = Utils::GetNormal(player->GetPosition() - position);
-		attackArea.setRotation(Utils::Angle(direction));
+		direction = Utils::GetNormal(player->GetPosition() - position + sf::Vector2f(0.f, body.getGlobalBounds().height * 0.5f));
+		attackArea.setRotation(Utils::Angle(direction) + 90.f);
 	}
 
 	if (Utils::Magnitude(playerPos) < DISTANCE_TO_PLAYER && attackDelay >= attackDuration)
@@ -226,7 +230,6 @@ void AniSkeleton::GetHitUpdate(float dt)
 
 void AniSkeleton::DeathUpdate(float dt)
 {
-
 	sf::Vector2f pos = player->GetPosition();
 	sf::Vector2f playerPos = player->GetPosition() - position;
 
@@ -352,4 +355,5 @@ void AniSkeleton::OnHit(float damage)
 	hp -= damage;
 
 	HPBar.setScale({ hp / info.hp, 1.0f });
+	Monster::OnHit(damage);
 }

@@ -44,9 +44,9 @@ void DamageText::Release()
 
 void DamageText::Reset()
 {
-	text.SetFont("Bokor");
-	text.SetCharacterSize(40);
-	text.SetOutline(2, sf::Color::Black);
+	text.SetFont(GET_FONT("PerfectDOSVGA437"));
+	text.SetCharacterSize(30);
+	text.SetOutline(1, sf::Color::Black);
 }
 
 void DamageText::Update(float dt)
@@ -60,6 +60,14 @@ void DamageText::Update(float dt)
 		timer += dt;
 		posForAnim += sf::Vector2f(0, -120 * dt);
 		text.SetPosition(position + posForAnim);
+		if (timer > duration - 0.2f)
+		{
+			opacity -= 1225 * dt;
+			if (opacity < 0)
+				opacity = 0;
+			text.SetOpacity(opacity);
+		}
+
 		if (timer > duration)
 		{
 			isPlay = false;
@@ -88,38 +96,17 @@ void DamageText::PlayAnimation(int type)
 	isPlay = true;
 	this->active = true;
 	posForAnim = { 0.f, 0.f };
+	opacity = 255;
 	SetText(type);
 }
 
 void DamageText::SetText(int type)
 {
-
-	switch (type)
+	if (type > 0) 
 	{
-		case 0:
-		{
-			text.SetString(std::to_wstring(type));
-			text.SetFillColor(sf::Color(1, 4, 7, 255));
-			text.SetOutline(2, sf::Color(147, 147, 147, 255));
-			break;
-		}
-		default :
-		{
-			if (type > 0) 
-			{
-				text.SetString(std::to_wstring(type));
-				text.SetFillColor(sf::Color(197, 7, 0, 255));
-				text.SetOutline(2, sf::Color(sf::Color::Black));
-			}
-			else
-			{
-				text.SetString(std::to_wstring(abs(type)));
-				text.SetFillColor(sf::Color::Green);
-				text.SetOutline(2, sf::Color(sf::Color::Black));
-			}
-			
-		}
-
+		text.SetString(std::to_wstring(type));
+		text.SetFillColor(sf::Color::White);
+		text.SetOutline(2, sf::Color(sf::Color::Black));
 	}
 	SetOrigin(originPreset);
 }

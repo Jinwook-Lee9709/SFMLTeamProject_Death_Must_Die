@@ -118,6 +118,7 @@ protected:
 	sf::Sprite body4;
 	Animator animator4;
 
+
 	SpriteGo shadow;
 
 	bool flip;

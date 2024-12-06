@@ -4,8 +4,11 @@
 class Ability;
 class AbilityMgr;
 class CalculatorMgr;
+class DamageText;
+class Effector;
 class UIAbilitySelect;
 class Player;
+class Timer;
 
 
 class GameMgr : public GameObject
@@ -19,6 +22,8 @@ public:
 	};
 protected:
 
+	Effector* effector;
+
 	Status beforeStatus;
 	Status currentStatus;
 	
@@ -26,8 +31,12 @@ protected:
 	CalculatorMgr* calc;
 	UIAbilitySelect* uiAbilSelect;
 
+	ObjectPool<DamageText> textPool;
+	std::list<DamageText*> textList;
+
 	Player* player;
 
+	Timer timer;
 	std::vector<std::pair<json, UpgradeType>> selectedSkill;
 public:
 	GameMgr(const std::string& name = "");
@@ -53,6 +62,8 @@ public:
 
 	void AbilitySelected(int num);
 	void IncreaseEXP();
+
+	void PopUpDamageText(const GameObject& go, float damage);
 };
 
 #define NOVICE_PROBABILITY 0.4

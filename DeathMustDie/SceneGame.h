@@ -10,6 +10,7 @@ class MonsterSpawner;
 class Player;
 class Structure;
 class TileMap;
+class DamageText;
 
 class SceneGame : public Scene
 {

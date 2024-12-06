@@ -39,6 +39,8 @@ public:
 	}
 
 	virtual void RemoveGo(GameObject* obj);
+	virtual void ExcludeGo(GameObject* obj);
+	virtual void RemoveAllGo();
 	virtual GameObject* FindGo(const std::string& name);
 	virtual int FindGoAll(const std::string& name, std::list<GameObject*>& list);
 

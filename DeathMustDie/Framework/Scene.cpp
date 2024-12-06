@@ -138,6 +138,37 @@ void Scene::RemoveGo(GameObject* obj)
 	removeGameObjects.push_back(obj);
 }
 
+void Scene::ExcludeGo(GameObject* obj)
+{
+	auto it = gameObjects.begin();
+	while (it != gameObjects.end())
+	{
+		if ((*it) == obj)
+		{
+			auto reIt = std::find(removeGameObjects.begin(), removeGameObjects.end(), *it);
+			it = gameObjects.erase(it);
+			
+			if (reIt != removeGameObjects.end())
+			{
+				removeGameObjects.erase(reIt);
+			}
+
+		}
+		else
+		{
+			it++;
+		}
+	}
+}
+
+void Scene::RemoveAllGo()
+{
+	for (auto obj : gameObjects)
+	{
+		removeGameObjects.push_back(obj);
+	}
+}
+
 GameObject* Scene::FindGo(const std::string& name)
 {
 	for (auto obj : gameObjects)
@@ -180,7 +211,8 @@ void Scene::ApplyRemoveGO()
 {
 	for (auto go : removeGameObjects)
 	{
-		//delete go;
+		go->Release();
+		delete go;
 		gameObjects.remove(go);
 	}
 	removeGameObjects.clear();

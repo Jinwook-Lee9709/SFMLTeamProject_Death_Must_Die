@@ -51,10 +51,12 @@ public:
 	{
 		for (auto obj : unused)
 		{
+			SCENE_MGR.GetCurrentScene()->ExcludeGo(obj);
 			delete obj;
 		}
 		for (auto obj : used)
 		{
+			SCENE_MGR.GetCurrentScene()->ExcludeGo(obj);
 			delete obj;
 		}
 	}

@@ -4,7 +4,7 @@
 #include "SceneDev2.h"
 #include "SceneDev3.h"
 #include "SceneGame.h"
-
+#include "SceneTitle.h"
 
 void SceneMgr::Init()
 {
@@ -12,6 +12,7 @@ void SceneMgr::Init()
 	scenes.push_back(new SceneDev1());	
 	scenes.push_back(new SceneDev2());
 	scenes.push_back(new SceneDev3());
+	scenes.push_back(new SceneTitle());
 
 	for (auto scene : scenes)
 	{
@@ -26,6 +27,7 @@ void SceneMgr::Release()
 {
 	for (auto scene : scenes)
 	{
+		scene->Exit();
 		if (currentScene == scene->id)
 		{
 			scene->Exit();
@@ -76,6 +78,7 @@ void SceneMgr::OnPostDraw()
 		scenes[(int)currentScene]->Exit();
 		currentScene = nextScene;
 		nextScene = SceneIds::None;
+		EVENT_HANDLER.DeleteAllEvenet();
 		scenes[(int)currentScene]->Enter();
 	}
 }

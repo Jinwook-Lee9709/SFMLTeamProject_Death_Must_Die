@@ -27,8 +27,10 @@ public:
 
 	bool IsDeath() { return isDeath; }
 
+	sf::FloatRect GetGlobalBounds() const override { return { 0.f, 0.f, 0.f, 0.f }; }
+
 	virtual void SetInfo(const json& j) {}
-	virtual void OnHit(float damage) {}
+	virtual void OnHit(float damage);
 	virtual void OnDebuffed(DebuffType type) {} // 디버프 처리
 
 	void SetCollisionRadius(float radius);
@@ -42,4 +44,4 @@ public:
 	void OnDeath();
 };
 
-#define DISTANCE_TO_PLAYER (60.f)
+#define DISTANCE_TO_PLAYER (100.f)

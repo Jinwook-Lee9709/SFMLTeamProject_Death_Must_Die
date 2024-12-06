@@ -155,6 +155,7 @@
     <ClCompile Include="AniSkeleton.cpp" />
     <ClCompile Include="AniSlime.cpp" />
     <ClCompile Include="BasicAttack.cpp" />
+    <ClCompile Include="Button.cpp" />
     <ClCompile Include="Calculator.cpp" />
     <ClCompile Include="CalculatorMgr.cpp" />
     <ClCompile Include="DamageText.cpp" />
@@ -199,6 +200,7 @@
     <ClCompile Include="SceneDev3.cpp" />
     <ClCompile Include="SceneGame.cpp" />
     <ClCompile Include="Framework\Variables.cpp" />
+    <ClCompile Include="SceneTitle.cpp" />
     <ClCompile Include="SideEffect.cpp" />
     <ClCompile Include="AbilitySelectPanel.cpp" />
     <ClCompile Include="SkillLevelTable.cpp" />
@@ -226,6 +228,7 @@
     <ClInclude Include="AniSkeleton.h" />
     <ClInclude Include="AniSlime.h" />
     <ClInclude Include="BasicAttack.h" />
+    <ClInclude Include="Button.h" />
     <ClInclude Include="Calculator.h" />
     <ClInclude Include="CalculatorMgr.h" />
     <ClInclude Include="DamageText.h" />
@@ -276,6 +279,7 @@
     <ClInclude Include="SceneDev3.h" />
     <ClInclude Include="SceneGame.h" />
     <ClInclude Include="Framework\Variables.h" />
+    <ClInclude Include="SceneTitle.h" />
     <ClInclude Include="SideEffect.h" />
     <ClInclude Include="AbilitySelectPanel.h" />
     <ClInclude Include="SkillLevelTable.h" />

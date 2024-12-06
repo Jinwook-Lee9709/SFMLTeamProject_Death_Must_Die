@@ -4,6 +4,7 @@
 #include "AniBoss.h"
 #include "AttackEntityPoolMgr.h"
 #include "CalculatorMgr.h"
+#include "DamageText.h"
 #include "GameMgr.h"
 #include "ItemPoolManager.h"
 #include "ItemSpawner.h"
@@ -23,16 +24,11 @@ SceneGame::SceneGame()
 void SceneGame::Init()
 {
 	sf::Vector2f size = FRAMEWORK.GetWindowSizeF();
-	AddGo(new StatusUi("UI"));
-	AddGo(new TopUi("TopUI"));
-	for (int i = 0; i < 5; i++)
-	{
-		SetObjPos();
-	}
+	
 
 	worldView.setSize(size);
 	uiView.setSize(size);
-	player = AddGo(new Player("Player"));
+
 	Scene::Init();
 }
 
@@ -43,6 +39,17 @@ void SceneGame::Release()
 
 void SceneGame::Enter()
 {
+	player = AddGo(new Player("Player"));
+	auto ui = AddGo(new StatusUi("UI"));
+	auto topUi = AddGo(new TopUi("TopUI"));
+	player->Init();
+	ui->Init();
+	topUi->Init();
+	for (int i = 0; i < 5; i++)
+	{
+		SetObjPos();
+	}
+
 	sf::Vector2f size = FRAMEWORK.GetWindowSizeF();
 	worldView.setCenter(0.f, 0.f);
 	uiView.setCenter(size.x * 0.5f, size.y * 0.5f);
@@ -50,16 +57,22 @@ void SceneGame::Enter()
 	RES_TABLE_MGR.LoadAnimation();
 
 
-	map = AddGo(new TileMap("map"));
-	AddGo(new AttackEntityPoolMgr("AttackEntityPoolMgr"));
-	abilMgr = AddGo(new AbilityMgr("AbilityMgr"));
+	auto aep = AddGo(new AttackEntityPoolMgr("AttackEntityPoolMgr"));
+	aep->sortingOrder = 10;
+
 	AddGo(new CalculatorMgr("CalculatorMgr"));
-	MPMgr = AddGo(new MonsterPoolManager("monsterPoolMgr"));
-	monsterSpawn = AddGo(new MonsterSpawner(MPMgr, mapBound, 30));
 	AddGo(new UIAbilitySelect("UIAbilitySelect"));
+	AddGo(new GameMgr("GameMgr"));
+
+	abilMgr = AddGo(new AbilityMgr("AbilityMgr"));
+	map = AddGo(new TileMap("map"));
+	MPMgr = AddGo(new MonsterPoolManager("monsterPoolMgr"));
 	itemMPMgr = AddGo(new ItemPoolManager("itemPoolMgr"));
 	itemSpawn = AddGo(new ItemSpawner(itemMPMgr));
-	AddGo(new GameMgr("GameMgr"));
+
+	monsterSpawn = AddGo(new MonsterSpawner(MPMgr, mapBound, 30));
+
+
 	ApplyAddGo();
 
 	Scene::Enter();
@@ -71,10 +84,12 @@ void SceneGame::Exit()
 {
 	for (auto stru : struList)
 	{
-		RemoveGo(stru);
+		ExcludeGo(stru);
 		struPool.Return(stru);
 	}
 	struList.clear();
+
+	RemoveAllGo();
 	Scene::Exit();
 }
 
@@ -85,6 +100,10 @@ void SceneGame::Update(float dt)
 	if (MPMgr)
 	{
 		MPMgr->CheckCollisions();
+	}
+	if (InputMgr::GetKeyDown(sf::Keyboard::C))
+	{
+		SCENE_MGR.ChangeScene(SceneIds::Title);
 	}
 }
 
@@ -113,5 +132,6 @@ void SceneGame::SetObjPos()
 	struList.push_back(stru);
 	AddGo(stru);
 }
+
 
 

@@ -20,7 +20,13 @@ Monster::Monster(const std::string& name)
 }
 
 
-void Monster::SetCollisionRadius(float radius) 
+void Monster::OnHit(float damage)
+{
+    EVENT_HANDLER.InvokeEvent("OnMonsterHit", (GameObject)*this , damage);
+
+}
+
+void Monster::SetCollisionRadius(float radius)
 {
     collisionRadius = radius;
     collisionCircle.setRadius(radius);

@@ -75,7 +75,7 @@ public:
 	void SetOrigin(Origins preset) override;
 	void SetOrigin(const sf::Vector2f& newOrigin) override;
 
-	sf::FloatRect GetGlobalBound() { return hitbox.rect.getGlobalBounds(); }
+	sf::FloatRect GetGlobalBounds() const override { return hitbox.rect.getGlobalBounds(); }
 	sf::Vector2f GetPosition() { return position; }
 	sf::Sprite GetSprite() const { return body; }
 	HitBox& GetHitBox2() { return hitbox2; }

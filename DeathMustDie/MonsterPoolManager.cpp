@@ -13,6 +13,22 @@ void MonsterPoolManager::Init()
 
 void MonsterPoolManager::Release()
 {
+	for (auto& pair : monsters)
+	{
+		auto it = pair.second.begin();
+		while (it != pair.second.end())
+		{
+			poolContainer[pair.first]->Return(*it);
+			SCENE_MGR.GetCurrentScene()->ExcludeGo(*it);
+			it = pair.second.erase(it);
+		}
+	}
+	for (auto& pointer : poolContainer)
+	{
+		delete pointer.second;
+	}
+	monsters.clear();
+	poolContainer.clear();
 }
 
 void MonsterPoolManager::Reset()
@@ -32,12 +48,12 @@ void MonsterPoolManager::Update(float dt)
 			if (!(*it)->IsActive())
 			{
 				poolContainer[pair.first]->Return(*it);
+				SCENE_MGR.GetCurrentScene()->ExcludeGo(*it);
 				it = pair.second.erase(it);
 				EVENT_HANDLER.InvokeEvent("OnMonsterDie");
 			}
 			else
 			{
-				(*it)->Update(dt);
 				it++;
 			}
 		}
@@ -54,12 +70,13 @@ void MonsterPoolManager::FixedUpdate(float dt)
 			if (!(*it)->IsActive())
 			{
 				poolContainer[pair.first]->Return(*it);
+				SCENE_MGR.GetCurrentScene()->ExcludeGo(*it);
 				it = pair.second.erase(it);
 				EVENT_HANDLER.InvokeEvent("OnMonsterDie");
+
 			}
 			else
 			{
-				(*it)->FixedUpdate(dt);
 				it++;
 			}
 		}
@@ -68,13 +85,13 @@ void MonsterPoolManager::FixedUpdate(float dt)
 
 void MonsterPoolManager::Draw(sf::RenderWindow& window)
 {
-	for (auto& pair : monsters)
+	/*for (auto& pair : monsters)
 	{
 		for (auto& entity : pair.second)
 		{
 			entity->Draw(window);
 		}
-	}
+	}*/
 }
 
 void MonsterPoolManager::CreatePool(MonsterTypes type, json j, std::string name)
@@ -119,6 +136,7 @@ Monster* MonsterPoolManager::GetMonster(std::string name)
 	MonsterPool* obj = poolContainer.find(name)->second;
 
 	Monster* monster = obj->Take();
+	SCENE_MGR.GetCurrentScene()->AddGo(monster);
 
 	auto it = monsters.find(name);
 	if (it == monsters.end())

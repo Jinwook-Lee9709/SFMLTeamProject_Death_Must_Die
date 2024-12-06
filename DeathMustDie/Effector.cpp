@@ -53,24 +53,48 @@ void Effector::Reset()
 
 void Effector::Update(float dt)
 {
-	if ((!isPlaying && !animationQueue.empty()) || (isPlaying && !animationQueue.empty() && animator.IsLoop()))
+	if (isRealtime)
 	{
-		PlayAnimation(animationQueue.front());
-		animationQueue.pop();
-		timer = 0;
-		isPlaying = true;
-	}
-	if (isPlaying && !animator.IsLoop())
-	{
-		timer += dt;
-		if (timer > duration)
+		if ((!isPlaying && !animationQueue.empty()) || (isPlaying && !animationQueue.empty() && animator.IsLoop()))
 		{
-			isPlaying = false;
+			PlayAnimation(animationQueue.front());
+			animationQueue.pop();
+			timer = 0;
+			isPlaying = true;
 		}
+		if (isPlaying && !animator.IsLoop())
+		{
+			timer += FRAMEWORK.GetRealDeltaTime();
+			if (timer > duration)
+			{
+				isPlaying = false;
+			}
+		}
+		animator.Update(FRAMEWORK.GetRealDeltaTime());
+	}
+	else
+	{
+		if ((!isPlaying && !animationQueue.empty()) || (isPlaying && !animationQueue.empty() && animator.IsLoop()))
+		{
+			PlayAnimation(animationQueue.front());
+			animationQueue.pop();
+			timer = 0;
+			isPlaying = true;
+		}
+		if (isPlaying && !animator.IsLoop())
+		{
+			timer += dt;
+			if (timer > duration)
+			{
+				isPlaying = false;
+			}
+		}
+		animator.Update(dt);
 	}
 	
+	
 
-	animator.Update(dt);
+
 }
 
 void Effector::Draw(sf::RenderWindow& window)
@@ -97,4 +121,9 @@ void Effector::PlayAnimation(std::string animId)
 	animator.Play(animId);
 	SetOrigin(originPreset);
 	this->active = true;
+}
+
+void Effector::SetToRealDeltaTime(bool isRealtime)
+{
+	this->isRealtime = isRealtime;
 }

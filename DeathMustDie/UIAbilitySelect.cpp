@@ -47,7 +47,7 @@ void UIAbilitySelect::Release()
 
 void UIAbilitySelect::Reset()
 {
-	sf::Vector2f initPos = { 300.f, 100.f };
+	sf::Vector2f initPos = { 230.f, 80.f };
 	for (int i = 0; i < 3; i++)
 	{
 		AbilitySelectPanel* panel = new AbilitySelectPanel("panel" + std::to_string(i), i);

@@ -39,7 +39,7 @@ void SummonEntity::Reset()
 
 void SummonEntity::Release()
 {
-
+	SCENE_MGR.GetCurrentScene()->RemoveGo(this);
 }
 
 void SummonEntity::Update(float dt)

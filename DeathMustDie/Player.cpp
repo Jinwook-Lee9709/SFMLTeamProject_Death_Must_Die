@@ -11,7 +11,8 @@ Player::Player(const std::string& name)
 void Player::SetPosition(const sf::Vector2f& pos)
 {
 	position = pos;
-	sortingY = position.y;
+	shadow.SetPosition({ position.x, position.y + body.getGlobalBounds().height * 0.5f - 10.f });
+	sortingY = shadow.GetPosition().y;
 	body.setPosition(position);
 	body2.setPosition(position);
 	body3.setPosition(position + attackPos);
@@ -24,7 +25,7 @@ void Player::SetPosition(const sf::Vector2f& pos)
 		dashBlock[i].setPosition({backDashBar.getGlobalBounds().left + 3.f + 7.f * i, backDashBar.getGlobalBounds().top + 2.f});
 	damageBar.setPosition(hpBar.getGlobalBounds().left + hpBar.getGlobalBounds().width, hpBar.getGlobalBounds().top);
 
-	shadow.SetPosition({position.x, position.y + body.getGlobalBounds().height * 0.5f - 10.f});
+	
 }
 
 void Player::SetRotation(float angle)

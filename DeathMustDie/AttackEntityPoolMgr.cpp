@@ -14,6 +14,20 @@ void AttackEntityPoolMgr::Init()
 
 void AttackEntityPoolMgr::Release()
 {
+	for (auto& pair : attackEntities)
+	{
+		auto it = pair.second.begin();
+		while (it != pair.second.end())
+		{
+			poolContainer[pair.first]->Return(*it);
+			SCENE_MGR.GetCurrentScene()->ExcludeGo(*it);
+			it = pair.second.erase(it);
+		}
+	}
+	for (auto& pointer : poolContainer)
+	{
+		delete pointer.second;
+	}
 }
 
 void AttackEntityPoolMgr::Reset()
