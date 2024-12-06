@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "AniBoss.h"
 #include "Player.h"
+#include "AttackEntityPoolMgr.h"
 
 AniBoss::AniBoss(const std::string& name)
 	:Monster(name)
@@ -77,6 +78,15 @@ void AniBoss::Reset()
 	tickInterval = 1.f;
 	tickDuration = 6.f;
 	tickDamage = 10.f;
+
+	json j;
+	j["AnimId"] = "sorceror_fireball";
+	j["AnimSize"] = 0.4;
+	j["damage"] = 10;
+	j["speed"] = 500;
+
+	poolMgr = (AttackEntityPoolMgr*)SCENE_MGR.GetCurrentScene()->FindGo("AttackEntityPoolMgr");
+	poolMgr->CreatePool("bossProjectile", AttackEntityType::Projectile, j);
 }
 
 void AniBoss::Update(float dt)
@@ -84,6 +94,16 @@ void AniBoss::Update(float dt)
 	SetOrigin(Origins::BC);
 
 	Anim.Update(dt);
+
+	if (InputMgr::GetKeyDown(sf::Keyboard::O))
+	{
+		AttackEntity* obj = poolMgr->GetEntity("bossProjectile");
+		sf::Vector2f playerPos = player->GetPosition();
+		float angle = Utils::Angle(playerPos - position);
+		obj->SetPosition(position);
+		obj->SetRotation(angle);
+		obj->Activate();
+	}
 
 
 
@@ -193,7 +213,11 @@ void AniBoss::GetHitUpdate(float dt)
 
 void AniBoss::ChannelUpdate(float dt)
 {
-
+	//AttackEntity* obj = poolMgr->GetEntity("bossProjectile");
+	//sf::Vector2f playerPos = player->GetPosition();
+	//float angle = Utils::Angle(playerPos - position);
+	//obj->SetRotation(angle);
+	//obj->Activate();
 }
 
 void AniBoss::DeathUpdate(float dt)

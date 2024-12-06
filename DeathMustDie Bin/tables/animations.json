@@ -166,6 +166,11 @@
         "ID": "sorceror_death",
         "TEX_ID": "resource/texture/Sheet/boss/Sorceror_Death_Sheet.png"
     },
+    "SORCEROR_FIREBALL" :
+    {
+        "ID": "sorceror_fireball",
+        "TEX_ID": "resource/texture/Sheet/boss/Sorceror_FireBall_Sheet.png"
+    },
     "LEVEL_UP":
     {
         "ID": "levelup_effect",

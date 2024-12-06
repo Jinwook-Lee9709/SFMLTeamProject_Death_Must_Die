@@ -31,4 +31,5 @@ sorceror_walk,"10",1,3,8,72,86
 sorceror_gethit,"10",0,3,5,72,86
 sorceror_channel,"10",0,4,16,72,86
 sorceror_death,"10",0,6,33,114,123
+sorceror_fireball,"10",0,5,23,300,250
 levelup_effect,"10",0,4,12,281,368

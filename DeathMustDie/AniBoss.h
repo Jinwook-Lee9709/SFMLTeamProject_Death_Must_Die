@@ -13,6 +13,7 @@ enum class BossStatus
 };
 
 class Player;
+class AttackEntityPoolMgr;
 
 class AniBoss : public Monster
 {
@@ -57,6 +58,7 @@ protected:
 	BossInfo info;
 	Scene* scene;
 
+	AttackEntityPoolMgr* poolMgr;
 	sf::FloatRect mapBounds = { 0, 0, 1920, 1080 };
 
 	std::mt19937 rng; // ·£´ý »ý¼º±â

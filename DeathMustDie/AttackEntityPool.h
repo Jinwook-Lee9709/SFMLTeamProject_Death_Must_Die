@@ -6,6 +6,7 @@
 #include "TrailEntity.h"
 #include "BasicAttack.h"
 #include "SummonEntity.h"
+#include "MonsterProjectile.h"
 
 class AttackEntityPool
 {
@@ -38,6 +39,10 @@ private:
 			case AttackEntityType::Summon:
 			{
 				return new SummonEntity();
+			}
+			case AttackEntityType::Projectile:
+			{
+				return new MonsterProjectile();
 			}
 		}
 	}

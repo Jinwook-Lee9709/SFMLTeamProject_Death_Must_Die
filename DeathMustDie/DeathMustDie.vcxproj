@@ -191,6 +191,7 @@
     <ClCompile Include="ItemPoolManager.cpp" />
     <ClCompile Include="ItemSpawner.cpp" />
     <ClCompile Include="ItemTable.cpp" />
+    <ClCompile Include="MonsterProjectile.cpp" />
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="Monster.cpp" />
     <ClCompile Include="MonsterPoolManager.cpp" />
@@ -269,6 +270,7 @@
     <ClInclude Include="ItemPoolManager.h" />
     <ClInclude Include="ItemSpawner.h" />
     <ClInclude Include="ItemTable.h" />
+    <ClInclude Include="MonsterProjectile.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="Monster.h" />

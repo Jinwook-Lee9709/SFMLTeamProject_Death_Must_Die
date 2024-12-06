@@ -123,7 +123,7 @@ void MonsterSpawner::Update(float dt)
 		spawnTimer = 0.0f;
 	}
 
-	if (bossSpawnTimer >= 30.f)
+	if (bossSpawnTimer >= 1.f)
 	{
 		BossSpawn("Boss");
 		isBossSpawn = true;
