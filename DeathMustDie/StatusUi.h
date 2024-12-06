@@ -28,6 +28,7 @@ protected:
 	SpriteGo hpFrame;
 	SpriteGo hp;
 	SpriteGo hpTrace;
+	TextGo hpText;
 
 	std::vector<SpriteGo> staminaFrame;
 	std::vector<SpriteGo> stamina;

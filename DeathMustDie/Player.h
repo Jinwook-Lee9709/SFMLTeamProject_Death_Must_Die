@@ -194,11 +194,17 @@ public:
 	Stat& GetStat();
 	Stat& GetCurStat();
 	SpriteGo& GetShadow();
+	sf::Vector2f GetDirection();
 
 	void ChangeAttackColor(sf::Color color);
 
 	void Damage(float damage);
 	void SetHp(float hp, float damage = 0);
 	void SetLevel(float exp);
+
+	void SetMaxHp(int maxHp);
+	void SetDashCharge(int count);
+	void SetCurHp(int count);
+	void SetDefence(int count);
 };
 

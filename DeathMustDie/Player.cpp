@@ -11,7 +11,8 @@ Player::Player(const std::string& name)
 void Player::SetPosition(const sf::Vector2f& pos)
 {
 	position = pos;
-	sortingY = position.y;
+	shadow.SetPosition({ position.x, position.y + body.getGlobalBounds().height * 0.5f - 10.f });
+	sortingY = shadow.GetPosition().y;
 	body.setPosition(position);
 	body2.setPosition(position);
 	body3.setPosition(position + attackPos);
@@ -24,7 +25,7 @@ void Player::SetPosition(const sf::Vector2f& pos)
 		dashBlock[i].setPosition({backDashBar.getGlobalBounds().left + 3.f + 7.f * i, backDashBar.getGlobalBounds().top + 2.f});
 	damageBar.setPosition(hpBar.getGlobalBounds().left + hpBar.getGlobalBounds().width, hpBar.getGlobalBounds().top);
 
-	shadow.SetPosition({position.x, position.y + body.getGlobalBounds().height * 0.5f - 10.f});
+	
 }
 
 void Player::SetRotation(float angle)
@@ -196,9 +197,9 @@ void Player::Draw(sf::RenderWindow& window)
 
 void Player::SetDashAndHp()
 {
-	dashCharge = baseStat.dash.dashCharge;
-	hp = baseStat.defensive.life;
-	hp = baseStat.defensive.life;
+	dashCharge = curStat.dash.dashCharge;
+	hp = curStat.defensive.life;
+	hp = curStat.defensive.life;
 
 	backHpBar.setSize({ 70.f, 7.f});
 	backHpBar.setFillColor(sf::Color::Black);
@@ -435,6 +436,11 @@ SpriteGo& Player::GetShadow()
 	return this->shadow;
 }
 
+sf::Vector2f Player::GetDirection()
+{
+	return direction;
+}
+
 void Player::ChangeAttackColor(sf::Color color)
 {
 	body3.setColor(color);
@@ -468,4 +474,32 @@ void Player::SetLevel(float exp)
 		this->exp = 0;
 	}
 	ui->UpdateExp(this->exp, level);
+}
+
+void Player::SetMaxHp(int maxHp)
+{
+	curStat.defensive.life += maxHp;
+	SetCurHp(maxHp);
+	ui->UpdateHp(hp);
+	ui->UpdateTrace();
+}
+
+void Player::SetDashCharge(int count)
+{
+	curStat.dash.dashCharge += count;
+	SetDashAndHp();
+	ui->SetStaminaFrame();
+}
+
+void Player::SetCurHp(int count)
+{
+	hp = Utils::Clamp(hp + count,0,curStat.defensive.life);
+	SetHp(hp);
+	ui->UpdateHp(hp);
+	ui->UpdateTrace();
+}
+
+void Player::SetDefence(int count)
+{
+	curStat.defensive.armor += count;
 }

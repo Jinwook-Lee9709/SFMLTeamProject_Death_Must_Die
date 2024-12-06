@@ -50,7 +50,7 @@ void StatusUi::Release()
 void StatusUi::Reset()
 {
 	scene = SCENE_MGR.GetCurrentScene();
-	stat = dynamic_cast<Player*>(scene->FindGo("Player"))->GetCurStat();
+	
 	SetBoons();
 	SetInventory();
 	SetExpFrame();
@@ -86,6 +86,7 @@ void StatusUi::Draw(sf::RenderWindow& window)
 	hpTrace.Draw(window);
 	hp.Draw(window);
 	hpFrame.Draw(window);
+	hpText.Draw(window);
 	
 	
 	for (auto st : stamina)
@@ -101,6 +102,7 @@ void StatusUi::Draw(sf::RenderWindow& window)
 
 void StatusUi::SetBoons()
 {
+	stat = dynamic_cast<Player*>(scene->FindGo("Player"))->GetCurStat();
 	boonsBtn = SpriteGo("boonsButton");
 	boonsBtnGlow = SpriteGo("boonsButtonGlow");
 	boonsBtn.Reset();
@@ -118,6 +120,7 @@ void StatusUi::SetBoons()
 
 void StatusUi::SetInventory()
 {
+	stat = dynamic_cast<Player*>(scene->FindGo("Player"))->GetCurStat();
 	inventoryBtn = SpriteGo("inventoryButton");
 	inventoryBtnGlow = SpriteGo("inventoryButtonGlow");
 	inventoryBtn.Reset();
@@ -135,6 +138,7 @@ void StatusUi::SetInventory()
 
 void StatusUi::SetExpFrame()
 {
+	stat = dynamic_cast<Player*>(scene->FindGo("Player"))->GetCurStat();
 	expFrame = SpriteGo("expFrame");
 	expUnderFrame = SpriteGo("expUnderFrame");
 	exp = SpriteGo("exp");
@@ -160,6 +164,7 @@ void StatusUi::SetExpFrame()
 
 void StatusUi::SetPortrait()
 {
+	stat = dynamic_cast<Player*>(scene->FindGo("Player"))->GetCurStat();
 	portraitFrame = SpriteGo("portrait");
 	portrait = SpriteGo("knight");
 	level = SpriteGo("level");
@@ -192,12 +197,16 @@ void StatusUi::SetPortrait()
 
 void StatusUi::SetHpFrame()
 {
+	stat = dynamic_cast<Player*>(scene->FindGo("Player"))->GetCurStat();
 	hpFrame = SpriteGo("hpFrame");
 	hpTrace = SpriteGo("hpTrace");
 	hp = SpriteGo("hp");
+	hpText = TextGo("PtSerifRegular_Font");
+
 	hpFrame.Reset();
 	hpTrace.Reset();
 	hp.Reset();
+	hpText.Reset();
 	hpFrame.SetOrigin(Origins::BR);
 	hpFrame.SetPosition({ winSize.x * 0.5f + hpFrame.GetGlobalBounds().width / 7, winSize.y});
 
@@ -207,20 +216,26 @@ void StatusUi::SetHpFrame()
 	hp.SetOrigin(Origins::BR);
 	hp.SetPosition({ hpFrame.GetPosition().x, hpFrame.GetPosition().y});
 	
+	hpText.SetString(std::to_wstring(stat.defensive.life) + L" / " + std::to_wstring(stat.defensive.life));
+	hpText.SetCharacterSize(200);
+	hpText.SetOrigin(Origins::MC);
+	hpText.SetPosition({ hpFrame.GetGlobalBounds().left - 40.f, hpFrame.GetGlobalBounds().top - 40.f});
 	
 	hpFrame.SetScale({ 3.f, 3.f });
 	hpTrace.SetScale({ 3.f, 3.f });
 	hp.SetScale({ 3.f, 3.f });
-
+	hpText.SetScale({ 0.1f, 0.1f });
 	
 
 }
 
 void StatusUi::SetStaminaFrame()
 {
+	stat = dynamic_cast<Player*>(scene->FindGo("Player"))->GetCurStat();
 	Scene* scene = SCENE_MGR.GetCurrentScene();
 	Player* player = dynamic_cast<Player*>(scene->FindGo("Player"));
-
+	staminaFrame.clear();
+	stamina.clear();
 	for (int i = 0; i < stat.dash.dashCharge; i++)
 	{
 		staminaFrame.push_back(SpriteGo("staminaFrame"));
@@ -287,6 +302,7 @@ void StatusUi::cursorInventory(float dt)
 
 void StatusUi::UpdateDashCount(int dashCharge)
 {
+	stat = dynamic_cast<Player*>(scene->FindGo("Player"))->GetCurStat();
 	int count = stat.dash.dashCharge;
 	for (int i = 0; i < count; i++)
 	{
@@ -300,9 +316,11 @@ void StatusUi::UpdateDashCount(int dashCharge)
 
 void StatusUi::UpdateHp(float changeHp, float damage)
 {
+	stat = dynamic_cast<Player*>(scene->FindGo("Player"))->GetCurStat();
 	hp.SetTextureRect({ (52 + 88 * (int)(stat.defensive.life - changeHp) / stat.defensive.life) , 0,
 		(112 - 88 * (int)(stat.defensive.life - changeHp) / stat.defensive.life), 60 });
 	hp.SetOrigin(Origins::BR);
+	hpText.SetString(std::to_wstring((int)changeHp) + L" / " + std::to_wstring(stat.defensive.life));
 }
 
 void StatusUi::UpdateTrace()
