@@ -1,6 +1,7 @@
 #pragma once
 
 class Player;
+class ButtonUi;
 
 class Structure : public GameObject
 {
@@ -21,8 +22,6 @@ protected:
 	std::string bodySpr = "resource/texture/Sprite/Object/Obelisk_Greed_Base_Spr.png";
 	sf::FloatRect collision;
 	sf::RectangleShape temp;
-
-	sf::Sprite key;
 
 	bool isUsed = false;
 	bool isInteract;
@@ -47,4 +46,6 @@ public:
 
 	void SetKind(Kinds kind);
 	void ShowInteract();
+
+	bool GetInteract() const { return isInteract; }
 };

@@ -11,6 +11,7 @@ public:
 		SkillLevel,
 		Item,
 		Exp,
+		Button,
 		Count
 	};
 

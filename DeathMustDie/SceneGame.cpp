@@ -13,6 +13,7 @@
 #include "Structure.h"
 #include "TileMap.h"
 #include "TopUi.h"
+#include "ButtonUi.h"
 #include "UIAbilitySelect.h"
 
 SceneGame::SceneGame()
@@ -25,7 +26,7 @@ void SceneGame::Init()
 	sf::Vector2f size = FRAMEWORK.GetWindowSizeF();
 	AddGo(new StatusUi("UI"));
 	AddGo(new TopUi("TopUI"));
-	
+	AddGo(new ButtonUi("ButtonUI"));
 
 	worldView.setSize(size);
 	uiView.setSize(size);

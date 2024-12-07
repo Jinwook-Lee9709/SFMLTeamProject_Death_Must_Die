@@ -158,6 +158,8 @@ protected:
 	int level;
 	float exp;
 
+	bool isDead;
+
 	Stat baseStat;
 	Stat curStat;
 	Scene* scene;
@@ -195,6 +197,9 @@ public:
 	Stat& GetCurStat();
 	SpriteGo& GetShadow();
 	sf::Vector2f GetDirection();
+
+	bool GetIsDead() const { return isDead; }
+	void SetIsDead(bool dead) { isDead = dead; }
 
 	void ChangeAttackColor(sf::Color color);
 

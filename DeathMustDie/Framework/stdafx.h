@@ -35,6 +35,7 @@ using json = nlohmann::json;
 #include "SkillLevelTable.h"
 #include "ItemTable.h"
 #include "ExpTable.h"
+#include "ButtonTable.h"
 #include "DataTableMgr.h"
 #include "ResourceTableManager.h"
 #include "HitBox.h"

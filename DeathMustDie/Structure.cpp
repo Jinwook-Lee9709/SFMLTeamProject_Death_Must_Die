@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "Structure.h"
 #include "Player.h"
+#include "ButtonUi.h"
+#include "StatusUi.h"
 
 Structure::Structure(const std::string& name)
 	: GameObject(name)
@@ -52,7 +54,6 @@ void Structure::Release()
 void Structure::Reset()
 {
 	body.setTexture(TEXTURE_MGR.Get(bodySpr), true);
-	key.setTexture(TEXTURE_MGR.Get("resource/texture/Sprite/playUi/_S_ButtonPrompts.png"));
 	player = dynamic_cast<Player*>(SCENE_MGR.GetCurrentScene()->FindGo("Player"));
 	Utils::SetOrigin(body, Origins::MC);
 	body.setScale({ 3.f, 3.f });
@@ -148,8 +149,9 @@ void Structure::SetKind(Kinds kind)
 
 void Structure::ShowInteract()
 {
+	StatusUi* ui = dynamic_cast<StatusUi*>(SCENE_MGR.GetCurrentScene()->FindGo("UI"));
 	float mag = Utils::Magnitude(position - player->GetPosition());
-	if (mag < 100.f)
+	if (mag < 200.f)
 		isInteract = true;
 	else
 		isInteract = false;

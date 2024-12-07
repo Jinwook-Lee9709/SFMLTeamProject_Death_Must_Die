@@ -5,9 +5,10 @@
 #include "MonsterTable.h"
 #include "UISettingTable.h"
 #include "SkillLevelTable.h"
-
 #include "ItemTable.h"
 #include "ExpTable.h"
+#include "ButtonTable.h"
+
 DataTableMgr::~DataTableMgr()
 {
 	Release();
@@ -24,6 +25,7 @@ void DataTableMgr::Init()
 	tables.insert({ DataTable::Types::SkillLevel, new SkillLevelTable() });
 	tables.insert({ DataTable::Types::Item, new ItemTable() });
 	tables.insert({ DataTable::Types::Exp, new ExpTable() });
+	tables.insert({ DataTable::Types::Button, new ButtonTable() });
 
 	for (auto t : tables)
 	{
