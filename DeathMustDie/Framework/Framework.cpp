@@ -12,6 +12,7 @@ void Framework::Init(int width, int height, const std::string& name)
     Utils::Init();
     SCENE_MGR.Init();
     InputMgr::Init();
+    SOUND_MGR.Init();
 
    /* SOUND_MGR.Init();*/
 }
@@ -35,7 +36,7 @@ void Framework::Do()
             InputMgr::UpdateEvent(event);
         }
         InputMgr::Update(deltaTime);
-        
+        SOUND_MGR.Update(deltaTime);
         SCENE_MGR.Update(deltaTime);
         SCENE_MGR.LateUpdate(deltaTime);
         SCENE_MGR.FixedUpdate(deltaTime);
@@ -51,4 +52,5 @@ void Framework::Release()
     SCENE_MGR.Release();
     FONT_MGR.Unload("fonts/DS-DIGI.ttf");
     DATATABLE_MGR.Release();
+    SOUND_MGR.Release();
 }

@@ -30,6 +30,8 @@ private:
     int summonMaxMonsters = 10;
     int summonCurrentMonsterCount = 0;
 
+    float worldTimer;
+
     float spawnTimer = 0.0f;
     float spawnInterval = 5.0f;
 
@@ -41,6 +43,8 @@ private:
     bool isSlimeSpawn = false;
     bool isBossSpawn = false;
     bool isBossDeSpawn = true;
+
+    std::vector<bool> flags;
 
     sf::FloatRect rect = { 0, 0, 1920, 1080 };
 

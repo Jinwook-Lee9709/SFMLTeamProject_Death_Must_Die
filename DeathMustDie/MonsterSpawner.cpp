@@ -126,43 +126,68 @@ void MonsterSpawner::Reset()
 	std::function<void(const GameObject&)> func = std::bind(&MonsterSpawner::SummonMonsterTrigger, this, std::placeholders::_1);
 
 	EVENT_HANDLER.AddEventGo("SummonSkeleton", func);
+
+	flags = { false, false, false };
+	worldTimer = 0;
 }
 
 void MonsterSpawner::Update(float dt)
 {
+	worldTimer += dt;
+
+	if (worldTimer > 60.f && flags[0] == false)
+	{
+		SpawnMonster("Skeleton", 150);
+		flags[0] = true;
+	}
+
+	if (worldTimer > 120.f && flags[1] == false)
+	{
+		SpawnMonster("Slime", 150);
+		flags[1] = true;
+	}
+
+	if (worldTimer > 160.f && flags[2] == false)
+	{
+		EVENT_HANDLER.InvokeEvent("OnBossSummon");
+		BossSpawn("Boss");
+		flags[2] = true;
+	}
+
 	spawnTimer += dt;
 	slimeSpawnTimer += dt;
 
 	bossSpawnTimer += dt;
 
-	/*if (spawnTimer >= spawnInterval)
+	if (spawnTimer >= spawnInterval)
 	{
-		SpawnMonster("Skeleton", 10);
+		SpawnMonster("Skeleton", 5);
 		spawnTimer = 0.0f;
-	}*/
+	}
 
-	/*if (slimeSpawnTimer >= 15.0f)
+	if (slimeSpawnTimer >= 90.f)
 	{
 		isSlimeSpawn = true;
 		slimeSpawnTimer = 0.0f;
-	}*/
-
-	/*if (isSlimeSpawn && slimeSpawnTimer >= slimeSpawnInterval)
-	{
-		SpawnMonster("Slime", 10);
-		spawnTimer = 0.0f;
-	}*/
-
-	if (bossSpawnTimer >= 1.f)
-	{
-		BossSpawn("Boss");
-		isBossSpawn = true;
-		bossSpawnTimer = 0.f;
 	}
+
+	if (isSlimeSpawn && slimeSpawnTimer >= slimeSpawnInterval)
+	{
+		SpawnMonster("Slime", 5);
+		slimeSpawnTimer = 0.0f;
+	}
+
+	//if (bossSpawnTimer >= 1.f)
+	//{
+	//	BossSpawn("Boss");
+	//	isBossSpawn = true;
+	//	bossSpawnTimer = 0.f;
+	//}
 
 	if (InputMgr::GetKeyDown(sf::Keyboard::L))
 	{
 		BossSpawn("Boss");
 		bossSpawnTimer = 0.f;
+		EVENT_HANDLER.InvokeEvent("OnBossSummon");
 	}
 }

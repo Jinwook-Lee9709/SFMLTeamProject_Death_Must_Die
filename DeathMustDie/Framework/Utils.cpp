@@ -290,7 +290,7 @@ bool Utils::CheckCollision(const sf::Vector2f& wedgeCenter, float degree, float 
             continue; 
         float angleToCorner = Angle(corner - wedgeCenter);
 
-        float relativeAngle = NormalizeAngle(angleToCorner - degree);
+        float relativeAngle = NormalizeAngle(angleToCorner - NormalizeAngle(degree));
  
         if (std::abs(relativeAngle) <= degreeRange / 2.0f) {
             return true; 
@@ -304,7 +304,7 @@ bool Utils::CheckCollision(const sf::Vector2f& wedgeCenter, float degree, float 
     if (dx*dx + dy*dy < radius * radius ) 
     {
         float angleToDot = Angle({ dx, dy });
-        float relativeAngle = NormalizeAngle(angleToDot - degree);
+        float relativeAngle = NormalizeAngle(angleToDot - NormalizeAngle(degree));
         if (std::abs(relativeAngle) <= degreeRange / 2.0f) {
             return true;
         }

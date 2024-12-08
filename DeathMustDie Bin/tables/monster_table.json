@@ -43,7 +43,7 @@
          "deathFrame": 10,
          "damage": 30.0,
          "speed": 10.0,
-         "hp": 300.0,
+         "hp": 2000.0,
          "ellipseWidth": 32.0,
          "ellipseHeight": 64.0
      }

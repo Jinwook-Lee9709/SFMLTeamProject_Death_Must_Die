@@ -340,6 +340,7 @@ void Player::Attack(float dt)
 			body3.setPosition(position + attackPos);
 			attackTerm = 0.f;
 			EVENT_HANDLER.InvokeEvent("OnAttack");
+			SOUND_MGR.PlaySfx(GET_SOUND("swordSlash"));
 			dashQueue.pop();
 		}
 	}

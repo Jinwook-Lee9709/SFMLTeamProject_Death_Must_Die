@@ -79,7 +79,12 @@
                  "LinBiolinum_RB" : "resource/fonts/LinBiolinum_RB.otf"
              },
              "Sound" :{
-                 
+                 "bgm1" : "resource/sound/AudioClip/Scorched Land - Full Loop Version.wav",
+                 "levelUp" : "resource/sound/AudioClip/FreeLevel_Spawn_01.wav",
+                 "skeletonHit" : "resource/sound/AudioClip/Item_Bone_Drop.wav",
+                 "slimeHit" : "resource/sound/AudioClip/Monster_OozeSmall_Death_02.wav",
+                 "fireBlast" : "resource/sound/AudioClip/Fire Blast 1.wav",
+                 "swordSlash" : "resource/sound/AudioClip/Weapon_Slash_01.wav"
              }
         },
         "Title":{

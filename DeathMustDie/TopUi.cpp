@@ -59,6 +59,8 @@ void TopUi::Reset()
 
 	SetTimer();
 	SetMiniMap();
+	SetBossHpBar();
+	EVENT_HANDLER.AddEventInt("OnBossHit", std::bind(&TopUi::UpdateBossHpBar, this, std::placeholders::_1));
 }
 
 void TopUi::Update(float dt)
@@ -87,6 +89,13 @@ void TopUi::Draw(sf::RenderWindow& window)
 		obj.Draw(window);
 	}
 	markerPlayer.Draw(window);
+
+	if (bossHp.IsActive())
+	{
+		bossHp.Draw(window);
+		bossHpFrame.Draw(window);
+	}
+
 }
 
 void TopUi::SetTimer()
@@ -154,6 +163,37 @@ void TopUi::SetMiniMap()
 	miniMap.SetScale({ 3.f,3.f });
 	miniMapBack.SetScale({ 3.f,3.f });
 	markerPlayer.SetScale({ 3.f, 3.f });
+}
+
+void TopUi::SetBossHpBar()
+{
+	bossHp = SpriteGo("bossHealthBar");
+	bossHp.Reset();
+	bossHpFrame = SpriteGo("bossHealthBarFrame");
+	bossHpFrame.Reset();
+	bossHp.SetPosition({ winSize.x * 0.28f, winSize.y * 0.15f - 10.f });
+	bossHpFrame.SetPosition({ winSize.x * 0.5f, winSize.y * 0.15f });
+
+	bossHp.SetScale({3.f, 3.f});
+	bossHpFrame.SetScale({ 3.f, 3.f });
+
+	bossHp.SetTextureRect(sf::IntRect{ 0, 0, ((int)(286 * 1.f)), 6 });
+	bossHp.SetOrigin(Origins::ML);
+	bossHpFrame.SetOrigin(Origins::MC);
+
+	bossHp.SetActive(false);
+	bossHpFrame.SetActive(false);
+
+	std::function<void()> func = [&]() { bossHp.SetActive(true);  bossHpFrame.SetActive(true); };
+	EVENT_HANDLER.AddEvent("OnBossSummon", func);
+	func = [&]() { bossHp.SetActive(false);  bossHpFrame.SetActive(false); };
+	EVENT_HANDLER.AddEvent("OnBossDeath", func); 
+}
+
+void TopUi::UpdateBossHpBar(int hp)
+{
+	bossHp.SetTextureRect(sf::IntRect{ 0, 0, ((int)(286 * ((float)hp / 2000))), 6 });
+	bossHp.SetOrigin(Origins::ML);
 }
 
 void TopUi::SetObjPos()

@@ -19,6 +19,10 @@ protected:
 	SpriteGo miniMap;
 	SpriteGo miniMapBack;
 	SpriteGo markerPlayer;
+
+	SpriteGo bossHp;
+	SpriteGo bossHpFrame;;
+
 	std::vector<SpriteGo> markerObj;
 
 	std::list<Structure*> objList;
@@ -44,5 +48,8 @@ public:
 	void SetTime(float min, float sec);
 	void SetMiniMap();
 	void SetObjPos();
+
+	void SetBossHpBar();
+	void UpdateBossHpBar(int hp);
 };
 

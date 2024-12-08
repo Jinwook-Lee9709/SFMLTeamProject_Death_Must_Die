@@ -31,7 +31,7 @@ void SoundMgr::Update(float dt)
 		if ((*it)->getStatus() == sf::Sound::Stopped)
 		{
 			waiting.push_back(*it);
-			playing.erase(it);
+			it = playing.erase(it);
 		}
 		else {
 			it++;
@@ -60,12 +60,25 @@ void SoundMgr::StopBgm()
 
 void SoundMgr::PlaySfx(std::string id, bool loop)
 {
-
 	PlaySfx(SOUNDBUFFER_MGR.Get(id), loop);
 }
 
 void SoundMgr::PlaySfx(sf::SoundBuffer& buffer, bool loop)
 {
+	int count = 0;
+	for (auto& sound : playing)
+	{
+		if (&buffer == sound->getBuffer())
+		{
+			count++;
+		}
+		if (count == 3)
+		{
+			return;
+		}
+	}
+
+
 	sf::Sound* sound = nullptr;
 
 	if (waiting.empty())

@@ -164,7 +164,11 @@ void AniBoss::AttackUpdate(float dt)
 {
 	if (Utils::RandomValue() < 0.5f)
 	{
-
+		AttackEntity* obj = poolMgr->GetEntity("bossProjectile");
+		sf::Vector2f playerPos = player->GetPosition();
+		float angle = Utils::Angle(playerPos - position);
+		obj->SetRotation(angle);
+		obj->Activate();
 	}
 	else
 	{
@@ -217,19 +221,15 @@ void AniBoss::GetHitUpdate(float dt)
 		Anim.Play(info.deathAnimId);
 		HPBar.setScale({ 0.f, 0.f });
 		beforeStatus = currentStatus;
+
+		EVENT_HANDLER.InvokeEvent("OnBossDeath", (int)hp);
 		currentStatus = BossStatus::Death;
 	}
 }
 
 void AniBoss::ChannelUpdate(float dt)
 {
-<<<<<<< HEAD
-	//AttackEntity* obj = poolMgr->GetEntity("bossProjectile");
-	//sf::Vector2f playerPos = player->GetPosition();
-	//float angle = Utils::Angle(playerPos - position);
-	//obj->SetRotation(angle);
-	//obj->Activate();
-=======
+
 	OnSummon();
 
 	if (!Anim.IsPlay())
@@ -239,7 +239,6 @@ void AniBoss::ChannelUpdate(float dt)
 		beforeStatus = currentStatus;
 		currentStatus = BossStatus::Move;
 	}
->>>>>>> origin/hayoung
 }
 
 void AniBoss::DeathUpdate(float dt)
@@ -330,6 +329,9 @@ void AniBoss::OnHit(float damage)
 
 	HPBar.setScale({ hp / info.hp, 1.0f });
 	Monster::OnHit(damage);
+
+	EVENT_HANDLER.InvokeEvent("OnBossHit",(int)hp);
+
 }
 
 sf::Vector2f AniBoss::RandomTPPos()

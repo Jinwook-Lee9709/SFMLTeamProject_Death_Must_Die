@@ -160,7 +160,14 @@ void AniSlime::AttackUpdate(float dt)
 	sf::Vector2f pos = player->GetPosition();
 	sf::Vector2f playerPos = player->GetPosition() - position;
 
-	opacity += opacitySpeed * dt;
+	if (opacity < 255)
+	{
+		opacity += opacitySpeed * dt;
+		if (opacity > 255)
+		{
+			opacity = 255;
+		}
+	}
 
 	attackArea.setColor(sf::Color(255, 0, 0, opacity));
 
@@ -238,7 +245,7 @@ void AniSlime::FixedUpdate(float dt)
 	if (atkTimer.UpdateTimer(dt))
 	{
 		sf::FloatRect rect = player->GetHitBox().rect.getGlobalBounds();
-		if (Utils::CheckCollision(position, sf::Vector2f(64.f, 64.f), rect))
+		if (Utils::CheckCollision(position, sf::Vector2f(96.f, 96.f), rect))
 		{
 			player->Damage(info.damage);
 		}
@@ -302,5 +309,7 @@ void AniSlime::OnHit(float damage)
 	hp -= damage;
 
 	HPBar.setScale({ hp / info.hp, 1.0f });
+
+	SOUND_MGR.PlaySfx(GET_SOUND("slimeHit"));
 	Monster::OnHit(damage);
 }

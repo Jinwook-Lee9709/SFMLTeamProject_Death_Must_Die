@@ -140,7 +140,7 @@ void AniSkeleton::FixedUpdate(float dt)
 	if (atkTimer.UpdateTimer(dt))
 	{
 		sf::FloatRect rect = player->GetHitBox().rect.getGlobalBounds();
-		if (Utils::CheckCollision(position, attackArea.getRotation() -90.f, 175.f, 75.f, rect))
+		if (Utils::CheckCollision(position, attackArea.getRotation() -90.f, 175.f, 120.f, rect))
 		{
 			player->Damage(info.damage);
 		}
@@ -193,7 +193,15 @@ void AniSkeleton::AttackUpdate(float dt)
 	sf::Vector2f pos = player->GetPosition();
 	sf::Vector2f playerPos = player->GetPosition() - position;
 
-	opacity += opacitySpeed * dt;
+	if (opacity < 255)
+	{
+		opacity += opacitySpeed * dt;
+		if (opacity > 255)
+		{
+			opacity = 255;
+		}
+	}
+	
 
 	attackArea.setColor(sf::Color(255, 0, 0, opacity));
 
@@ -379,5 +387,7 @@ void AniSkeleton::OnHit(float damage)
 	hp -= damage;
 
 	HPBar.setScale({ hp / info.hp, 1.0f });
+
+	SOUND_MGR.PlaySfx(GET_SOUND("skeletonHit"));
 	Monster::OnHit(damage);
 }

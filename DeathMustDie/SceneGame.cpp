@@ -71,7 +71,7 @@ void SceneGame::Enter()
 	itemMPMgr = AddGo(new ItemPoolManager("itemPoolMgr"));
 	itemSpawn = AddGo(new ItemSpawner(itemMPMgr));
 
-	monsterSpawn = AddGo(new MonsterSpawner(MPMgr, mapBound, 200));
+	monsterSpawn = AddGo(new MonsterSpawner(MPMgr, mapBound, 400));
 
 
 	ApplyAddGo();
@@ -85,6 +85,8 @@ void SceneGame::Enter()
 	
 	map->SetOrigin(Origins::MC);
 	player->SetScale({ 3.f, 3.f });
+
+	SOUND_MGR.PlayBgm(GET_SOUND("bgm1"), true);
 }
 
 void SceneGame::Exit()
@@ -95,6 +97,9 @@ void SceneGame::Exit()
 		struPool.Return(stru);
 	}
 	struList.clear();
+
+	SOUND_MGR.StopAllSfx();
+	SOUND_MGR.StopBgm();
 
 	RemoveAllGo();
 	Scene::Exit();

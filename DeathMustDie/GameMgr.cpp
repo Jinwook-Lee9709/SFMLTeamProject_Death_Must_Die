@@ -129,6 +129,7 @@ void GameMgr::OnLevelUp()
 	effector->SetOrigin(Origins::MC);
 	effector->SetScale({ 3.f, 3.f });
 	effector->SetDuration(2.f);
+	SOUND_MGR.PlaySfx(GET_SOUND("levelUp"));
 	beforeStatus = Status::IDLE;
 	currentStatus = Status::SELECT_SKILL;
 }
