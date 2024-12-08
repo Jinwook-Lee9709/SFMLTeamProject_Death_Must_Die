@@ -26,10 +26,10 @@ private:
     int bossCurrentMonsterCount = 0;
 
     float spawnTimer = 0.0f;
-    float spawnInterval = 2.0f;
+    float spawnInterval = 5.0f;
 
     float slimeSpawnTimer = 0.0f;
-    float slimeSpawnInterval = 2.0f;
+    float slimeSpawnInterval = 5.0f;
 
     float bossSpawnTimer = 0.f;
 

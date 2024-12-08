@@ -1,5 +1,6 @@
 #pragma once
 #include "Monster.h"
+#include "Timer.h"
 
 enum class Status
 {
@@ -12,6 +13,7 @@ enum class Status
 
 class AniSlime;
 class Player;
+class MonsterPoolManager;
 
 class AniSkeleton : public Monster
 {
@@ -45,8 +47,6 @@ protected:
 	Status beforeStatus = Status::None;
 	Status currentStatus = Status::Move;
 
-	Player* player;
-
 	sf::Vector2f direction;
 	float speed = 70.f;
 	float attackDelay = 0.f;
@@ -58,11 +58,14 @@ protected:
 	sf::Clock clock;
 	float animationDuration = 3.f;
 
+	Timer atkTimer;
+
 	bool isAttack = false;
 	bool isDead = false;
 
 	SkeletonInfo info;
 	Scene* scene;
+	MonsterPoolManager* mpMgr;
 	HitBox hitbox2;
 public:
 	AniSkeleton(const std::string& name = "");
@@ -91,6 +94,7 @@ public:
 	void AttackUpdate(float dt);
 	void GetHitUpdate(float dt);
 	void DeathUpdate(float dt);
+	void FixedUpdate(float dt)override;
 	void Draw(sf::RenderWindow& window) override;
 
 	void SetInfo(const json& j) override;

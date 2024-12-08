@@ -1,7 +1,9 @@
 #include "stdafx.h"
 #include "Monster.h"
+#include "Player.h"
 #include "SceneDev2.h"
 #include "MonsterSpawner.h"
+#include "MonsterPoolManager.h"
 
 Monster::Monster(const std::string& name)
 	:GameObject(name)
@@ -20,10 +22,49 @@ Monster::Monster(const std::string& name)
 }
 
 
+void Monster::Reset()
+{
+	if (player == nullptr)
+	{
+		player = dynamic_cast<Player*>(SCENE_MGR.GetCurrentScene()->FindGo("Player"));
+	}
+	if (mpMgr == nullptr)
+	{
+		mpMgr = (MonsterPoolManager*)(SCENE_MGR.GetCurrentScene()->FindGo("monsterPoolMgr"));
+	}
+}
+
 void Monster::OnHit(float damage)
 {
     EVENT_HANDLER.InvokeEvent("OnMonsterHit", (GameObject)*this , damage);
 
+}
+
+void Monster::HandleOverlap(float dt)
+{
+	auto monsters = mpMgr->GetMonsterList();
+	for (auto& pair : monsters)
+	{
+		for (auto& monster : pair.second)
+		{
+			if (monster != this)
+			{
+				sf::Vector2f otherPos = monster->GetPosition();
+				if (Utils::Magnitude(otherPos - position) < DISTANCE_TO_OTHER)
+				{
+					float thisToPlayerDist = Utils::Magnitude(player->GetPosition() - position);
+					float otherToPlayerDist = Utils::Magnitude(player->GetPosition() - otherPos);
+					if (thisToPlayerDist > otherToPlayerDist)
+					{
+						sf::Vector2f backwardDir = Utils::GetNormal(position - otherPos);
+						position += backwardDir * PUSH_SPEED * dt;
+					}
+
+
+				}
+			}
+		}
+	}
 }
 
 void Monster::SetCollisionRadius(float radius)

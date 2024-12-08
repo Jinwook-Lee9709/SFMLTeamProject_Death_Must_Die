@@ -54,7 +54,6 @@ protected:
 	bool isAttack = false;
 	bool isDead = false;
 
-	Player* player;
 	BossInfo info;
 	Scene* scene;
 
@@ -91,6 +90,7 @@ public:
 	void GetHitUpdate(float dt);
 	void ChannelUpdate(float dt);
 	void DeathUpdate(float dt);
+	void FixedUpdate(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
 
 	void SetInfo(const json& j) override;

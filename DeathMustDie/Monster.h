@@ -1,6 +1,9 @@
 #pragma once
 #include "GameObject.h"
 
+class Player;
+class MonsterPoolManager;
+
 class Monster : public GameObject
 {
 
@@ -21,6 +24,9 @@ protected:
 	sf::RectangleShape HPBar;
 	sf::RectangleShape HPBarFrame;
 
+	Player* player;
+	MonsterPoolManager* mpMgr;
+
 public:
 	Monster(const std::string& name = "");
 	~Monster() = default;
@@ -29,9 +35,13 @@ public:
 
 	sf::FloatRect GetGlobalBounds() const override { return { 0.f, 0.f, 0.f, 0.f }; }
 
+	virtual void Reset() override;
+
 	virtual void SetInfo(const json& j) {}
 	virtual void OnHit(float damage);
 	virtual void OnDebuffed(DebuffType type) {} // 디버프 처리
+
+	virtual void HandleOverlap(float dt);
 
 	void SetCollisionRadius(float radius);
 	sf::CircleShape GetCollisionCircle() const;
@@ -45,3 +55,5 @@ public:
 };
 
 #define DISTANCE_TO_PLAYER (100.f)
+#define DISTANCE_TO_OTHER (100.f)
+#define PUSH_SPEED (20.f)

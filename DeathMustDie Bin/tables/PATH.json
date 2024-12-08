@@ -115,7 +115,9 @@
                 "miniMap" : "resource/texture/Sprite/playUi/Minimap_Frame_Spr.png",
                 "miniMapBack" : "resource/texture/Sprite/playUi/Minimap_Circle_Spr.png",
                 "markerP" : "resource/texture/Sprite/playUi/Minimap_Marker_Player_Spr.png",
-                "markerObj" : "resource/texture/Sprite/playUi/Minimap_Marker02_Spr.png"
+                "markerObj" : "resource/texture/Sprite/playUi/Minimap_Marker02_Spr.png",
+                "bossHealthBar" : "resource/texture/Sprite/bossUI/BossHealthBar.png",
+                "bossHealthBarFrame" : "resource/texture/Sprite/bossUI/BossHealthBarFrame.png"
                 
              },
              "Font" :{

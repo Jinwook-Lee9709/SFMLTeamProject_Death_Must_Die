@@ -1,5 +1,6 @@
 #pragma once
 #include "Monster.h"
+#include "Timer.h"
 
 enum class SlimeStatus
 {
@@ -52,11 +53,12 @@ protected:
 	float attackDelay = 0.f;
 	float attackDuration = 3.f;
 
+	Timer atkTimer;
+
 	bool isGetHit = false;
 	bool isAttack = false;
 	bool isDead = false;
 
-	Player* player;
 	SlimeInfo info;
 public:
 	AniSlime(const std::string& name = "");
@@ -78,6 +80,7 @@ public:
 	void AttackUpdate(float dt);
 	void GetHitUpdate(float dt);
 	void DeathUpdate(float dt);
+	void FixedUpdate(float dt)override;
 	void Draw(sf::RenderWindow& window) override;
 
 	void SetInfo(const json& j) override;

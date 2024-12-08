@@ -70,7 +70,7 @@ void SceneGame::Enter()
 	itemMPMgr = AddGo(new ItemPoolManager("itemPoolMgr"));
 	itemSpawn = AddGo(new ItemSpawner(itemMPMgr));
 
-	monsterSpawn = AddGo(new MonsterSpawner(MPMgr, mapBound, 30));
+	monsterSpawn = AddGo(new MonsterSpawner(MPMgr, mapBound, 200));
 
 
 	ApplyAddGo();

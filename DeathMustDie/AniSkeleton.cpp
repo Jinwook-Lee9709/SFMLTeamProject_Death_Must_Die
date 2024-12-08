@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "AniSkeleton.h"
+
 #include "Player.h"
 
 AniSkeleton::AniSkeleton(const std::string& name)
@@ -58,6 +59,7 @@ void AniSkeleton::Release()
 
 void AniSkeleton::Reset()
 {
+	Monster::Reset();
 	hitbox.rect.setSize({ 40, 120 });
 	hitbox.rect.setPosition({ position });
 	hitbox2.rect.setSize({ 20, 60 });
@@ -66,10 +68,8 @@ void AniSkeleton::Reset()
 	Utils::SetOrigin(hitbox2.rect, Origins::BC);
 	HPBar.setPosition({ position.x - HPBar.getSize().x * 0.5f, position.y - 140 });
 	HPBarFrame.setPosition({ position.x - HPBar.getSize().x * 0.5f, position.y - 140 });
-	if (player == nullptr)
-	{
-		player = dynamic_cast<Player*>(SCENE_MGR.GetCurrentScene()->FindGo("Player"));
-	}
+
+
 	hp = info.hp;
 	HPBar.setScale({ 1.0f, 1.0f });
 
@@ -88,6 +88,8 @@ void AniSkeleton::Reset()
 	tickInterval = 1.f;
 	tickDuration = 6.f;
 	tickDamage = 10.f;
+
+	atkTimer.SetDefaultDuration(0.9f);
 
 	sortingLayer = SortingLayers::Foreground;
 	sortingOrder = 1;
@@ -127,6 +129,25 @@ void AniSkeleton::Update(float dt)
 	}
 }
 
+void AniSkeleton::FixedUpdate(float dt)
+{
+	if (currentStatus == Status::Move)
+	{
+		Monster::HandleOverlap(dt);
+		SetPosition(position);
+	}
+
+	if (atkTimer.UpdateTimer(dt))
+	{
+		sf::FloatRect rect = player->GetHitBox().rect.getGlobalBounds();
+		if (Utils::CheckCollision(position, attackArea.getRotation() -90.f, 175.f, 75.f, rect))
+		{
+			player->Damage(info.damage);
+		}
+	}
+
+}
+
 void AniSkeleton::MoveUpdate(float dt)
 {
 	Walk(dt);
@@ -154,6 +175,7 @@ void AniSkeleton::MoveUpdate(float dt)
 		isAttack = true;
 		Anim.Play(info.attackAnimId);
 		attackDelay = 0.f;
+		atkTimer.StartTimer(false);
 		beforeStatus = currentStatus;
 		currentStatus = Status::Attack;
 		return;
@@ -164,6 +186,8 @@ void AniSkeleton::AttackUpdate(float dt)
 {
 	sf::Vector2f pos = player->GetPosition();
 	sf::Vector2f playerPos = player->GetPosition() - position;
+
+	
 
 	float elapsedTime = clock.getElapsedTime().asSeconds();
 	if (elapsedTime < animationDuration) {

@@ -92,10 +92,7 @@ void GameMgr::UpdateIdle(float dt)
 		beforeStatus = Status::IDLE;
 		currentStatus = Status::SELECT_SKILL;
 	}
-	if (InputMgr::GetKeyDown(sf::Keyboard::Y))
-	{
-		AbilitySelected(0);
-	}
+
 	if (InputMgr::GetKeyDown(sf::Keyboard::F))
 	{
 		uiAbilSelect->EnableUI();

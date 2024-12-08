@@ -56,15 +56,12 @@ void AniBoss::Release()
 
 void AniBoss::Reset()
 {
+	Monster::Reset();
 	hitbox.rect.setSize({ 40, 120 });
 	hitbox.rect.setPosition({ position });
 	Utils::SetOrigin(hitbox.rect, Origins::BC);
 	HPBar.setPosition({ position.x - HPBar.getSize().x * 0.5f, position.y - 140 });
 	HPBarFrame.setPosition({ position.x - HPBar.getSize().x * 0.5f, position.y - 140 });
-	if (player == nullptr)
-	{
-		player = dynamic_cast<Player*>(SCENE_MGR.GetCurrentScene()->FindGo("Player"));
-	}
 	hp = info.hp;
 	HPBar.setScale({ 1.0f, 1.0f });
 
@@ -240,6 +237,11 @@ void AniBoss::DeathUpdate(float dt)
 		isDeath = true;
 		Monster::OnDeath();
 	}
+}
+
+void AniBoss::FixedUpdate(float dt)
+{
+
 }
 
 void AniBoss::Draw(sf::RenderWindow& window)

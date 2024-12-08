@@ -53,6 +53,8 @@ void AniSlime::Release()
 
 void AniSlime::Reset()
 {
+	Monster::Reset();
+
 	hitbox.rect.setSize({ 40, 120 });
 	hitbox.rect.setPosition({ position });
 	hitbox2.rect.setSize({ 20, 60 });
@@ -61,10 +63,6 @@ void AniSlime::Reset()
 	Utils::SetOrigin(hitbox2.rect, Origins::BC);
 	HPBar.setPosition({ position.x - HPBar.getSize().x * 0.5f, position.y - 140 });
 	HPBarFrame.setPosition({ position.x - HPBar.getSize().x * 0.5f, position.y - 140 });
-	if (player == nullptr)
-	{
-		player = dynamic_cast<Player*>(SCENE_MGR.GetCurrentScene()->FindGo("Player"));
-	}
 	hp = info.hp;
 	HPBar.setScale({ 1.0f, 1.0f });
 
@@ -82,6 +80,8 @@ void AniSlime::Reset()
 	tickInterval = 1.f;
 	tickDuration = 6.f;
 	tickDamage = 10.f;
+
+	atkTimer.SetDefaultDuration(1.0f);
 
 	sortingLayer = SortingLayers::Foreground;
 	sortingOrder = 1;
@@ -146,6 +146,7 @@ void AniSlime::MoveUpdate(float dt)
 		isAttack = true;
 		Anim.Play(info.attackAnimId);
 		attackDelay = 0.f;
+		atkTimer.StartTimer(false);
 		beforeStatus = currentStatus;
 		currentStatus = SlimeStatus::Attack;
 		return;
@@ -218,6 +219,25 @@ void AniSlime::DeathUpdate(float dt)
 		isDead = true;
 		Monster::OnDeath();
 	}
+}
+
+void AniSlime::FixedUpdate(float dt)
+{
+	if (currentStatus == SlimeStatus::Move)
+	{
+		Monster::HandleOverlap(dt);
+		SetPosition(position);
+	}
+
+	if (atkTimer.UpdateTimer(dt))
+	{
+		sf::FloatRect rect = player->GetHitBox().rect.getGlobalBounds();
+		if (Utils::CheckCollision(position, sf::Vector2f(64.f, 64.f), rect))
+		{
+			player->Damage(info.damage);
+		}
+	}
+
 }
 
 void AniSlime::Draw(sf::RenderWindow& window)

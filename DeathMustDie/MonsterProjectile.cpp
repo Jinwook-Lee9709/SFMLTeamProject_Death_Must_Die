@@ -9,7 +9,7 @@ MonsterProjectile::MonsterProjectile(const std::string& name)
 void MonsterProjectile::SetPosition(const sf::Vector2f& pos)
 {
 	position = pos;
-	sprite.setPosition(position);
+	sprite.setPosition(position + sf::Vector2f(0.f, 0.f));
 	hitbox.rect.setPosition(position);
 }
 
@@ -33,10 +33,10 @@ void MonsterProjectile::Reset()
 	player = (Player*)SCENE_MGR.GetCurrentScene()->FindGo("Player");
 	sf::Transformable tr;
 
-	tr.setPosition(position - sf::Vector2f(0.f, 28.f));
+	tr.setPosition(position);
 	tr.rotate(rotation);
 	tr.scale(scale);
-	this->hitbox.UpdateTr(tr, { 0, 0, 120, 120 });
+	this->hitbox.UpdateTr(tr, { 0, 0, 200, 120 });
 	Utils::SetOrigin(hitbox.rect, Origins::MC);
 }
 
