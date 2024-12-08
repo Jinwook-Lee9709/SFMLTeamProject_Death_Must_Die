@@ -244,10 +244,13 @@ void AniSlime::FixedUpdate(float dt)
 
 	if (atkTimer.UpdateTimer(dt))
 	{
-		sf::FloatRect rect = player->GetHitBox().rect.getGlobalBounds();
-		if (Utils::CheckCollision(position, sf::Vector2f(96.f, 96.f), rect))
+		if (currentStatus != SlimeStatus::Death)
 		{
-			player->Damage(info.damage);
+			sf::FloatRect rect = player->GetHitBox().rect.getGlobalBounds();
+			if (Utils::CheckCollision(position, sf::Vector2f(96.f, 96.f), rect))
+			{
+				player->Damage(info.damage);
+			}
 		}
 	}
 

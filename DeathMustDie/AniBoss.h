@@ -47,13 +47,14 @@ protected:
 
 	sf::Vector2f direction;
 	float speed = 70.f;
+	float attackDelayTimer = 0.f;
 	float attackDelay = 0.f;
-	float attackDuration = 3.f;
+	float attackDuration = 5.f;
 	int hitCount = 0;
 
 	bool isAttack = false;
 	bool isDead = false;
-	bool isFire = false;
+	bool isAbilityUsed = false;
 
 	BossInfo info;
 	Scene* scene;
@@ -102,7 +103,9 @@ public:
 	void Walk(float dt);
 	void CheckAttack(float dt);
 	void OnHit(float damage);
+	void FireProjectile();
 
 	sf::Vector2f RandomTPPos();
 };
 
+#define DISTANCE_TO_PLAYER_BOSS (400.f)

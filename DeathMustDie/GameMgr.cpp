@@ -87,18 +87,7 @@ void GameMgr::Update(float dt)
 
 void GameMgr::UpdateIdle(float dt)
 {
-	if (InputMgr::GetKeyDown(sf::Keyboard::T))
-	{
-		beforeStatus = Status::IDLE;
-		currentStatus = Status::SELECT_SKILL;
-	}
 
-	if (InputMgr::GetKeyDown(sf::Keyboard::F))
-	{
-		uiAbilSelect->EnableUI();
-		beforeStatus = Status::IDLE;
-		currentStatus = Status::SELECT_SKILL;
-	}
 }
 
 void GameMgr::UpdateSelectSkill(float dt)

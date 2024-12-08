@@ -41,6 +41,12 @@ void Framework::Do()
         SCENE_MGR.LateUpdate(deltaTime);
         SCENE_MGR.FixedUpdate(deltaTime);
 
+        if (InputMgr::GetKeyDown(sf::Keyboard::H))
+        {
+            Variables::isDrawHitBox = !Variables::isDrawHitBox;
+        }
+
+
         window.clear();
         SCENE_MGR.Draw(window);
         window.display();

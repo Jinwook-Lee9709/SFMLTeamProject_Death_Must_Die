@@ -104,7 +104,7 @@ void Structure::FixedUpdate(float dt)
 void Structure::Draw(sf::RenderWindow& window)
 {
 	window.draw(body);
-	window.draw(temp);
+	/*window.draw(temp);*/
 }
 
 void Structure::SetKind(Kinds kind)

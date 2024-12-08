@@ -61,11 +61,16 @@ void MonsterProjectile::Update(float dt)
 
 void MonsterProjectile::FixedUpdate(float dt)
 {
-	sf::RectangleShape playerRect = player->GetHitBox().rect;
-	if (Utils::CheckCollision(hitbox.rect, playerRect))
+	if (active)
 	{
-		player->Damage(info.damage);
+		sf::RectangleShape playerRect = player->GetHitBox().rect;
+		if (Utils::CheckCollision(hitbox.rect, playerRect))
+		{
+			player->Damage(info.damage);
+			this->active = false;
+		}
 	}
+	
 }
 
 void MonsterProjectile::Draw(sf::RenderWindow& window)

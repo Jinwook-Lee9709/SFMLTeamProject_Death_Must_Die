@@ -79,7 +79,7 @@ void AniBoss::Reset()
 	json j;
 	j["AnimId"] = "sorceror_fireball";
 	j["AnimSize"] = 0.4;
-	j["damage"] = 10;
+	j["damage"] = 2;
 	j["speed"] = 500;
 
 	poolMgr = (AttackEntityPoolMgr*)SCENE_MGR.GetCurrentScene()->FindGo("AttackEntityPoolMgr");
@@ -94,12 +94,7 @@ void AniBoss::Update(float dt)
 
 	if (InputMgr::GetKeyDown(sf::Keyboard::O))
 	{
-		AttackEntity* obj = poolMgr->GetEntity("bossProjectile");
-		sf::Vector2f playerPos = player->GetPosition();
-		float angle = Utils::Angle(playerPos - position);
-		obj->SetPosition(position);
-		obj->SetRotation(angle);
-		obj->Activate();
+		FireProjectile();
 	}
 
 
@@ -136,11 +131,11 @@ void AniBoss::Update(float dt)
 void AniBoss::MoveUpdate(float dt)
 {
 	Walk(dt);
-	attackDelay += dt;
+	attackDelayTimer += dt;
 	sf::Vector2f pos = player->GetPosition();
 	sf::Vector2f playerPos = player->GetPosition() - position;
 
-	if (Utils::Magnitude(playerPos) < DISTANCE_TO_PLAYER)
+	if (Utils::Magnitude(playerPos) < DISTANCE_TO_PLAYER_BOSS && attackDelayTimer > attackDuration)
 	{
 		if (position.x > pos.x)
 		{
@@ -152,7 +147,7 @@ void AniBoss::MoveUpdate(float dt)
 		}
 
 		isAttack = true;
-		attackDelay = 0.f;
+		attackDelayTimer = 0.f;
 		Anim.Play(info.channelAnimId);
 		beforeStatus = currentStatus;
 		currentStatus = BossStatus::Channel;
@@ -164,21 +159,18 @@ void AniBoss::AttackUpdate(float dt)
 {
 	if (Utils::RandomValue() < 0.5f)
 	{
-		AttackEntity* obj = poolMgr->GetEntity("bossProjectile");
-		sf::Vector2f playerPos = player->GetPosition();
-		float angle = Utils::Angle(playerPos - position);
-		obj->SetRotation(angle);
-		obj->Activate();
+
 	}
 	else
 	{
-		isFire = true;
+		FireProjectile();
+		isAbilityUsed = true;
 	}
 
 	if (!Anim.IsPlay())
 	{
 		SetIsSummon(false);
-		isFire = false;
+		isAbilityUsed = false;
 		Anim.Play(info.walkAnimId);
 		beforeStatus = currentStatus;
 		currentStatus = BossStatus::Move;
@@ -222,19 +214,37 @@ void AniBoss::GetHitUpdate(float dt)
 		HPBar.setScale({ 0.f, 0.f });
 		beforeStatus = currentStatus;
 
-		EVENT_HANDLER.InvokeEvent("OnBossDeath", (int)hp);
+		EVENT_HANDLER.InvokeEvent("OnBossDeath");
 		currentStatus = BossStatus::Death;
 	}
 }
 
 void AniBoss::ChannelUpdate(float dt)
 {
+	if (Utils::RandomValue() < 0.5f)
+	{
+		if (!isAbilityUsed)
+		{
+			OnSummon();
+			isAbilityUsed = true;
+		}
 
-	OnSummon();
+	}
+	else
+	{
+		if (!isAbilityUsed)
+		{
+			FireProjectile();
+			isAbilityUsed = true;
+		}
+		
+	}
+
+
 
 	if (!Anim.IsPlay())
 	{
-		isFire = false;
+		isAbilityUsed = false;
 		Anim.Play(info.walkAnimId);
 		beforeStatus = currentStatus;
 		currentStatus = BossStatus::Move;
@@ -330,8 +340,25 @@ void AniBoss::OnHit(float damage)
 	HPBar.setScale({ hp / info.hp, 1.0f });
 	Monster::OnHit(damage);
 
+	SOUND_MGR.PlaySfx(GET_SOUND("bossHit"));
 	EVENT_HANDLER.InvokeEvent("OnBossHit",(int)hp);
 
+}
+
+void AniBoss::FireProjectile()
+{
+	sf::Vector2f playerPos = player->GetPosition();
+	float centerAngle = Utils::Angle(playerPos - position);
+	float angle = centerAngle - 20.f;
+	for (int i = 0; i < 5; i++)
+	{
+		AttackEntity* obj = poolMgr->GetEntity("bossProjectile");
+		obj->SetPosition(position);
+		obj->SetRotation(angle);
+		obj->Activate();
+		angle += 10.f;
+	}
+	SOUND_MGR.PlaySfx(GET_SOUND("fireBlast"));
 }
 
 sf::Vector2f AniBoss::RandomTPPos()

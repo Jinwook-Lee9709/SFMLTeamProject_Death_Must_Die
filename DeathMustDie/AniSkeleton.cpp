@@ -139,11 +139,15 @@ void AniSkeleton::FixedUpdate(float dt)
 
 	if (atkTimer.UpdateTimer(dt))
 	{
-		sf::FloatRect rect = player->GetHitBox().rect.getGlobalBounds();
-		if (Utils::CheckCollision(position, attackArea.getRotation() -90.f, 175.f, 120.f, rect))
+		if (currentStatus != Status::Death)
 		{
-			player->Damage(info.damage);
+			sf::FloatRect rect = player->GetHitBox().rect.getGlobalBounds();
+			if (Utils::CheckCollision(position, attackArea.getRotation() - 90.f, 175.f, 120.f, rect))
+			{
+				player->Damage(info.damage);
+			}
 		}
+
 	}
 
 }

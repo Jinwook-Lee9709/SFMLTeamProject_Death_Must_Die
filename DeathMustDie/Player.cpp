@@ -449,13 +449,16 @@ void Player::ChangeAttackColor(sf::Color color)
 
 void Player::Damage(float damage)
 {
-	
 	float value = Utils::Clamp(damage - curStat.defensive.armor, 0, hp) / curStat.defensive.life;
 	isDamage = true;
 	hp = Utils::Clamp(hp - (damage - curStat.defensive.armor), 0, curStat.defensive.life);
 
 	SetHp(hp, value);
 	ui->UpdateHp(hp, value);
+
+	if (hp == 0) {
+		SCENE_MGR.ChangeScene(SceneIds::Title);
+	}
 }
 
 void Player::SetHp(float hp, float damage)
