@@ -131,6 +131,11 @@
         "ID": "dash_spr",
         "TEX_ID": "resource/texture/Sheet/player_knight/dash_spr_sheet.png"
     },
+    "PLAYER_DIE" :
+    {
+        "ID": "player_die",
+        "TEX_ID": "resource/texture/Sheet/player_knight/_S_Dissolving_Spr.png"
+    },
     "BOON_APPEAR" :
     {
         "ID": "boon_appear",
@@ -165,5 +170,25 @@
     {
         "ID": "sorceror_death",
         "TEX_ID": "resource/texture/Sheet/boss/Sorceror_Death_Sheet.png"
+    },
+    "END_HEADER" :
+    {
+        "ID": "end_header",
+        "TEX_ID": "resource/texture/Sheet/player_knight/header_sheet.png"
+    },
+    "EMBLEM_LIGHT" :
+    {
+        "ID": "emblem_light",
+        "TEX_ID": "resource/texture/Sheet/player_knight/emblemLight_sheet.png"
+    },
+    "EMBLEM_R" :
+    {
+        "ID": "emblem_r",
+        "TEX_ID": "resource/texture/Sheet/player_knight/emblemR_sheet.png"
+    },
+    "EMBLEM_L" :
+    {
+        "ID": "emblem_l",
+        "TEX_ID": "resource/texture/Sheet/player_knight/emblemL_sheet.png"
     }
 }

@@ -52,7 +52,8 @@ void StatusUi::Release()
 void StatusUi::Reset()
 {
 	scene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
-	
+	player = dynamic_cast<Player*>(scene->FindGo("Player"));
+
 	SetBoons();
 	SetInventory();
 	SetExpFrame();
@@ -64,9 +65,11 @@ void StatusUi::Reset()
 
 void StatusUi::Update(float dt)
 {
+	if (player->GetIsDead())
+		return;
 	cursorBoons(dt);
 	cursorInventory(dt);
-	UpdateDashCount(dynamic_cast<Player*>(scene->FindGo("Player"))->GetDashCharge());
+	UpdateDashCount(player->GetDashCharge());
 	for (auto& btn : btns)
 	{
 		btn.Update(dt);
@@ -83,7 +86,7 @@ void StatusUi::Update(float dt)
 
 	for (auto obj : scene->GetObjList())
 	{
-		if (obj->GetInteract())
+		if (obj->GetInteract() && !obj->GetIsUsed())
 		{
 			btns[7].SetActive(true);
 			break;
@@ -94,6 +97,9 @@ void StatusUi::Update(float dt)
 
 void StatusUi::Draw(sf::RenderWindow& window)
 {
+	if (player->GetIsDead())
+		return;
+
 	expUnderFrame.Draw(window);
 	exp.Draw(window);
 	expFrame.Draw(window);
