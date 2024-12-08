@@ -111,3 +111,8 @@ void Monster::OnDeath()
 	EVENT_HANDLER.InvokeEvent("OnMonsterDie", (GameObject)*this);
 }
 
+void Monster::OnSummon()
+{
+    EVENT_HANDLER.InvokeEvent("SummonSkeleton", (GameObject)*this);
+}
+

@@ -7,7 +7,8 @@ void EventHandler::AddEvent(const std::string& id, std::function<void()> action)
 	if (it == events.end()) {
 		events.emplace(id, std::vector<std::function<void()>>{action});
 	}
-	else {
+	else 
+	{
 		it->second.push_back(action);
 	}
 }

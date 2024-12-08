@@ -162,9 +162,22 @@ void AniBoss::MoveUpdate(float dt)
 
 void AniBoss::AttackUpdate(float dt)
 {
-	if (!Anim.IsPlay())
+	if (Utils::RandomValue() < 0.5f)
 	{
 
+	}
+	else
+	{
+		isFire = true;
+	}
+
+	if (!Anim.IsPlay())
+	{
+		SetIsSummon(false);
+		isFire = false;
+		Anim.Play(info.walkAnimId);
+		beforeStatus = currentStatus;
+		currentStatus = BossStatus::Move;
 	}
 }
 
@@ -210,11 +223,23 @@ void AniBoss::GetHitUpdate(float dt)
 
 void AniBoss::ChannelUpdate(float dt)
 {
+<<<<<<< HEAD
 	//AttackEntity* obj = poolMgr->GetEntity("bossProjectile");
 	//sf::Vector2f playerPos = player->GetPosition();
 	//float angle = Utils::Angle(playerPos - position);
 	//obj->SetRotation(angle);
 	//obj->Activate();
+=======
+	OnSummon();
+
+	if (!Anim.IsPlay())
+	{
+		isFire = false;
+		Anim.Play(info.walkAnimId);
+		beforeStatus = currentStatus;
+		currentStatus = BossStatus::Move;
+	}
+>>>>>>> origin/hayoung
 }
 
 void AniBoss::DeathUpdate(float dt)

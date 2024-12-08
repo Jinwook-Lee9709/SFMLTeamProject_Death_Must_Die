@@ -76,7 +76,7 @@ void AniSkeleton::Reset()
 	attackArea.setTexture(TEXTURE_MGR.Get("resource/texture/Sprite/Warn_Melee_Slash_Spr.png"));
 	attackArea.setColor(sf::Color( 255, 0, 0, 70));
 	Utils::SetOrigin(attackArea, Origins::BC);
-	attackArea.setScale({ 0.5f, 0.5f });
+	attackArea.setScale({ 0.8f, 0.8f });
 
 	Anim.Play(info.walkAnimId);
 	currentStatus = Status::Move;
@@ -152,14 +152,20 @@ void AniSkeleton::MoveUpdate(float dt)
 {
 	Walk(dt);
 	attackDelay += dt;
+	opacity = 70;
 	sf::Vector2f pos = player->GetPosition();
 	sf::Vector2f playerPos = player->GetPosition() - position;
+
+	look = Utils::GetNormal(pos - position);
+
+	attackArea.setRotation(Utils::Angle(look));
 
 	if (player != nullptr && Utils::Distance(position, player->GetPosition()) > 10)
 	{
 		direction = Utils::GetNormal(player->GetPosition() - position + sf::Vector2f(0.f, body.getGlobalBounds().height * 0.5f));
 		attackArea.setRotation(Utils::Angle(direction) + 90.f);
 	}
+
 
 	if (Utils::Magnitude(playerPos) < DISTANCE_TO_PLAYER && attackDelay >= attackDuration)
 	{
@@ -187,15 +193,9 @@ void AniSkeleton::AttackUpdate(float dt)
 	sf::Vector2f pos = player->GetPosition();
 	sf::Vector2f playerPos = player->GetPosition() - position;
 
-	
+	opacity += opacitySpeed * dt;
 
-	float elapsedTime = clock.getElapsedTime().asSeconds();
-	if (elapsedTime < animationDuration) {
-		// ºÒÅõ¸íµµ °è»ê (70¿¡¼­ 150À¸·Î ¼±Çü Áõ°¡)
-		float progress = elapsedTime / animationDuration; // 0.0 ~ 1.0
-		int alpha = static_cast<int>(70 + progress * (150 - 70));
-		attackArea.setColor(sf::Color(255, 0, 0, alpha));
-	}
+	attackArea.setColor(sf::Color(255, 0, 0, opacity));
 
 	if (position.x > pos.x)
 	{
@@ -303,7 +303,7 @@ void AniSkeleton::OnDebuffed(DebuffType types)
 	//{
 	//	isDebuff = false;
 	//	tickTimer = 0.f;
-	//	return; // µð¹öÇÁ Á¾·á
+	//	return; // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	//}
 
 	//switch (types)

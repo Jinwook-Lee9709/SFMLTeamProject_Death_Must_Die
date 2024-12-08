@@ -5,6 +5,8 @@
 #include <random>
 
 class Player;
+class Monster;
+class MonsterPoolManager;
 
 class MonsterSpawner : public GameObject 
 {
@@ -25,6 +27,9 @@ private:
     int bossMaxMonsters = 1;
     int bossCurrentMonsterCount = 0;
 
+    int summonMaxMonsters = 10;
+    int summonCurrentMonsterCount = 0;
+
     float spawnTimer = 0.0f;
     float spawnInterval = 5.0f;
 
@@ -43,12 +48,16 @@ private:
     sf::Vector2f RandomBossPosition();
 
     Player* player;
+    Monster* AniMonster;
+    MonsterPoolManager* monsterPool;
 public:
     MonsterSpawner(MonsterPoolManager* manager, const sf::FloatRect& bounds, int maxMonsters);
     ~MonsterSpawner() = default;
 
     void SpawnMonster(const std::string& monsterName, int poolsize);
     void BossSpawn(const std::string& bossName);
+    void SummonMonster(const std::string& monsterName, const GameObject& monster);
+    void SummonMonsterTrigger(const GameObject& monster);
     void Init() override;
     void Reset() override;
     void Update(float dt) override;

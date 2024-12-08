@@ -10,15 +10,16 @@ class Monster : public GameObject
 protected:
 	float hp = 100.f;
 
-	float tickDuration;          // ³²Àº Áö¼Ó ½Ã°£
-	float tickInterval;      // Æ½ °£°Ý
-	float tickDamage;        // Æ½´ç µ¥¹ÌÁö
-	float tickTimer;         // Æ½ Å¸ÀÌ¸Ó
+	float tickDuration;          // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½
+	float tickInterval;      // Æ½ ï¿½ï¿½ï¿½ï¿½
+	float tickDamage;        // Æ½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	float tickTimer;         // Æ½ Å¸ï¿½Ì¸ï¿½
 
 	bool isDebuff = false;
 	bool isDeath = false;
+	bool isSummon = false;
 
-	sf::CircleShape collisionCircle; // ¿øÇü Ãæµ¹Ã¼
+	sf::CircleShape collisionCircle; // ï¿½ï¿½ï¿½ï¿½ ï¿½æµ¹Ã¼
 	float collisionRadius;
 
 	sf::RectangleShape HPBar;
@@ -39,19 +40,27 @@ public:
 
 	virtual void SetInfo(const json& j) {}
 	virtual void OnHit(float damage);
-	virtual void OnDebuffed(DebuffType type) {} // µð¹öÇÁ Ã³¸®
+	virtual void OnDebuffed(DebuffType type) {} // ï¿½ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½
 
 	virtual void HandleOverlap(float dt);
+
+	bool GetIsSummon() { return isSummon; }
+	bool SetIsSummon(bool summon)
+	{
+		isSummon = summon;
+		return isSummon;
+	}
 
 	void SetCollisionRadius(float radius);
 	sf::CircleShape GetCollisionCircle() const;
 
 	bool CheckCollision(const Monster& other) const;
-	virtual void OnCollision(Monster* other); // Ãæµ¹ Ã³¸®
+	virtual void OnCollision(Monster* other); // ï¿½æµ¹ Ã³ï¿½ï¿½
 
 	void Draw(sf::RenderWindow& window) override;
 
 	void OnDeath();
+	void OnSummon();
 };
 
 #define DISTANCE_TO_PLAYER (100.f)

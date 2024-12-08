@@ -54,6 +54,8 @@ protected:
 	float attackDuration = 3.f;
 
 	Timer atkTimer;
+	int opacity = 70;
+	float opacitySpeed = 500.f;
 
 	bool isGetHit = false;
 	bool isAttack = false;
