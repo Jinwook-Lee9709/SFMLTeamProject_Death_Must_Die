@@ -26,6 +26,8 @@ private:
 	ItemSpawner* itemSpawn;
 
 	sf::FloatRect mapBound = { 0, 0, 1920, 1080 };
+	sf::Vector2f mapFull = {10000, 10000};
+	sf::Vector2f mapGrid[20][20];
 
 	ObjectPool<Structure> struPool;
 	std::list<Structure*> struList;

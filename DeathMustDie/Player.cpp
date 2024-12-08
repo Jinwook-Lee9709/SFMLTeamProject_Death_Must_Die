@@ -197,9 +197,9 @@ void Player::Draw(sf::RenderWindow& window)
 
 void Player::SetDashAndHp()
 {
-	dashCharge = baseStat.dash.dashCharge;
-	hp = baseStat.defensive.life;
-	hp = baseStat.defensive.life;
+	dashCharge = curStat.dash.dashCharge;
+	hp = curStat.defensive.life;
+	hp = curStat.defensive.life;
 
 	backHpBar.setSize({ 70.f, 7.f});
 	backHpBar.setFillColor(sf::Color::Black);
@@ -436,6 +436,11 @@ SpriteGo& Player::GetShadow()
 	return this->shadow;
 }
 
+sf::Vector2f Player::GetDirection()
+{
+	return direction;
+}
+
 void Player::ChangeAttackColor(sf::Color color)
 {
 	body3.setColor(color);
@@ -470,4 +475,32 @@ void Player::SetLevel(float exp)
 		EVENT_HANDLER.InvokeEvent("LevelUp");
 	}
 	ui->UpdateExp(this->exp, level);
+}
+
+void Player::SetMaxHp(int maxHp)
+{
+	curStat.defensive.life += maxHp;
+	SetCurHp(maxHp);
+	ui->UpdateHp(hp);
+	ui->UpdateTrace();
+}
+
+void Player::SetDashCharge(int count)
+{
+	curStat.dash.dashCharge += count;
+	SetDashAndHp();
+	ui->SetStaminaFrame();
+}
+
+void Player::SetCurHp(int count)
+{
+	hp = Utils::Clamp(hp + count,0,curStat.defensive.life);
+	SetHp(hp);
+	ui->UpdateHp(hp);
+	ui->UpdateTrace();
+}
+
+void Player::SetDefence(int count)
+{
+	curStat.defensive.armor += count;
 }

@@ -1,11 +1,14 @@
 #pragma once
 #include "Player.h"
+#include "ButtonUi.h"
+
+class SceneGame;
 
 class StatusUi : public GameObject
 {
 protected:
 	sf::Vector2f winSize = FRAMEWORK.GetWindowSizeF();
-	Scene* scene;
+	SceneGame* scene;
 	Stat stat;
 
 	SpriteGo boonsBtn;
@@ -28,10 +31,14 @@ protected:
 	SpriteGo hpFrame;
 	SpriteGo hp;
 	SpriteGo hpTrace;
+	TextGo hpText;
 
 	std::vector<SpriteGo> staminaFrame;
 	std::vector<SpriteGo> stamina;
 	SpriteGo staminaEnd;
+
+	std::vector<ButtonUi> btns;
+	float visibleTime;
 
 public:
 	StatusUi(const std::string& name = "");
@@ -56,6 +63,7 @@ public:
 	void SetPortrait();
 	void SetHpFrame();
 	void SetStaminaFrame();
+	void SetBtns();
 
 	void cursorBoons(float dt);
 	void cursorInventory(float dt);
@@ -64,4 +72,7 @@ public:
 	void UpdateHp(float changeHp, float damage = 0);
 	void UpdateTrace();
 	void UpdateExp(float exp, int level);
+
+	void isInteract(bool interact);
+
 };

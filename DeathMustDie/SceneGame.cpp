@@ -14,6 +14,7 @@
 #include "Structure.h"
 #include "TileMap.h"
 #include "TopUi.h"
+#include "ButtonUi.h"
 #include "UIAbilitySelect.h"
 
 SceneGame::SceneGame()
@@ -75,7 +76,13 @@ void SceneGame::Enter()
 
 	ApplyAddGo();
 
+	for (int i = 0; i < 100; i++)
+	{
+		SetObjPos();
+	}
+	ApplyAddGo();
 	Scene::Enter();
+	
 	map->SetOrigin(Origins::MC);
 	player->SetScale({ 3.f, 3.f });
 }
@@ -121,13 +128,31 @@ void SceneGame::Draw(sf::RenderWindow& window)
 
 void SceneGame::SetObjPos()
 {
-	sf::Vector2f posRangeX = { -2000.f, 2000.f };
-	sf::Vector2f posRangeY = { -2000.f, 2000.f };
+	float posRangeX = -mapFull.x;
+	float posRangeY = -mapFull.y ;
 	Structure* stru = struPool.Take();
 
-	float posX = Utils::RandomRange(posRangeX.x, posRangeX.y);
-	float posY = Utils::RandomRange(posRangeY.x, posRangeY.y);
-	stru->SetPosition({ posX, posY });
+	for (int i = 0; i < 20; i++)
+	{
+		for (int j = 0; j < 20; j++)
+		{
+			mapGrid[i][j] = { posRangeX + mapFull.x / 20 * i * 2, posRangeY + mapFull.y / 20 * j * 2 };
+		}
+	}
+
+	stru->SetKind((Structure::Kinds)Utils::RandomRange(0, 4));
+	int posX = Utils::RandomRange(0, 19);
+	int posY = Utils::RandomRange(0, 19);
+
+	while (mapGrid[posX][posY] == sf::Vector2f(-1, -1))
+	{
+		posX = Utils::RandomRange(0, 19);
+		posY = Utils::RandomRange(0, 19);
+	}
+	
+	
+	stru->SetPosition({ mapGrid[posX][posY].x + posRangeX / 20 * Utils::RandomValue(), mapGrid[posX][posY].y + posRangeY / 20 * Utils::RandomValue() });
+	mapGrid[posX][posY] = { -1, -1 };
 
 	struList.push_back(stru);
 	AddGo(stru);

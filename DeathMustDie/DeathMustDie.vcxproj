@@ -156,6 +156,8 @@
     <ClCompile Include="AniSlime.cpp" />
     <ClCompile Include="BasicAttack.cpp" />
     <ClCompile Include="Button.cpp" />
+    <ClCompile Include="ButtonTable.cpp" />
+    <ClCompile Include="ButtonUi.cpp" />
     <ClCompile Include="Calculator.cpp" />
     <ClCompile Include="CalculatorMgr.cpp" />
     <ClCompile Include="DamageText.cpp" />
@@ -230,6 +232,8 @@
     <ClInclude Include="AniSlime.h" />
     <ClInclude Include="BasicAttack.h" />
     <ClInclude Include="Button.h" />
+    <ClInclude Include="ButtonTable.h" />
+    <ClInclude Include="ButtonUi.h" />
     <ClInclude Include="Calculator.h" />
     <ClInclude Include="CalculatorMgr.h" />
     <ClInclude Include="DamageText.h" />

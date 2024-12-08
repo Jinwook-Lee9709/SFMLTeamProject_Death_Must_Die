@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "StatusUi.h"
 #include "Player.h"
+#include "SceneGame.h"
+#include "Structure.h"
 
 StatusUi::StatusUi(const std::string& name)
 	: GameObject(name)
@@ -49,14 +51,15 @@ void StatusUi::Release()
 
 void StatusUi::Reset()
 {
-	scene = SCENE_MGR.GetCurrentScene();
-	stat = dynamic_cast<Player*>(scene->FindGo("Player"))->GetCurStat();
+	scene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
+	
 	SetBoons();
 	SetInventory();
 	SetExpFrame();
 	SetPortrait();
 	SetHpFrame();
 	SetStaminaFrame();
+	SetBtns();
 }
 
 void StatusUi::Update(float dt)
@@ -64,6 +67,29 @@ void StatusUi::Update(float dt)
 	cursorBoons(dt);
 	cursorInventory(dt);
 	UpdateDashCount(dynamic_cast<Player*>(scene->FindGo("Player"))->GetDashCharge());
+	for (auto& btn : btns)
+	{
+		btn.Update(dt);
+	}
+
+	visibleTime += dt;
+	if (visibleTime > 3.f)
+	{
+		for (int i = 0; i < 7; i++)
+		{
+			btns[i].SetButtonVisible(true);
+		}
+	}
+
+	for (auto obj : scene->GetObjList())
+	{
+		if (obj->GetInteract())
+		{
+			btns[7].SetActive(true);
+			break;
+		}
+		btns[7].SetActive(false);
+	}
 }
 
 void StatusUi::Draw(sf::RenderWindow& window)
@@ -86,6 +112,7 @@ void StatusUi::Draw(sf::RenderWindow& window)
 	hpTrace.Draw(window);
 	hp.Draw(window);
 	hpFrame.Draw(window);
+	hpText.Draw(window);
 	
 	
 	for (auto st : stamina)
@@ -96,11 +123,16 @@ void StatusUi::Draw(sf::RenderWindow& window)
 	{
 		stFrame.Draw(window);
 	}
+	for (auto btn : btns)
+	{
+		btn.Draw(window);
+	}
 	staminaEnd.Draw(window);
 }
 
 void StatusUi::SetBoons()
 {
+	stat = dynamic_cast<Player*>(scene->FindGo("Player"))->GetCurStat();
 	boonsBtn = SpriteGo("boonsButton");
 	boonsBtnGlow = SpriteGo("boonsButtonGlow");
 	boonsBtn.Reset();
@@ -118,6 +150,7 @@ void StatusUi::SetBoons()
 
 void StatusUi::SetInventory()
 {
+	stat = dynamic_cast<Player*>(scene->FindGo("Player"))->GetCurStat();
 	inventoryBtn = SpriteGo("inventoryButton");
 	inventoryBtnGlow = SpriteGo("inventoryButtonGlow");
 	inventoryBtn.Reset();
@@ -135,6 +168,7 @@ void StatusUi::SetInventory()
 
 void StatusUi::SetExpFrame()
 {
+	stat = dynamic_cast<Player*>(scene->FindGo("Player"))->GetCurStat();
 	expFrame = SpriteGo("expFrame");
 	expUnderFrame = SpriteGo("expUnderFrame");
 	exp = SpriteGo("exp");
@@ -160,6 +194,7 @@ void StatusUi::SetExpFrame()
 
 void StatusUi::SetPortrait()
 {
+	stat = dynamic_cast<Player*>(scene->FindGo("Player"))->GetCurStat();
 	portraitFrame = SpriteGo("portrait");
 	portrait = SpriteGo("knight");
 	level = SpriteGo("level");
@@ -192,12 +227,16 @@ void StatusUi::SetPortrait()
 
 void StatusUi::SetHpFrame()
 {
+	stat = dynamic_cast<Player*>(scene->FindGo("Player"))->GetCurStat();
 	hpFrame = SpriteGo("hpFrame");
 	hpTrace = SpriteGo("hpTrace");
 	hp = SpriteGo("hp");
+	hpText = TextGo("PtSerifRegular_Font");
+
 	hpFrame.Reset();
 	hpTrace.Reset();
 	hp.Reset();
+	hpText.Reset();
 	hpFrame.SetOrigin(Origins::BR);
 	hpFrame.SetPosition({ winSize.x * 0.5f + hpFrame.GetGlobalBounds().width / 7, winSize.y});
 
@@ -207,20 +246,26 @@ void StatusUi::SetHpFrame()
 	hp.SetOrigin(Origins::BR);
 	hp.SetPosition({ hpFrame.GetPosition().x, hpFrame.GetPosition().y});
 	
+	hpText.SetString(std::to_wstring(stat.defensive.life) + L" / " + std::to_wstring(stat.defensive.life));
+	hpText.SetCharacterSize(200);
+	hpText.SetOrigin(Origins::MC);
+	hpText.SetPosition({ hpFrame.GetGlobalBounds().left - 40.f, hpFrame.GetGlobalBounds().top - 40.f});
 	
 	hpFrame.SetScale({ 3.f, 3.f });
 	hpTrace.SetScale({ 3.f, 3.f });
 	hp.SetScale({ 3.f, 3.f });
-
+	hpText.SetScale({ 0.1f, 0.1f });
 	
 
 }
 
 void StatusUi::SetStaminaFrame()
 {
+	stat = dynamic_cast<Player*>(scene->FindGo("Player"))->GetCurStat();
 	Scene* scene = SCENE_MGR.GetCurrentScene();
 	Player* player = dynamic_cast<Player*>(scene->FindGo("Player"));
-
+	staminaFrame.clear();
+	stamina.clear();
 	for (int i = 0; i < stat.dash.dashCharge; i++)
 	{
 		staminaFrame.push_back(SpriteGo("staminaFrame"));
@@ -249,6 +294,42 @@ void StatusUi::SetStaminaFrame()
 	staminaEnd.SetScale({3.f, 3.f});
 }
 
+void StatusUi::SetBtns()
+{
+	for (int i = 0; i < 8; i++)
+	{
+		btns.push_back(ButtonUi());
+		btns[i].Reset();
+	}
+	btns[0].SetButton("MOUSEL");
+	btns[0].SetPosition({ winSize.x * 0.5f, winSize.y * 0.5f + 300.f - 3 * 60.f });
+	btns[0].SetButtonName(L"Attack");
+
+	btns[1].SetButton("SPACE");
+	btns[1].SetPosition({ winSize.x * 0.5f, winSize.y * 0.5f + 300.f - 2 * 60.f });
+	btns[1].SetButtonName(L"Dash");
+
+	btns[2].SetButton("D");
+	btns[2].SetPosition({ winSize.x * 0.5f, winSize.y * 0.5f + 300.f - 1 * 60.f });
+	btns[2].SetButtonName(L"Move");
+	btns[3].SetButton("A");
+	btns[3].SetPosition({ winSize.x * 0.5f - 1 * 60.f, winSize.y * 0.5f + 300.f - 1 * 60.f });
+	btns[4].SetButton("S");
+	btns[4].SetPosition({ winSize.x * 0.5f - 2 * 60.f, winSize.y * 0.5f + 300.f - 1 * 60.f });
+	btns[5].SetButton("W");
+	btns[5].SetPosition({ winSize.x * 0.5f - 3 * 60.f, winSize.y * 0.5f + 300.f - 1 * 60.f });
+
+	btns[6].SetButton("MOUSE");
+	btns[6].SetPosition({ winSize.x * 0.5f, winSize.y * 0.5f + 300.f - 0 * 60.f });
+	btns[6].SetButtonName(L"Aim");
+
+	btns[7].SetButton("E");
+	btns[7].SetPosition({ winSize.x * 0.5f, winSize.y * 0.5f + 300.f + 80.f });
+	btns[7].SetButtonName(L"Instruct");
+	btns[7].SetActive(false);
+
+}
+
 void StatusUi::cursorBoons(float dt)
 {
 	Scene* scene = SCENE_MGR.GetCurrentScene();
@@ -257,6 +338,7 @@ void StatusUi::cursorBoons(float dt)
 
 	if (boonsBtnGlow.GetGlobalBounds().contains(cursor))
 	{
+		
 		boonTrans += dt * 255 * 3;
 		boonsBtnGlow.SetFillColor(sf::Color(255, 255, 255, Utils::Clamp(boonTrans, 0, 255)));
 	}
@@ -287,6 +369,7 @@ void StatusUi::cursorInventory(float dt)
 
 void StatusUi::UpdateDashCount(int dashCharge)
 {
+	stat = dynamic_cast<Player*>(scene->FindGo("Player"))->GetCurStat();
 	int count = stat.dash.dashCharge;
 	for (int i = 0; i < count; i++)
 	{
@@ -300,9 +383,11 @@ void StatusUi::UpdateDashCount(int dashCharge)
 
 void StatusUi::UpdateHp(float changeHp, float damage)
 {
+	stat = dynamic_cast<Player*>(scene->FindGo("Player"))->GetCurStat();
 	hp.SetTextureRect({ (52 + 88 * (int)(stat.defensive.life - changeHp) / stat.defensive.life) , 0,
 		(112 - 88 * (int)(stat.defensive.life - changeHp) / stat.defensive.life), 60 });
 	hp.SetOrigin(Origins::BR);
+	hpText.SetString(std::to_wstring((int)changeHp) + L" / " + std::to_wstring(stat.defensive.life));
 }
 
 void StatusUi::UpdateTrace()
@@ -316,4 +401,9 @@ void StatusUi::UpdateExp(float exp, int level)
 	int max = EXP_TABLE->Get(level + 1).curExp;
 	this->exp.SetTextureRect({0,0,(int)(640 * exp / max),3});
 	levelNum.SetString(std::to_wstring(level));
+}
+
+void StatusUi::isInteract(bool interact)
+{
+	btns[7].SetActive(interact);
 }

@@ -1,22 +1,30 @@
 #pragma once
 
+class Player;
+class ButtonUi;
+
 class Structure : public GameObject
 {
 public:
 	enum class Kinds
 	{
-		Back,
-		Obstacle,
-		Interactive,
+		Greed,
+		Bookshelf,
+		Coffin,
+		Sanctuary,
+		Mineral
 	};
 protected:
 	Kinds kind;
+	Player* player;
 
 	sf::Sprite body;
+	std::string bodySpr = "resource/texture/Sprite/Object/Obelisk_Greed_Base_Spr.png";
 	sf::FloatRect collision;
 	sf::RectangleShape temp;
 
-	bool isUsed;
+	bool isUsed = false;
+	bool isInteract;
 
 public:
 	Structure(const std::string& name = "");
@@ -35,4 +43,9 @@ public:
 	void Update(float dt) override;
 	void FixedUpdate(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
+
+	void SetKind(Kinds kind);
+	void ShowInteract();
+
+	bool GetInteract() const { return isInteract; }
 };

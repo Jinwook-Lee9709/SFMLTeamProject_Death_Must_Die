@@ -117,8 +117,8 @@
                 "markerP" : "resource/texture/Sprite/playUi/Minimap_Marker_Player_Spr.png",
                 "markerObj" : "resource/texture/Sprite/playUi/Minimap_Marker02_Spr.png",
                 "bossHealthBar" : "resource/texture/Sprite/bossUI/BossHealthBar.png",
-                "bossHealthBarFrame" : "resource/texture/Sprite/bossUI/BossHealthBarFrame.png"
-                
+                "bossHealthBarFrame" : "resource/texture/Sprite/bossUI/BossHealthBarFrame.png",  
+                "buttonSpr" : "resource/texture/Sprite/playUi/_S_ButtonPrompts.png"
              },
              "Font" :{
                  "Sansation" : "fonts/Sansation.ttf",
