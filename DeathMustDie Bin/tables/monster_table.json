@@ -36,6 +36,7 @@
          "walkAnimId": "sorceror_walk",
          "getHitAnimId": "sorceror_gethit",
          "channelAnimId": "sorceror_channel",
+         "channelParticleAnimId": "sorceror_particle",
          "deathAnimId": "sorceror_death",
          "walkFrame": 10,
          "getHitFrame": 10,

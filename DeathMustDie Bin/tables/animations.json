@@ -161,6 +161,11 @@
         "ID": "sorceror_channel",
         "TEX_ID": "resource/texture/Sheet/boss/Sorceror_Channel_Sheet.png"
     },
+    "SORCEROR_PARTICLE" :
+    {
+        "ID": "sorceror_particle",
+        "TEX_ID": "resource/texture/Sheet/boss/Sorceror_ChannelParticles_Sheet.png"
+    },
     "SORCEROR_DEATH" :
     {
         "ID": "sorceror_death",

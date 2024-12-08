@@ -23,6 +23,7 @@ public:
 		std::string walkAnimId;
 		std::string getHitAnimId;
 		std::string channelAnimId;
+		std::string channelParticleAnimId;
 		std::string deathAnimId;
 		int walkFrame;
 		int getHitFrame;
@@ -34,27 +35,35 @@ public:
 		float ellipseWidth;
 		float ellipseHeight;
 
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(BossInfo, walkAnimId, getHitAnimId, channelAnimId, deathAnimId,
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(BossInfo, walkAnimId, getHitAnimId, channelAnimId, channelParticleAnimId, deathAnimId,
 			walkFrame, getHitFrame, channelFrame, deathFrame,
 			damage, speed, hp, ellipseWidth, ellipseHeight);
 	};
 protected:
 	sf::Sprite body;
+	sf::Sprite particleBody;
 	Animator Anim;
+	Animator ParticleAnim;
 	std::string textureId;
 	BossStatus beforeStatus = BossStatus::None;
 	BossStatus currentStatus = BossStatus::Move;
 
+	sf::CircleShape circle;
+
 	sf::Vector2f direction;
-	float speed = 70.f;
+	float speed = 20.f;
 	float attackDelayTimer = 0.f;
 	float attackDelay = 0.f;
-	float attackDuration = 5.f;
+	float attackDuration = 6.f;
 	int hitCount = 0;
+
+	sf::Vector2f randomBossPos;
 
 	bool isAttack = false;
 	bool isDead = false;
 	bool isAbilityUsed = false;
+	bool isFire = false;
+	bool isArrival = false;
 
 	BossInfo info;
 	Scene* scene;
@@ -62,7 +71,7 @@ protected:
 	AttackEntityPoolMgr* poolMgr;
 	sf::FloatRect mapBounds = { 0, 0, 1920, 1080 };
 
-	std::mt19937 rng; // ·£´ý »ý¼º±â
+	std::mt19937 rng; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	std::uniform_real_distribution<float> randomPosX;
 	std::uniform_real_distribution<float> randomPosY;
 public:
@@ -106,6 +115,8 @@ public:
 	void FireProjectile();
 
 	sf::Vector2f RandomTPPos();
+	sf::Vector2f RandomPointInCircle();
+	void SetRandomPointInCircle();
 };
 
 #define DISTANCE_TO_PLAYER_BOSS (400.f)

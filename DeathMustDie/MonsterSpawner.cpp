@@ -91,13 +91,16 @@ void MonsterSpawner::BossSpawn(const std::string& bossName)
 
 void MonsterSpawner::SummonMonster(const std::string& monsterName, const GameObject& monster)
 {
-	poolSize = 30;
+	if (summonCurrentMonsterCount < 0.f)
+	{
+		summonCurrentMonsterCount = 0.f;
+	}
 
 	if (summonCurrentMonsterCount >= summonMaxMonsters)
 	{
 		return;
 	}
-	for (int i = 0; i < poolSize; i++)
+	for (int i = 0; i < summonMaxMonsters; i++)
 	{
 		Monster* summonMonster = poolManager->GetMonster(monsterName);
 		if (summonMonster)
@@ -107,6 +110,8 @@ void MonsterSpawner::SummonMonster(const std::string& monsterName, const GameObj
 			summonCurrentMonsterCount++;
 		}
 	}
+
+	std::cout << summonCurrentMonsterCount << std::endl;
 }
 
 void MonsterSpawner::SummonMonsterTrigger(const GameObject& monster)
@@ -123,6 +128,7 @@ void MonsterSpawner::Reset()
 {
 	player = (Player*)SCENE_MGR.GetCurrentScene()->FindGo("Player");
 	EVENT_HANDLER.AddEvent("OnMonsterDie", [&]() { currentMonsterCount--; });
+	EVENT_HANDLER.AddEvent("OnSummonMonsterDie", [&]() {summonCurrentMonsterCount--; });
 	std::function<void(const GameObject&)> func = std::bind(&MonsterSpawner::SummonMonsterTrigger, this, std::placeholders::_1);
 
 	EVENT_HANDLER.AddEventGo("SummonSkeleton", func);

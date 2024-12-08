@@ -109,6 +109,7 @@ void Monster::OnDeath()
 {
 	active = false; // 비활성화
 	EVENT_HANDLER.InvokeEvent("OnMonsterDie", (GameObject)*this);
+    EVENT_HANDLER.InvokeEvent("OnSummonMonsterDie", (GameObject)*this);
 }
 
 void Monster::OnSummon()
