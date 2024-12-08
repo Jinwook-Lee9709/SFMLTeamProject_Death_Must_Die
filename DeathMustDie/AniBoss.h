@@ -51,8 +51,7 @@ protected:
 	sf::CircleShape circle;
 
 	sf::Vector2f direction;
-	float speed = 20.f;
-	float attackDelayTimer = 0.f;
+	float speed = 50.f;
 	float attackDelay = 0.f;
 	float attackDuration = 6.f;
 	int hitCount = 0;

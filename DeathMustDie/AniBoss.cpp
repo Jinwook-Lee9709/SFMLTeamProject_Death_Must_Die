@@ -86,7 +86,7 @@ void AniBoss::Reset()
 	isDebuff = false;
 	isDeath = false;
 
-	attackDelay = 4.f;
+	attackDelay = 0.f;
 
 	tickTimer = 0.f;
 	tickInterval = 1.f;
@@ -153,7 +153,6 @@ void AniBoss::Update(float dt)
 void AniBoss::MoveUpdate(float dt)
 {
 	Walk(dt);
-	attackDelayTimer += dt;
 	ParticleAnim.SetEnd();
 	attackDelay += dt;
 	sf::Vector2f pos = player->GetPosition();
@@ -170,7 +169,6 @@ void AniBoss::MoveUpdate(float dt)
 		}
 
 		isAttack = true;
-		attackDelayTimer = 0.f;
 		Anim.Play(info.channelAnimId);
 		ParticleAnim.Play(info.channelParticleAnimId);
 		beforeStatus = currentStatus;
@@ -269,11 +267,11 @@ void AniBoss::ChannelUpdate(float dt)
 	if (!Anim.IsPlay() && !ParticleAnim.IsPlay())
 	{
 		isAbilityUsed = false;
-		OnSummon();
 		//SetPosition(RandomTPPos());
 		isAttack = false;
 		isFire = false;
 		Anim.Play(info.walkAnimId);
+		attackDelay = 0;
 		beforeStatus = currentStatus;
 		currentStatus = BossStatus::Move;
 	}
@@ -309,7 +307,11 @@ void AniBoss::FixedUpdate(float dt)
 void AniBoss::Draw(sf::RenderWindow& window)
 {
 	window.draw(body);
-	window.draw(particleBody);
+	if (ParticleAnim.IsPlay())
+	{
+		window.draw(particleBody);
+	}
+
 	hitbox.Draw(window);
 	Monster::Draw(window);
 }
@@ -416,8 +418,8 @@ sf::Vector2f AniBoss::RandomPointInCircle()
 	float x = 0;
 	float y = 0;
 
-	x = Utils::RandomRange(bossPos.x, circle.getRadius());
-	y = Utils::RandomRange(bossPos.y, circle.getRadius());
+	x = Utils::RandomRange(bossPos.x - circle.getRadius(), bossPos.x + circle.getRadius());
+	y = Utils::RandomRange(bossPos.y - circle.getRadius(), bossPos.y + circle.getRadius());
 
 	return sf::Vector2f(x, y);
 }
