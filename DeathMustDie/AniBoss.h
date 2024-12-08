@@ -22,6 +22,7 @@ public:
 		std::string walkAnimId;
 		std::string getHitAnimId;
 		std::string channelAnimId;
+		std::string channelParticleAnimId;
 		std::string deathAnimId;
 		int walkFrame;
 		int getHitFrame;
@@ -33,26 +34,33 @@ public:
 		float ellipseWidth;
 		float ellipseHeight;
 
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(BossInfo, walkAnimId, getHitAnimId, channelAnimId, deathAnimId,
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(BossInfo, walkAnimId, getHitAnimId, channelAnimId, channelParticleAnimId, deathAnimId,
 			walkFrame, getHitFrame, channelFrame, deathFrame,
 			damage, speed, hp, ellipseWidth, ellipseHeight);
 	};
 protected:
 	sf::Sprite body;
+	sf::Sprite particleBody;
 	Animator Anim;
+	Animator ParticleAnim;
 	std::string textureId;
 	BossStatus beforeStatus = BossStatus::None;
 	BossStatus currentStatus = BossStatus::Move;
 
+	sf::CircleShape circle;
+
 	sf::Vector2f direction;
-	float speed = 70.f;
+	float speed = 20.f;
 	float attackDelay = 0.f;
-	float attackDuration = 3.f;
+	float attackDuration = 10.f;
 	int hitCount = 0;
+
+	sf::Vector2f randomBossPos;
 
 	bool isAttack = false;
 	bool isDead = false;
 	bool isFire = false;
+	bool isArrival = false;
 
 	Player* player;
 	BossInfo info;
@@ -102,5 +110,7 @@ public:
 	void OnHit(float damage);
 
 	sf::Vector2f RandomTPPos();
+	sf::Vector2f RandomPointInCircle();
+	void SetRandomPointInCircle();
 };
 

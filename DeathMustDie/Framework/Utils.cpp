@@ -102,6 +102,13 @@ sf::Vector2f Utils::RandomPointInRect(const sf::FloatRect& rect)
         RandomRange(rect.top, rect.top + rect.height));
 }
 
+//sf::Vetcor2f Utils::RandomPointInCircle(const sf::CircleShape circle)
+//{
+//    return sf::Vector2f(
+//        RandomRange(circle.)
+//    )
+//}
+
 sf::Vector2f Utils::SetOrigin(sf::Transformable& obj, Origins preset, const sf::FloatRect rect)
 {
     sf::Vector2f newOrigin(rect.width, rect.height);

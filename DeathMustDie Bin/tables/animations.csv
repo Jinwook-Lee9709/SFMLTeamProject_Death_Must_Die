@@ -30,4 +30,5 @@ boon_selected,"10",0,2,5,378,319
 sorceror_walk,"10",1,3,8,72,86
 sorceror_gethit,"10",0,3,5,72,86
 sorceror_channel,"10",0,4,16,72,86
+sorceror_particle,"10",0,4,10,72,86
 sorceror_death,"10",0,6,33,114,123

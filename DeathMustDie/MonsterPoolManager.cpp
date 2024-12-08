@@ -34,6 +34,7 @@ void MonsterPoolManager::Update(float dt)
 				poolContainer[pair.first]->Return(*it);
 				it = pair.second.erase(it);
 				EVENT_HANDLER.InvokeEvent("OnMonsterDie");
+				EVENT_HANDLER.InvokeEvent("OnSummonMonsterDie");
 			}
 			else
 			{
@@ -56,6 +57,7 @@ void MonsterPoolManager::FixedUpdate(float dt)
 				poolContainer[pair.first]->Return(*it);
 				it = pair.second.erase(it);
 				EVENT_HANDLER.InvokeEvent("OnMonsterDie");
+				EVENT_HANDLER.InvokeEvent("OnSummonMonsterDie");
 			}
 			else
 			{

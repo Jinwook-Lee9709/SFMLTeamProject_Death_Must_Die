@@ -6,12 +6,15 @@ AniBoss::AniBoss(const std::string& name)
 	:Monster(name)
 {
 	Anim.SetTarget(&body);
+	ParticleAnim.SetTarget(&particleBody);
 }
 
 void AniBoss::SetPosition(const sf::Vector2f& pos)
 {
 	position = pos;
 	body.setPosition(position);
+	particleBody.setPosition(position);
+	circle.setPosition(position);
 	hitbox.rect.setPosition(position);
 	HPBar.setPosition({ position.x - HPBar.getSize().x * 0.5f, position.y - 140 });
 	HPBarFrame.setPosition({ position.x - HPBar.getSize().x * 0.5f, position.y - 140 });
@@ -21,12 +24,14 @@ void AniBoss::SetRotation(float angle)
 {
 	rotation = angle;
 	body.setRotation(rotation);
+	particleBody.setRotation(rotation);
 }
 
 void AniBoss::SetScale(const sf::Vector2f& s)
 {
 	scale = s;
 	body.setScale(scale);
+	particleBody.setScale(scale);
 }
 
 void AniBoss::SetOrigin(Origins preset)
@@ -35,6 +40,7 @@ void AniBoss::SetOrigin(Origins preset)
 	if (originPreset != Origins::Custom)
 	{
 		origin = Utils::SetOrigin(body, originPreset);
+		origin = Utils::SetOrigin(particleBody, originPreset);
 	}
 }
 
@@ -43,6 +49,7 @@ void AniBoss::SetOrigin(const sf::Vector2f& newOrigin)
 	originPreset = Origins::Custom;
 	origin = newOrigin;
 	body.setOrigin(origin);
+	particleBody.setOrigin(origin);
 }
 
 void AniBoss::Init()
@@ -55,11 +62,16 @@ void AniBoss::Release()
 
 void AniBoss::Reset()
 {
+	RES_TABLE_MGR.LoadAnimation();
 	hitbox.rect.setSize({ 40, 120 });
 	hitbox.rect.setPosition({ position });
 	Utils::SetOrigin(hitbox.rect, Origins::BC);
-	HPBar.setPosition({ position.x - HPBar.getSize().x * 0.5f, position.y - 140 });
-	HPBarFrame.setPosition({ position.x - HPBar.getSize().x * 0.5f, position.y - 140 });
+	HPBar.setPosition({ position.x - HPBar.getSize().x * 0.5f, position.y - 180 });
+	HPBarFrame.setPosition({ position.x - HPBar.getSize().x * 0.5f, position.y - 180 });
+	Utils::SetOrigin(circle, Origins::MC);
+	circle.setPosition(position);
+	circle.setFillColor(sf::Color::White);
+	circle.setRadius(5);
 	if (player == nullptr)
 	{
 		player = dynamic_cast<Player*>(SCENE_MGR.GetCurrentScene()->FindGo("Player"));
@@ -72,10 +84,13 @@ void AniBoss::Reset()
 
 	isDebuff = false;
 
+	attackDelay = 4.f;
+
 	tickTimer = 0.f;
 	tickInterval = 1.f;
 	tickDuration = 6.f;
 	tickDamage = 10.f;
+	SetRandomPointInCircle();
 }
 
 void AniBoss::Update(float dt)
@@ -83,8 +98,17 @@ void AniBoss::Update(float dt)
 	SetOrigin(Origins::BC);
 
 	Anim.Update(dt);
+	ParticleAnim.Update(dt);
 
+	sf::Vector2f bossPos = body.getPosition();
 
+	circle.setPosition(bossPos);
+	
+	if (isArrival)
+	{
+		SetRandomPointInCircle();
+		isArrival = false;
+	}
 
 	switch (currentStatus)
 	{
@@ -118,11 +142,11 @@ void AniBoss::Update(float dt)
 void AniBoss::MoveUpdate(float dt)
 {
 	Walk(dt);
+	ParticleAnim.SetEnd();
 	attackDelay += dt;
 	sf::Vector2f pos = player->GetPosition();
-	sf::Vector2f playerPos = player->GetPosition() - position;
 
-	if (Utils::Magnitude(playerPos) < DISTANCE_TO_PLAYER)
+	if (attackDelay >= attackDuration)
 	{
 		if (position.x > pos.x)
 		{
@@ -136,6 +160,7 @@ void AniBoss::MoveUpdate(float dt)
 		isAttack = true;
 		attackDelay = 0.f;
 		Anim.Play(info.channelAnimId);
+		ParticleAnim.Play(info.channelParticleAnimId);
 		beforeStatus = currentStatus;
 		currentStatus = BossStatus::Channel;
 		return;
@@ -144,19 +169,8 @@ void AniBoss::MoveUpdate(float dt)
 
 void AniBoss::AttackUpdate(float dt)
 {
-	if (Utils::RandomValue() < 0.5f)
-	{
-
-	}
-	else
-	{
-		isFire = true;
-	}
-
 	if (!Anim.IsPlay())
 	{
-		SetIsSummon(false);
-		isFire = false;
 		Anim.Play(info.walkAnimId);
 		beforeStatus = currentStatus;
 		currentStatus = BossStatus::Move;
@@ -205,10 +219,12 @@ void AniBoss::GetHitUpdate(float dt)
 
 void AniBoss::ChannelUpdate(float dt)
 {
-	OnSummon();
 
-	if (!Anim.IsPlay())
+	if (!Anim.IsPlay() && !ParticleAnim.IsPlay())
 	{
+		OnSummon();
+		//SetPosition(RandomTPPos());
+		isAttack = false;
 		isFire = false;
 		Anim.Play(info.walkAnimId);
 		beforeStatus = currentStatus;
@@ -240,6 +256,7 @@ void AniBoss::DeathUpdate(float dt)
 void AniBoss::Draw(sf::RenderWindow& window)
 {
 	window.draw(body);
+	window.draw(particleBody);
 	hitbox.Draw(window);
 	Monster::Draw(window);
 }
@@ -258,17 +275,19 @@ void AniBoss::OnDebuffed(DebuffType types, float dt)
 
 void AniBoss::Walk(float dt)
 {
-	sf::Vector2f playerPos = player->GetPosition();
-
-	if (Utils::Magnitude(playerPos - position) > DISTANCE_TO_PLAYER)
+	if (Utils::Magnitude(randomBossPos - position) > 10)
 	{
-		direction = playerPos - position;
+		direction = randomBossPos - position;
 		Utils::Normalize(direction);
 
 		SetPosition(position + direction * speed * dt);
 	}
+	else
+	{
+		isArrival = true;
+	}
 
-	if (position.x > playerPos.x)
+	if (position.x > randomBossPos.x)
 	{
 		SetScale({ -3.f, 3.f });
 	}
@@ -314,5 +333,22 @@ sf::Vector2f AniBoss::RandomTPPos()
 	sf::Vector2f randomPos = { x, y };
 
 	return randomPos;
-	return sf::Vector2f();
+}
+
+sf::Vector2f AniBoss::RandomPointInCircle()
+{
+	sf::Vector2f bossPos = body.getPosition();
+
+	float x = 0;
+	float y = 0;
+
+	x = Utils::RandomRange(bossPos.x, circle.getRadius());
+	y = Utils::RandomRange(bossPos.y, circle.getRadius());
+
+	return sf::Vector2f(x, y);
+}
+
+void AniBoss::SetRandomPointInCircle()
+{
+	randomBossPos = RandomPointInCircle();
 }
