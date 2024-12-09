@@ -223,7 +223,6 @@ void AniBoss::ChannelUpdate(float dt)
 	if (!Anim.IsPlay() && !ParticleAnim.IsPlay())
 	{
 		OnSummon();
-		//SetPosition(RandomTPPos());
 		isAttack = false;
 		isFire = false;
 		Anim.Play(info.walkAnimId);
