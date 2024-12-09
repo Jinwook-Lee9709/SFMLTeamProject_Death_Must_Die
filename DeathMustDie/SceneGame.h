@@ -11,6 +11,7 @@ class Player;
 class Structure;
 class TileMap;
 class DamageText;
+class TopUi;
 
 class SceneGame : public Scene
 {
@@ -32,6 +33,8 @@ private:
 	ObjectPool<Structure> struPool;
 	std::list<Structure*> struList;
 
+	TopUi* topUi;
+
 	TileMap* map;
 protected:
 
@@ -49,5 +52,7 @@ public:
 
 	std::list<Structure*> GetObjList() const { return struList; }
 	void SetObjPos();
+
+	void GameOver();
 };
 

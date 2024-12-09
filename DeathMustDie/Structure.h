@@ -10,9 +10,9 @@ public:
 	{
 		Greed,
 		Bookshelf,
-		Coffin,
 		Sanctuary,
-		Mineral
+		Mineral,
+		Coffin,
 	};
 protected:
 	Kinds kind;
@@ -48,4 +48,5 @@ public:
 	void ShowInteract();
 
 	bool GetInteract() const { return isInteract; }
+	bool GetIsUsed() const { return isUsed; }
 };

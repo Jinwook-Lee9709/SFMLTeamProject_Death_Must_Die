@@ -42,29 +42,33 @@ void Monster::OnHit(float damage)
 
 void Monster::HandleOverlap(float dt)
 {
-	auto monsters = mpMgr->GetMonsterList();
-	for (auto& pair : monsters)
+	if (dt > 0.00001f)
 	{
-		for (auto& monster : pair.second)
+		auto monsters = mpMgr->GetMonsterList();
+		for (auto& pair : monsters)
 		{
-			if (monster != this)
+			for (auto& monster : pair.second)
 			{
-				sf::Vector2f otherPos = monster->GetPosition();
-				if (Utils::Magnitude(otherPos - position) < DISTANCE_TO_OTHER)
+				if (monster != this)
 				{
-					float thisToPlayerDist = Utils::Magnitude(player->GetPosition() - position);
-					float otherToPlayerDist = Utils::Magnitude(player->GetPosition() - otherPos);
-					if (thisToPlayerDist > otherToPlayerDist)
+					sf::Vector2f otherPos = monster->GetPosition();
+					if (Utils::Magnitude(otherPos - position) < DISTANCE_TO_OTHER)
 					{
-						sf::Vector2f backwardDir = Utils::GetNormal(position - otherPos);
-						position += backwardDir * PUSH_SPEED * dt;
+						float thisToPlayerDist = Utils::Magnitude(player->GetPosition() - position);
+						float otherToPlayerDist = Utils::Magnitude(player->GetPosition() - otherPos);
+						if (thisToPlayerDist > otherToPlayerDist)
+						{
+							sf::Vector2f backwardDir = Utils::GetNormal(position - otherPos);
+							position += backwardDir * PUSH_SPEED * dt;
+						}
+
+
 					}
-
-
 				}
 			}
 		}
 	}
+	
 }
 
 void Monster::SetCollisionRadius(float radius)

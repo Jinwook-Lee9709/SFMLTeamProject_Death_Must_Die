@@ -40,6 +40,8 @@ protected:
 	std::vector<ButtonUi> btns;
 	float visibleTime;
 
+	Player* player;
+
 public:
 	StatusUi(const std::string& name = "");
 	~StatusUi() = default;

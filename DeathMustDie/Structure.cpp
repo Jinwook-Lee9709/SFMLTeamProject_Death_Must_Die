@@ -78,33 +78,36 @@ void Structure::FixedUpdate(float dt)
 	sf::Vector2f direction = position - player->GetPosition();
 	if (Utils::CheckCollision(temp, playerArea))
 	{
-		if (direction.x > 0)
+		if (rect.top < collision.top + collision.height && rect.top + rect.height > collision.top)
 		{
-			pPos.x -= (rect.left + rect.width - collision.left) - 10.f;
-			player->SetPosition(pPos);
+			if (rect.left + rect.width > collision.left && rect.left < collision.left)
+			{
+				pPos.x -= (rect.left + rect.width - collision.left);
+			}
+			else if (rect.left < collision.left + collision.width && rect.left + rect.width > collision.left + collision.width)
+			{
+				pPos.x += (collision.left + collision.width - rect.left);
+			}
 		}
-		else if (direction.x < 0)
+		if (rect.left < collision.left + collision.width && rect.left + rect.width > collision.left)
 		{
-			pPos.x += (collision.left + collision.width - rect.left);
-			player->SetPosition(pPos);
+			if (rect.top + rect.height > collision.top && rect.top < collision.top)
+			{
+				pPos.y -= (rect.top + rect.height - collision.top);
+			}
+			else if (rect.top < collision.top + collision.height && rect.top + rect.height > collision.top + collision.height)
+			{
+				pPos.y += (collision.top + collision.height - rect.top);
+			}
 		}
-		else if (direction.y < 0)
-		{
-			pPos.y += (collision.top + collision.height - rect.top);
-			player->SetPosition(pPos);
-		}
-		else if (direction.y > 0)
-		{
-			pPos.y -= (rect.top + rect.height - collision.top);
-			player->SetPosition(pPos);
-		}
+		player->SetPosition(pPos);
 	}
 }
 
 void Structure::Draw(sf::RenderWindow& window)
 {
 	window.draw(body);
-	/*window.draw(temp);*/
+	//window.draw(temp);
 }
 
 void Structure::SetKind(Kinds kind)

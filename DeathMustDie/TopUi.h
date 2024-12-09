@@ -27,6 +27,29 @@ protected:
 
 	std::list<Structure*> objList;
 	Player* player;
+
+	sf::RectangleShape rect;
+	float trans = 0;
+
+	Animator animator;
+	sf::Sprite aniSpr;
+	Animator animator2;
+	sf::Sprite aniSpr2;
+	Animator animator3;
+	sf::Sprite aniSpr3;
+	Animator animator4;
+	sf::Sprite aniSpr4;
+
+	std::string clipId = "end_header";
+	std::string clipId2 = "emblem_light";
+	std::string clipId3 = "emblem_r";
+	std::string clipId4 = "emblem_l";
+
+	bool isPlay = false;
+
+	TextGo death;
+	float dieTimer;
+
 public:
 	TopUi(const std::string& name = "");
 	~TopUi() = default;
@@ -51,5 +74,6 @@ public:
 
 	void SetBossHpBar();
 	void UpdateBossHpBar(int hp);
+	void GameOver();
 };
 

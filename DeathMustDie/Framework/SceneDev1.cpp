@@ -35,6 +35,10 @@ void SceneDev1::Init()
 void SceneDev1::Enter()
 {
 
+	player = AddGo(new Player("Player"));
+
+	AddGo(new StatusUi("UI"));
+	AddGo(new TopUi("TopUI"));
 	RES_TABLE_MGR.LoadScene("Dev1");
 	
 	Scene::Enter();

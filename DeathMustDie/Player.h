@@ -118,6 +118,8 @@ protected:
 	sf::Sprite body4;
 	Animator animator4;
 
+	sf::Sprite body5;
+	Animator animator5;
 
 	SpriteGo shadow;
 
@@ -131,6 +133,7 @@ protected:
 	std::string clipId2 = "knight_soward1";
 	std::string clipId3 = "knight_attack_range";
 	std::string clipId4 = "dash_spr";
+	std::string clipId5 = "player_die";
 	Status status;
 
 	float attackTerm = 0.f;
@@ -160,6 +163,9 @@ protected:
 	float exp;
 
 	bool isDead;
+	sf::Vector2f dieSprPos;
+
+	int trans;
 
 	Stat baseStat;
 	Stat curStat;
@@ -199,8 +205,8 @@ public:
 	SpriteGo& GetShadow();
 	sf::Vector2f GetDirection();
 
-	bool GetIsDead() const { return isDead; }
-	void SetIsDead(bool dead) { isDead = dead; }
+	bool GetIsDead() const {  return isDead; }
+	void SetIsDead(bool dead);
 
 	void ChangeAttackColor(sf::Color color);
 
@@ -212,5 +218,7 @@ public:
 	void SetDashCharge(int count);
 	void SetCurHp(int count);
 	void SetDefence(int count);
+
+	void Invisible();
 };
 

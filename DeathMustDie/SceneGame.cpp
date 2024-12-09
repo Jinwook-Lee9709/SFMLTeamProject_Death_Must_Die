@@ -25,7 +25,9 @@ SceneGame::SceneGame()
 void SceneGame::Init()
 {
 	sf::Vector2f size = FRAMEWORK.GetWindowSizeF();
-	
+
+
+
 
 	worldView.setSize(size);
 	uiView.setSize(size);
@@ -42,7 +44,9 @@ void SceneGame::Enter()
 {
 	player = AddGo(new Player("Player"));
 	auto ui = AddGo(new StatusUi("UI"));
-	auto topUi = AddGo(new TopUi("TopUI"));
+	topUi = AddGo(new TopUi("TopUI"));
+	auto buttonUi =	AddGo(new ButtonUi("ButtonUI"));
+	buttonUi->Init();
 	player->Init();
 	ui->Init();
 	topUi->Init();
@@ -108,6 +112,12 @@ void SceneGame::Exit()
 void SceneGame::Update(float dt)
 {
 	worldView.setCenter(player->GetPosition());
+	if (player->GetIsDead())
+	{
+		player->Update(dt);
+		topUi->Update(dt);
+		return;
+	}
 	Scene::Update(dt);
 	if (MPMgr)
 	{
@@ -145,7 +155,7 @@ void SceneGame::SetObjPos()
 		}
 	}
 
-	stru->SetKind((Structure::Kinds)Utils::RandomRange(0, 4));
+	stru->SetKind((Structure::Kinds)Utils::RandomRange(0, 3));
 	int posX = Utils::RandomRange(0, 19);
 	int posY = Utils::RandomRange(0, 19);
 
@@ -156,7 +166,8 @@ void SceneGame::SetObjPos()
 	}
 	
 	
-	stru->SetPosition({ mapGrid[posX][posY].x + posRangeX / 20 * Utils::RandomValue(), mapGrid[posX][posY].y + posRangeY / 20 * Utils::RandomValue() });
+	stru->SetPosition({ mapGrid[posX][posY].x + posRangeX / 20 * Utils::RandomRange(0.3f, 0.6f), 
+		mapGrid[posX][posY].y + posRangeY / 20 * Utils::RandomRange(0.3f, 0.6f) });
 	mapGrid[posX][posY] = { -1, -1 };
 
 	struList.push_back(stru);

@@ -17,6 +17,7 @@ void Player::SetPosition(const sf::Vector2f& pos)
 	body2.setPosition(position);
 	body3.setPosition(position + attackPos);
 	body4.setPosition({ position.x, position.y});
+	body5.setPosition({ position.x, position.y});
 	hitbox.rect.setPosition({position.x, position.y + 15.f});
 	backHpBar.setPosition({ position.x,  position.y -body.getGlobalBounds().height * 0.5f + 20.f});
 	hpBar.setPosition({ backHpBar.getGlobalBounds().left + 1.f, backHpBar.getGlobalBounds().top + 2.f });
@@ -41,6 +42,7 @@ void Player::SetScale(const sf::Vector2f& s)
 	body2.setScale(body2.getScale().x * scale.x, body2.getScale().y * scale.y);
 	body3.setScale(body3.getScale().x * scale.x, body3.getScale().y * scale.y);
 	body4.setScale(body4.getScale().x * scale.x, body4.getScale().y * scale.y);
+	body5.setScale(body5.getScale().x * scale.x, body5.getScale().y * scale.y);
 	shadow.SetScale({ shadow.GetScale().x * scale.x, shadow.GetScale().y * scale.y });
 	hitbox.rect.setScale(hitbox.rect.getScale().x * scale.x, hitbox.rect.getScale().y * scale.y);
 	
@@ -79,6 +81,7 @@ void Player::Init()
 	animator2.SetTarget(&body2);
 	animator3.SetTarget(&body3);
 	animator4.SetTarget(&body4);
+	animator5.SetTarget(&body5);
 }
 
 void Player::Release()
@@ -87,25 +90,39 @@ void Player::Release()
 
 void Player::Reset()
 {
-	
+	sortingLayer = SortingLayers::Foreground;
+	sortingOrder = 1;
 	RES_TABLE_MGR.LoadAnimation();
 	RES_TABLE_MGR.LoadScene("Dev1");
 	animator.Play(clipId);
+	body.setColor(sf::Color(255, 255, 255, 255));
+
 	animator2.Play(clipId2);
 	animator2.Stop();
+
 	animator3.Play(clipId3);
 	animator3.Stop();
+
 	animator4.Play(clipId4);
 	animator4.Stop();
+
+	animator5.Play(clipId5);
+	animator5.Stop();
+
+	body2.setScale(1.f, 1.f);
 	body3.setScale(0.2f, 0.2f);
 	body3.setPosition(position);
-	body3.setColor(sf::Color::Yellow);
+	//body3.setColor(sf::Color::Yellow);
 	body4.setScale(0.8f, 0.8f);
 	body4.setRotation(-90);
+	body5.setScale(1.f, 0.8f);
+	Utils::SetOrigin(body5, Origins::MC);
 	hitbox.UpdateTr(body, { 0,0,19.f,47.f });
 	shadow = SpriteGo("shadow");
 	shadow.Reset();
 	shadow.SetFillColor(sf::Color::Black);
+
+	dieSprPos.x = body5.getPosition().x + 100.f;
 
 	SetOrigin(Origins::MC);
 	
@@ -116,12 +133,27 @@ void Player::Reset()
 	SetDashAndHp();
 	level = 1;
 	exp = 0;
+	trans = 255;
+	isDead = false;
 	ui->UpdateExp(exp, level);
 }
 
 void Player::Update(float dt)
 {
 	animator.Update(dt);
+	if (isDead)
+	{
+		SetStatus(Status::IDLE);
+		animator.Stop();
+		animator2.Stop();
+		animator3.Stop();
+		animator4.Stop();
+		body.setColor(sf::Color(255, 102, 254));
+
+		
+		return;
+	}
+	
 	animator2.Update(dt);
 	animator3.Update(dt);
 	animator4.Update(dt);
@@ -135,6 +167,8 @@ void Player::Update(float dt)
 		Damage(10.f);
 	if (InputMgr::GetKeyDown(sf::Keyboard::L))
 		SetLevel(5.f);
+	if (InputMgr::GetKeyDown(sf::Keyboard::Numpad9))
+		SetIsDead(true);
 	
 	if (isDamage)
 	{
@@ -147,6 +181,8 @@ void Player::Update(float dt)
 			isDamage = false;
 		}
 	}
+	if(hp <= 0)
+		SetIsDead(true);
 
 	if (direction.x < 0 && (!isAttack || isDash))
 	{
@@ -183,16 +219,22 @@ void Player::Draw(sf::RenderWindow& window)
 	{
 		window.draw(body4);
 	}
-	
+	if (animator5.IsPlay())
+	{
+		window.draw(body5);
+	}
 	hitbox.Draw(window);
 	shadow.Draw(window);
 	window.draw(body);
-	window.draw(backHpBar);
-	window.draw(hpBar);
-	window.draw(damageBar);
-	window.draw(backDashBar);
-	for (auto& dashes : dashBlock)
-		window.draw(dashes);
+	if (!isDead)
+	{
+		window.draw(backHpBar);
+		window.draw(hpBar);
+		window.draw(damageBar);
+		window.draw(backDashBar);
+		for (auto& dashes : dashBlock)
+			window.draw(dashes);
+	}
 }
 
 void Player::SetDashAndHp()
@@ -442,6 +484,11 @@ sf::Vector2f Player::GetDirection()
 	return direction;
 }
 
+void Player::SetIsDead(bool dead)
+{
+	isDead = dead;
+}
+
 void Player::ChangeAttackColor(sf::Color color)
 {
 	body3.setColor(color);
@@ -456,9 +503,9 @@ void Player::Damage(float damage)
 	SetHp(hp, value);
 	ui->UpdateHp(hp, value);
 
-	if (hp == 0) {
+	/*if (hp == 0) {
 		SCENE_MGR.ChangeScene(SceneIds::Title);
-	}
+	}*/
 }
 
 void Player::SetHp(float hp, float damage)
@@ -507,4 +554,10 @@ void Player::SetCurHp(int count)
 void Player::SetDefence(int count)
 {
 	curStat.defensive.armor += count;
+}
+
+void Player::Invisible()
+{
+	trans = Utils::Lerp(trans, 0, 0.0001f, false);
+	body.setColor(sf::Color(255, 255, 255, trans));
 }
