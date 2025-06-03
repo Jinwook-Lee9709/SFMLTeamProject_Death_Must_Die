@@ -16,27 +16,27 @@
 
 ## 게임 설명
 
-![에버그로우1](https://github.com/user-attachments/assets/e023f178-bd90-4185-85e1-ab862edea832)|
+![스크린샷 2025-06-03 오후 4 49 53](https://github.com/user-attachments/assets/09a703b0-4d7e-4a10-8903-bd669b6e77f3)|
 |:---:|
 |타이틀 화면|
-|![에버그로우2](https://github.com/user-attachments/assets/fa4903bd-8c23-4172-80b1-07f7e7c7b577)|
+|![스크린샷 2025-06-03 오후 4 50 42](https://github.com/user-attachments/assets/0f50dfc3-8799-4077-83ca-000fcc7f70c6)|
 |인 게임 화면|
 
 
-- 다양한 건물들<br>
-농장, 공장, 주택등 다양한 건물을 통해 마을을 꾸며보세요.<br>
-- 농사를 짓고, 제품을 생산하세요!<br>
-농장에서 작물을 수확하고, 목장에서 다양한 물품들을 생산하세요! 이를 가공해서 다양한 제품을 생산가능합니다.<br>
-- 헬기 배달 시스템을 통한 재화 획득<br>
-생산한 자원들을 물물 교환 해보세요! 매일 아침 거래가능한 품목이 초기화 됩니다!<br>
+- 몬스터를 쓸어버리고 성장하세요!<br>
+적을 처치하면 잼이 등장하고, 젬을 획득하면 레벨업이 가능합니다.<br>
+- 스킬을 얻고 성장시키세요!<br>
+6종의 다양한 스킬을 사용할 수 있습니다<br>
+- 마법사 보스<br>
+화염구를 날리는 보스를 상대해보세요<br>
 
 
 
 ## 콘텐츠
 
-|<img width="1134" alt="스크린샷 2025-05-30 오후 12 30 13" src="https://github.com/user-attachments/assets/4972c65d-5b37-47b5-801d-a4d95e7eed24" />|<img width="1135" alt="스크린샷 2025-05-30 오후 12 31 19" src="https://github.com/user-attachments/assets/1fa5bcf8-cca1-4fbc-b684-54c2da60c0ff" />|<img width="1137" alt="스크린샷 2025-05-30 오후 12 29 26" src="https://github.com/user-attachments/assets/d4bf4160-a21e-4604-866f-cce56ba71d8d" />|<img width="1134" alt="스크린샷 2025-05-30 오후 12 30 29" src="https://github.com/user-attachments/assets/ddae7d77-edbd-4114-825a-d91a9e4eb261" />|
-|:---:|:---:|:---:|:--:|
-|농사|건설|공산품 생산|영역 확장|
+|![스크린샷 2025-06-03 오후 4 49 53](https://github.com/user-attachments/assets/a7d3788d-8bd6-4534-b95d-b23704f1541a)|![스크린샷 2025-06-03 오후 4 50 27](https://github.com/user-attachments/assets/fc5c089b-a934-467a-ba4c-d2146d4d3c84)|![스크린샷 2025-06-03 오후 4 50 42](https://github.com/user-attachments/assets/aefae149-5376-4a2c-bec0-3788e251d20d)|
+|:---:|:---:|:---:|
+|타이틀|전투|스킬 선택|
 
 
 
